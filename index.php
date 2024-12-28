@@ -7,13 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="./app.css ">
+    <link rel="stylesheet" href="app.css ">
 </head>
 <body>  
             <nav class="navbar navbar-dark fixed-top navbar-expand-lg bg-dark mx-2 mx-md-3 mx-lg-4 mx-xl-5 rounded p-1 shadow-sm">
                 <div class="container-fluid">
                     <a href="index.php" class="navbar-brand">
-                        <img src="st-logo-3.png" alt="" class="img-fluid rounded d-inline-block border border-white" width="120px">
+                        <img src="img/st-logo-3.png" alt="" class="img-fluid rounded d-inline-block border border-white" width="120px">
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -30,7 +30,7 @@
                                     <button class="btn btn-outline-success border border-white text-white nav-align" type="submit">Search</button>
                                   </form>
                             </li>
-                            <li class="nav-item mx-1 border border-white rounded"><a href="" class="nav-link active hov-nav nav-align"><img src="./img/account-logo.png" alt="" class="img-fluid" width=20px></a></li>
+                            <li class="nav-item mx-1 border border-white rounded"><a href="" class="nav-link active hov-nav nav-align"><img src="img/account-logo.png" alt="" class="img-fluid" width=20px></a></li>
                         </ul>
                     </div>
                 </div>
