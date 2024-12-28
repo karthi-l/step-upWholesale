@@ -1,0 +1,21 @@
+.material-icons.md-dark { color: rgba(0, 0, 0, 1); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+.nav-item {
+    border-radius: 0.33rem; /* Same radius as hover */
+    overflow: hidden; /* Ensures background color stays inside the border */
+}
+.nav-align  {
+    padding: 8px 8px;
+    
+}
+.hov-nav:hover{
+    border-radius: 0.33rem;
+    background-color: #198754;
+    
+}
+
+
