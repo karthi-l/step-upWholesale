@@ -33,10 +33,10 @@
                             <li class="nav-item mx-1 border border-white rounded d-none d-lg-block"><a href="account.php" class="nav-link active hov-nav nav-align"><img src="img/account-logo.png" alt="Account" class="img-fluid" width=20px></a></li>
                             <li class="nav-item mx-1 d-block d-lg-none">    
                                 <div class="row g-0">
-                                    <div class="col-6 px-1 border border-white rounded">
+                                    <div class="col-6 mx-1 border border-white rounded">
                                         <a href="login.php" class="nav-link active text-light hov-nav nav-align">Login</a>
                                     </div>
-                                    <div class="col-6 px-1 border border-white rounded">
+                                    <div class="col-6 mx-1 border border-white rounded">
                                         <a href="register.php" class="nav-link active text-light hov-nav nav-align">Register</a>
                                     </div>
                                 </div>
