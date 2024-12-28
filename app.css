@@ -17,4 +17,8 @@
     background-color: #198754;
     
 }
+.navbar-toggler:focus {
+    outline: none;
+    box-shadow: none;
+}
 
