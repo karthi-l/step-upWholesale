@@ -18,7 +18,7 @@ session_start();
             <nav class="navbar navbar-dark fixed-top navbar-expand-lg bg-dark { rounded p-1 shadow-sm">
                 <div class="container-fluid">
                     <a href="index.php" class="navbar-brand">
-                        <img src="img/st-logo-3.png" alt="" id="nav-logo" class="img-fluid rounded d-inline-block border border-white" >
+                        <img src="img/st-logo.png" alt="" id="nav-logo" class="img-fluid rounded d-inline-block border border-white" >
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
