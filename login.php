@@ -2,6 +2,11 @@
 // Start the session
 session_start();
 
+if (isset($_SESSION['user_id'])) {
+    // Redirect to the account or dashboard page
+    header("Location: account.php");
+    exit(); // Stop further execution of the script
+}
 // Include your database connection file
 include('db_connect.php');
 

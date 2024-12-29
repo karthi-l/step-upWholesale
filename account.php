@@ -96,10 +96,12 @@ if (isset($_SESSION['user_id'])) {
             </div>
         </div>
 
-        <!-- Logout Button -->
-        <a href="logout.php" class="btn btn-danger mt-3" onclick="return confirm('Are you sure you want to log out?');">Logout</a>
+        <div class="mt-4 d-flex justify-content-between flex-wrap">
+            <a href="index.php" class="btn btn-primary mt-3" >Home</a>
+            <!-- Logout Button -->
+            <a href="logout.php" class="btn btn-danger mt-3" onclick="return confirm('Are you sure you want to log out?');">Logout</a>
+        </div>
     </div>
-
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

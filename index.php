@@ -59,19 +59,23 @@ session_start();
             </nav>    
             <section class="hero row bg-light m-auto border rounded" id="hero-sec">
                 <!-- Content Column -->
+
+                <div class="hero-image col-lg-4 col-12 d-flex justify-content-center py-2">
+                  <img src="img/Walkaroo_logo.jpg" alt="Wholesale Footwear" class="border rounded-circle" width="192px">
+                </div>
+
+
                 <div class="hero-content col-lg-8 col-12 d-flex flex-column align-items-center text-center pt-3">
                   <h1>Welcome to Step-Up Wholesale</h1>
                   <p>Your trusted partner in wholesale footwear distribution.</p>
                   <div class="hero-buttons d-flex justify-content-center">
                     <a href="catologue.php" class="btn btn-primary mx-2">Explore Products</a>
-                    <a href="login.php" class="btn btn-secondary mx-2">Log In</a>
+                   
                   </div>
                 </div>
               
                 <!-- Image Column -->
-                <div class="hero-image col-lg-4 col-12 d-flex justify-content-center py-2">
-                  <img src="img/Walkaroo_logo.jpg" alt="Wholesale Footwear" class="border rounded-circle" width="192px">
-                </div>
+                
               </section>
               
               
