@@ -15,14 +15,21 @@ session_start();
     <link rel="stylesheet" href="app.css ">
 </head>
 <body>  
-            <nav class="navbar navbar-dark fixed-top navbar-expand-lg bg-dark { rounded p-1 shadow-sm">
-                <div class="container-fluid">
+            <nav class="navbar navbar-dark fixed-top navbar-expand-lg bg-dark  rounded p-1 shadow-sm">
+                <div class="container-fluid d-flex align-items-center">
                     <a href="index.php" class="navbar-brand">
                         <img src="img/st-logo.png" alt="" id="nav-logo" class="img-fluid rounded d-inline-block border border-white" >
                     </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <a href="account.php" class="d-block d-lg-none mx-1 border rounded border-white">
+                            <img src="img/account-logo.png" alt="Account" class="img-fluid hov-nav nav-align" width=39px>
+                        </a>
+                        <button class="navbar-toggler mx-1 border border-white hov-nav" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                    
+
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item  mx-1 border border-white rounded my-1 my-lg-0"><a class="nav-link active text-light hov-nav nav-align" href="index.php">Home</a></li>
@@ -37,21 +44,6 @@ session_start();
                             </li>
                             <li class="nav-item mx-1 border border-white rounded d-none d-lg-block"><a href="account.php" class="nav-link active hov-nav nav-align"><img src="img/account-logo.png" alt="Account" class="img-fluid" width=20px></a></li>
                             <li class="nav-item mx-1 d-block d-lg-none my-1 my-lg-0">    
-    <div class="row">
-        <div class="col">
-            <a 
-                href="<?php echo isset($_SESSION['user_id']) ? 'account.php' : 'login.php'; ?>" 
-                class="nav-link active text-light hov-nav nav-align border border-white rounded">
-                <?php echo isset($_SESSION['user_id']) ? 'My Account' : 'Login'; ?>
-            </a>
-        </div>
-        <div class="col">
-            <?php if (!isset($_SESSION['user_id'])): ?>
-                <a href="register.php" class="nav-link active text-light hov-nav nav-align border border-white rounded">Register</a>
-            <?php endif; ?>
-        </div>
-    </div>
-</li>
 
                         </ul>
                     </div>
@@ -66,15 +58,16 @@ session_start();
 
 
                 <div class="hero-content col-lg-8 col-12 d-flex flex-column align-items-center text-center pt-3">
-                  <h1>Welcome to Step-Up Wholesale</h1>
+                  <h1>Welcome to Saleem Traders</h1>
+                  <h2>It is a Step Up in Wholesale</h2>
                   <p>Your trusted partner in wholesale footwear distribution.</p>
                   <div class="hero-buttons d-flex justify-content-center">
-                    <a href="catologue.php" class="btn btn-primary mx-2">Explore Products</a>
+                    <a href="catologue.php" class="btn btn-primary mx-2 mb-2 mb-lg-0">Explore Products</a>
                    
                   </div>
                 </div>
               
-                <!-- Image Column -->
+               
                 
               </section>
               
