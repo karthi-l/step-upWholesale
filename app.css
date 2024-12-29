@@ -4,6 +4,12 @@
 /* Rules for using icons as white on a dark background. */
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+body{
+    margin-top: 80px;
+}
+#nav-logo{
+  width: 50%;
+}
 .nav-item {
     border-radius: 0.33rem; /* Same radius as hover */
     overflow: hidden; /* Ensures background color stays inside the border */
@@ -22,3 +28,4 @@
     box-shadow: none;
 }
 
+  

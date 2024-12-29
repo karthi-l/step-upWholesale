@@ -1,3 +1,8 @@
+<?php 
+session_start();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,10 +15,10 @@
     <link rel="stylesheet" href="app.css ">
 </head>
 <body>  
-            <nav class="navbar navbar-dark fixed-top navbar-expand-lg bg-dark mx-2 mx-md-3 mx-lg-4 mx-xl-5 rounded p-1 shadow-sm">
+            <nav class="navbar navbar-dark fixed-top navbar-expand-lg bg-dark { rounded p-1 shadow-sm">
                 <div class="container-fluid">
                     <a href="index.php" class="navbar-brand">
-                        <img src="img/st-logo-3.png" alt="" id="nav-logo" class="img-fluid rounded d-inline-block border border-white" width="120px">
+                        <img src="img/st-logo-3.png" alt="" id="nav-logo" class="img-fluid rounded d-inline-block border border-white" >
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -32,19 +37,44 @@
                             </li>
                             <li class="nav-item mx-1 border border-white rounded d-none d-lg-block"><a href="account.php" class="nav-link active hov-nav nav-align"><img src="img/account-logo.png" alt="Account" class="img-fluid" width=20px></a></li>
                             <li class="nav-item mx-1 d-block d-lg-none my-1 my-lg-0">    
-                                <div class="row">
-                                    <div class="col">
-                                        <a href="login.php" class="nav-link active text-light hov-nav nav-align border border-white rounded">Login</a>
-                                    </div>
-                                    <div class="col">
-                                        <a href="register.php" class="nav-link active text-light hov-nav nav-align border border-white rounded">Register</a>
-                                    </div>
-                                </div>
-                            </li>
+    <div class="row">
+        <div class="col">
+            <a 
+                href="<?php echo isset($_SESSION['user_id']) ? 'account.php' : 'login.php'; ?>" 
+                class="nav-link active text-light hov-nav nav-align border border-white rounded">
+                <?php echo isset($_SESSION['user_id']) ? 'My Account' : 'Login'; ?>
+            </a>
+        </div>
+        <div class="col">
+            <?php if (!isset($_SESSION['user_id'])): ?>
+                <a href="register.php" class="nav-link active text-light hov-nav nav-align border border-white rounded">Register</a>
+            <?php endif; ?>
+        </div>
+    </div>
+</li>
+
                         </ul>
                     </div>
                 </div>
             </nav>    
+            <section class="hero row bg-light m-auto border rounded" id="hero-sec">
+                <!-- Content Column -->
+                <div class="hero-content col-lg-8 col-12 d-flex flex-column align-items-center text-center pt-3">
+                  <h1>Welcome to Step-Up Wholesale</h1>
+                  <p>Your trusted partner in wholesale footwear distribution.</p>
+                  <div class="hero-buttons d-flex justify-content-center">
+                    <a href="catologue.php" class="btn btn-primary mx-2">Explore Products</a>
+                    <a href="login.php" class="btn btn-secondary mx-2">Log In</a>
+                  </div>
+                </div>
+              
+                <!-- Image Column -->
+                <div class="hero-image col-lg-4 col-12 d-flex justify-content-center py-2">
+                  <img src="img/Walkaroo_logo.jpg" alt="Wholesale Footwear" class="border rounded-circle" width="192px">
+                </div>
+              </section>
+              
+              
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>
