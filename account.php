@@ -21,7 +21,31 @@ if (isset($_SESSION['user_id'])) {
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
     } else {
-        echo "<div class='alert alert-warning'>Unable to fetch your details. Please contact support.</div>";
+        echo "
+        <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Account Center - Wholesale Footwear Management</title>
+            <!-- Bootstrap 5 CSS -->
+            <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+        </head>
+        <body>
+            <div class='container text-center mt-5'>
+                <div class='alert alert-warning m-auto text-center'>
+                    <h4>Unable to fetch your details. Please contact support.</h4>
+                     <div class='d-flex justify-content-center'>
+                    <a href='logout.php' class='btn btn-primary mx-2'>Logout</a>
+                    <a href='index.php' class='btn btn-info mx-2'>Home</a>
+                </div>
+                </div>
+                
+
+            </div>
+        <body>
+        </html>
+        ";
         exit;
     }
 } else {
@@ -43,7 +67,7 @@ if (isset($_SESSION['user_id'])) {
                 <p>Please log in to access your account.</p>
                 <div class='d-flex justify-content-center'>
                     <a href='login.php' class='btn btn-primary mx-2'>Login</a>
-                    <a href='register.php' class='btn btn-secondary mx-2'>Register</a>
+                    <a href='index.php' class='btn btn-info mx-2'>Home</a>
                 </div>
             </div>
         </div>
