@@ -57,15 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="row w-100">
+        <div class="row w-100 border rounded">
             <div class="col-12 col-md-6 col-lg-4 mx-auto">
                 <h2 class="text-center mb-4">Login</h2>
                 <?php if (isset($_GET['registration']) && $_GET['registration'] == 'success'): ?>
-    <div class="alert alert-success text-center mb-4">
-        Registration successful! You can now login here.
-    </div>
-<?php endif; ?>
-
+                    <div class="alert alert-success text-center mb-4">
+                        Registration successful! You can now login here.
+                    </div>
+                <?php endif; ?>
                 <form action="login.php" method="POST">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>

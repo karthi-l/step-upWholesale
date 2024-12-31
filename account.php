@@ -61,8 +61,8 @@ if (isset($_SESSION['user_id'])) {
         <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
     </head>
     <body>
-        <div class='container mt-5'>
-            <div class='alert alert-danger text-center'>
+        <div class='container mt-5 row m-auto'>
+            <div class='alert alert-danger text-center col-12 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-auto'>
                 <h4>You must be logged in to view this page.</h4>
                 <p>Please log in to access your account.</p>
                 <div class='d-flex justify-content-center'>

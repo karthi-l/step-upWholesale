@@ -3,7 +3,32 @@ session_start();
 include('db_connect.php');
 
 if (!isset($_SESSION['user_id'])) {
-    echo "<div class='alert alert-danger'>You must be logged in to change your password. <a href='login.php'>Login here</a></div>";
+    echo "
+        <!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Account Center - Wholesale Footwear Management</title>
+        <!-- Bootstrap 5 CSS -->
+        <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+    </head>
+    <body>
+        <div class='container mt-5 row m-auto'>
+            <div class='alert alert-danger text-center col-12 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-auto'>
+                <h4>You must be logged in to view this page.</h4>
+                <p>Please log in to get access.</p>
+                <div class='d-flex justify-content-center'>
+                    <a href='login.php' class='btn btn-primary mx-2'>Login</a>
+                    <a href='index.php' class='btn btn-info mx-2'>Home</a>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap 5 JS -->
+        <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js'></script>
+    </body>
+    </html>
+    ";
     exit;
 }
 
@@ -55,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 <div class="container mt-5">
     <h2>Change Password</h2>
+    
     <form method="POST" action="">
         <div class="mb-3">
             <label for="current_password" class="form-label">Current Password</label>
