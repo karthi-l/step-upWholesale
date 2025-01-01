@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Redirect to the account page
             header("Location: account.php");
             exit();
+            
         } else {
             // Incorrect password, set error flag
             $incorrect_password = true;

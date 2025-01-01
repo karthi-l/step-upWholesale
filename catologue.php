@@ -73,11 +73,11 @@ while ($row = $result->fetch_assoc()) {
 </head>
 <body>
 <div class="container mt-5">
-<div class="container d-flex justify-content-between align-items-center">
-    <div class="mx-auto">
-        <h1 class="mb-4">Brand Catalogues</h1>
+<div class="container d-flex justify-content-between align-items-center mb-3">
+    <div class="m-auto">
+        <h1>Brand Catalogues</h1>
     </div>
-    <a href="index.php">
+    <a href="index.php" class="">
         <button class="btn btn-primary">Home</button>
     </a>
 </div>
