@@ -1,0 +1,45 @@
+"id","brand_name","image_file","catalogue_file","created_at","sub_brand","description"
+"1","Walkaroo Basix Gents & Ladies","walkaroo-basix-gents&ladies-logo.png","walkaroo-basix-gents&ladies-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"2","Walkaroo Belly Shoe","walkaroo-belly-shoe-logo.png","walkaroo-belly-shoe-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"3","Walkaroo Bluetyga Gents & Ladies","walkaroo-bluetyga-gents&ladies-logo.png","walkaroo-bluetyga-gents&ladies-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"4","Walkaroo Flipflopz Gents & Ladies EVA","walkaroo-flipflopz-gents&ladies-eva-logo.png","walkaroo-flipflopz-gents&ladies-eva-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"5","Walkaroo Flipflopz Gents & Ladies Hawai","walkaroo-flipflopz-gents&ladies-hawai-logo.png","walkaroo-flipflopz-gents&ladies-hawai-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"6","Walkaroo Flipflopz Kids EVA","walkaroo-flipflopz-kids-eva-logo.png","walkaroo-flipflopz-kids-eva-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"7","Walkaroo Formal Shoe","walkaroo-formal-shoe-logo.png","walkaroo-formal-shoe-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"8","Walkaroo Gents PU","walkaroo-gents-pu-logo.png","walkaroo-gents-pu-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"9","Walkaroo Gents Sport Sandal","walkaroo-gents-sport-sandal-collection-logo.png","walkaroo-gents-sport-sandal-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"10","Walkaroo Gumboot & Working Shoes","walkaroo-gumboot&working-shoes-logo.png","walkaroo-gumboot&working-shoes-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"11","Walkaroo Kids","walkaroo-kids-logo.png","walkaroo-kids-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"12","Walkaroo Ladies PU","walkaroo-ladies-pu-logo.png","walkaroo-ladies-pu-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"13","Walkaroo Loyalty Plus","walkaroo-loyaltyPlus-logo.png","walkaroo-loyaltyPlus.pdf","2024-12-31 11:50:38",NULL,NULL
+"14","Walkaroo Plus Gents & Ladies","walkaroo-plus-gents&ladies-logo.png","walkaroo-plus-gents&ladies-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"15","Walkaroo PVC","walkaroo-pvc-logo.png","walkaroo-pvc-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"16","Walkaroo School Shoe","walkaroo-school-shoe-logo.png","walkaroo-school-shoe-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"17","Walkaroo Sport Catalogue","walkaroo-sport-catalogue-logo.png","walkaroo-sport-catalogue.pdf","2024-12-31 11:50:38",NULL,NULL
+"18","Walkaroo Sport Shoe","walkaroo-sport-shoe-logo.png","walkaroo-sport-shoe-collection.pdf","2024-12-31 11:50:38",NULL,NULL
+"19","Walkaroo Catalogue","walkaroo-logo.png","walkaroo-catalogue.pdf","2024-12-31 12:59:52",NULL,NULL
+"20","Walkmate Economy","walkmate-economy-logo.png","walkmate-economy-catalogue.pdf","2025-01-01 18:31:00",NULL,NULL
+"21","Walkmate Gents","walkmate-gents-logo.png","walkmate-gents-catalogue.pdf","2025-01-01 18:31:00",NULL,NULL
+"22","Walkmate Kids","walkmate-kids-logo.png","walkmate-kids-catalogue.pdf","2025-01-01 18:31:00",NULL,NULL
+"23","Walkmate Ladies","walkmate-ladies-logo.png","walkmate-ladies-catalogue.pdf","2025-01-01 18:31:00",NULL,NULL
+"24","Walkmate","walkmate-logo.png",NULL,"2025-01-01 18:31:00",NULL,NULL
+"25","Walkmate New Arrival Gents","walkmate-new-arrival-gents-logo.png","walkmate-new-arrival-gents-catologue.pdf","2025-01-01 18:31:00",NULL,NULL
+"26","Walkmate New Arrival Ladies","walkmate-new-arrival-ladies-logo.png","walkmate-new-arrival-ladies-catalogue.pdf","2025-01-01 18:31:00",NULL,NULL
+"27","VKC Debon Newstyle","vkc-debon-newstyle-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"28","VKC Debongo DB","vkc-debongo-db-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"29","VKC Debongo DX","vkc-debongo-dx-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"30","VKC Debongo","vkc-debongo-log.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"31","VKC Debongo Yay","vkc-debongo-yay-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"32","VKC Eezy","vkc-eezy-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"33","VKC Goodspot","vkc-goodspot-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"34","VKC Hawai","vkc-hawai-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"35","VKC Hi Pride Ladies","vkc-hi-pride-ladies-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"36","VKC Jamayka","vkc-jamayka-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"37","VKC Junior","vkc-junior-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"38","VKC Kapers","vkc-kapers-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"39","VKC Lite","vkc-lite-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"40","VKC Pride","vkc-pride-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"41","VKC Skalino","vkc-skalino-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"42","VKC Slippons","vkc-slippons-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"43","VKC Stile","vkc-stile-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
+"44","VKC Trendz","vkc-trendz-logo.png",NULL,"2025-01-01 22:22:25",NULL,NULL
