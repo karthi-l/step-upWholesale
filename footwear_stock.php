@@ -1,4 +1,16 @@
 <?php
+if (isset($_SESSION['success_message'])) {
+    echo '<div class="alert alert-success text-center">' . htmlspecialchars($_SESSION['success_message']) . '</div>';
+    unset($_SESSION['success_message']);
+}
+
+if (isset($_SESSION['error_message'])) {
+    echo '<div class="alert alert-danger text-center">' . htmlspecialchars($_SESSION['error_message']) . '</div>';
+    unset($_SESSION['error_message']);
+}
+?>
+
+<?php
 session_start();
 include('db_connect.php');
 
@@ -41,7 +53,7 @@ $result = $conn->query($query);
         <h1>Footwear Models</h1>
         <div class="d-flex align-items-center">
         <input type="text" class=" form-control mx-2" placeholder="search model">
-        <a href="upload_footwear.php" class="btn btn-primary w-25">Add New Model</a>
+        <a href="upload_footwear.php" class="btn btn-primary w-100">Add New Model</a>
         </div>
     </div>
 
