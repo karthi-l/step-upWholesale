@@ -61,13 +61,14 @@ if (isset($_SESSION['user_id'])) {
         <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
     </head>
     <body>
-        <div class='container mt-5 row m-auto'>
+        <div class='container row mt-5 m-auto'>
             <div class='alert alert-danger text-center col-12 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-auto'>
-                <h4>You must be logged in to view this page.</h4>
+                <h4>You must be logged in as a user to access.</h4>
                 <p>Please log in to access your account.</p>
                 <div class='d-flex justify-content-center'>
-                    <a href='login.php' class='btn btn-primary mx-2'>Login</a>
-                    <a href='index.php' class='btn btn-info mx-2'>Home</a>
+                <a href='login.php' class='btn btn-primary mx-2'>Login</a>
+                <a href='index.php' class='btn btn-info mx-2'>Home</a>
+                <a href='admin_dashboard.php' class='btn btn-primary mx-2'>Admin-Portal</a>
                 </div>
             </div>
         </div>

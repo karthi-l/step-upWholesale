@@ -1,5 +1,4 @@
 <?php
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -38,9 +37,9 @@ function sendOTPEmail($recipient_email, $otp, $name) {
 
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = 'Email Verification - Step-upWholesale';
+        $mail->Subject = 'Email Verification for Step-upWholesale';
         $mail->Body    = '
-            <h2>Hello, '. $name .'
+            <h1>Hello, '. $name . '</h1>
             <h3>Here is your OTP for Login/Registration</h3>
             <h4>OTP : '. $otp . '</h4>
         ';

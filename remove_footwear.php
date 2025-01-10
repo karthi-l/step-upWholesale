@@ -26,19 +26,19 @@ if (isset($_GET['model_id'])) {
 
         // Redirect back with a success message
         $_SESSION['success_message'] = "Model removed successfully.";
-        header("Location: fetch_footwear.php");
+        header("Location: footwear_stock.php");
     } catch (Exception $e) {
         // Rollback transaction in case of an error
         $conn->rollback();
 
         // Redirect back with an error message
         $_SESSION['error_message'] = "Failed to remove the model: " . $e->getMessage();
-        header("Location: fetch_footwear.php");
+        header("Location: footwear_stock.php");
     }
 } else {
     // Redirect back if no model_id is provided
     $_SESSION['error_message'] = "Invalid model selected.";
-    header("Location: fetch_footwear.php");
+    header("Location: footwear_stock.php");
 }
 
 exit();

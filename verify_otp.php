@@ -4,7 +4,7 @@ session_start();
 include('db_connect.php');
 // Check if user is already logged in
 if(isset($_SESSION['user_id'])){
-    header("Location:account.php");
+    header("Location:user_dashboard.php");
 }
 // Check if username and email is not set
 if (!isset($_SESSION['user']) && !isset($_SESSION['email'])) {
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $result['user_id'];
 
             // Redirect to account/dashboard page
-            header('Location:account.php');
+            header('Location:user_dashboard.php');
             exit(0);
         } else {
             $alert = "<div class='alert alert-danger'>Invalid or expired OTP. Please try again.</div>";

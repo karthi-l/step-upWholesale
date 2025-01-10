@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Set success alert message
         $alert_message = '<div class="alert alert-success">Footwear stock added/updated successfully.</div>';
-        header("Location: fetch_footwear.php");
+        header("Location: footwear_stock.php");
     } 
 }
 }

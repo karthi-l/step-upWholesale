@@ -167,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="d-flex justify-content-center">
         <button type="submit" class="btn btn-primary mx-1">Save Changes</button>
-        <a href="account.php" class="btn btn-secondary mx-1">Back</a>
+        <a href="user_dashboard.php" class="btn btn-secondary mx-1">Back</a>
         </div>
     </form>
 </div>

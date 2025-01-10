@@ -50,7 +50,7 @@ $result = $stmt->get_result();
     <?php else: ?>
         <div class="alert alert-warning">No orders found.</div>
     <?php endif; ?>
-    <a href="account.php" class="btn btn-secondary mt-3">Back</a>
+    <a href="user_dashboard.php" class="btn btn-secondary mt-3">Back</a>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

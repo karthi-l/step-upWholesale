@@ -21,7 +21,7 @@ session_start();
                         <img src="img/st-logo.png" alt="st-logo" id="nav-logo" class="img-fluid rounded d-inline-block border border-white" >
                     </a>
                     <div class="d-flex align-items-center justify-content-center">
-                        <a href="account.php" class="d-block d-lg-none border rounded border-white">
+                        <a href="user_dashboard.php" class="d-block d-lg-none border rounded border-white">
                             <img src="img/account-logo.png" alt="Account" class="img-fluid hov-nav nav-align" width=39px>
                         </a>
                         <button class="navbar-toggler mx-1 mx-xs-0 border border-white hov-nav" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@ session_start();
                                     <button class="btn btn-outline-success border border-white text-white nav-align" type="submit">Search</button>
                                   </form>
                             </li>
-                            <li class="nav-item mx-1 border border-white rounded d-none d-lg-block"><a href="account.php" class="nav-link active hov-nav nav-align"><img src="img/account-logo.png" alt="Account" class="img-fluid" width=20px></a></li>    
+                            <li class="nav-item mx-1 border border-white rounded d-none d-lg-block"><a href="user_dashboard.php" class="nav-link active hov-nav nav-align"><img src="img/account-logo.png" alt="Account" class="img-fluid" width=20px></a></li>    
 
                         </ul>
                     </div>
