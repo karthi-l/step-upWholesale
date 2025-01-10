@@ -1,53 +1,70 @@
 <?php
 // Start the session
-session_start();
 
+session_start(); // Always start the session at the beginning of your script
+
+// Before redirecting, check session variables
+
+// Redirect if the user is already logged in
 if (isset($_SESSION['user_id'])) {
-    // Redirect to the account or dashboard page
-    header("Location: account.php");
-    exit(); // Stop further execution of the script
+    header("Location:account.php");
+    exit();
 }
-// Include your database connection file
-include('db_connect.php');
 
+// Include your database connection and PHPMailer files
+include('db_connect.php');
+include('generate_otp.php');
+
+
+// Function to generate a 6-digit OTP
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Sanitize and get form data
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $owner_name = mysqli_real_escape_string($conn, $_POST['owner_name']);
     $shop_name = mysqli_real_escape_string($conn, $_POST['shop_name']);
     $shop_address = mysqli_real_escape_string($conn, $_POST['shop_address']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $mobile_number = mysqli_real_escape_string($conn, $_POST['mobile_number']);
-    
+
     // Hash the password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    // Check if the username already exists
-    $check_query = "SELECT * FROM usersretailers WHERE username = ?";
+    // Check if the username or email already exists
+    $check_query = "SELECT * FROM usersretailers WHERE username = ? OR email = ?";
     $stmt = $conn->prepare($check_query);
-    $stmt->bind_param("s", $username);
+    $stmt->bind_param("ss", $username, $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        echo "<div class='alert alert-danger'>Username already exists. Please choose another username.</div>";
+        echo "<div class='alert alert-danger'>Username or Email already exists. Please use a different one.</div>";
     } else {
-        // Insert new user into the database
-        $insert_query = "INSERT INTO usersretailers (username, password, shop_name, shop_address, email, mobile_number) VALUES (?, ?, ?, ?, ?, ?)";
+        // Generate OTP
+        $otp = generateOTP();
+        $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes')); // Set expiry time to 10 minutes
+
+        // Insert user data along with OTP and OTP expiry into the database
+        $insert_query = "INSERT INTO usersretailers (username, password, shop_name, shop_address, email, mobile_number, otp, otp_expiry, owner_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($insert_query);
-        $stmt->bind_param("ssssss", $username, $hashed_password, $shop_name, $shop_address, $email, $mobile_number);
+        $stmt->bind_param("sssssssss", $username, $hashed_password, $shop_name, $shop_address, $email, $mobile_number, $otp, $otp_expiry,$owner_name);
 
         if ($stmt->execute()) {
-            // Redirect to login page after successful registration
-            header('Location: login.php?registration=success');
-            exit;
+            // Send OTP to the user's email
+            $_SESSION['authType'] = "register"; 
+            sendOTPEmail($email, $otp, $username);
+            $_SESSION['user'] = $username;
+            $_SESSION['email'] = $email;
+            header('Location:verify_otp.php'); // Redirect to OTP verification page
+            exit(0);
         } else {
             echo "<div class='alert alert-danger'>Error during registration. Please try again.</div>";
         }
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -119,7 +136,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
                     </div>
-
+                    <div class="mb-3">
+                        <label for="owner_name" class="form-label">Owner Name</label>
+                        <input type="text" id="owner_name" name="owner_name" class="form-control" required>
+                    </div>
                     <div class="mb-3">
                         <label for="shop_name" class="form-label">Shop Name</label>
                         <input type="text" id="shop_name" name="shop_name" class="form-control" required>
@@ -131,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <button type="submit" name="submitRegistration" class="btn btn-primary w-100">Register</button>
                 </form>
                 <p class="mt-3 text-center">Already have an account? <a href="login.php">Login here</a></p>
                 <p class="mt-3 text-center">Go to Home Page <a href="index.php">Home-Page</a></p>
@@ -141,5 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </body>
 </html>

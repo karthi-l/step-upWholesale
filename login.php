@@ -2,14 +2,14 @@
 // Start the session
 session_start();
 
-if (isset($_SESSION['user_id'])) {
-    // Redirect to the account or dashboard page
-    header("Location: account.php");
-    exit(); // Stop further execution of the script
-}
-// Include your database connection file
+// Include database connection
 include('db_connect.php');
+include('generate_otp.php');
 
+//If the user is logged in Redirect to Account dashboard
+if(isset($_SESSION['user_id'])){
+    header("Location:account.php");
+}
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get form data and sanitize
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     
     // Query to fetch user data based on username
-    $query = "SELECT user_id, username, password FROM usersretailers WHERE username = ?";
+    $query = "SELECT user_id, username, password, email FROM usersretailers WHERE username = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -29,23 +29,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Verify the password
         if (password_verify($password, $user['password'])) {
-            // Password is correct, start the session
-            $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['username'] = $user['username'];
-            // Redirect to the account page
-            header("Location: account.php");
-            exit();
-            
+            // Password is correct; generate OTP
+            $otp = generateOTP();
+
+            // Save OTP and its expiry in the database
+            $otp_expiry = date("Y-m-d H:i:s", strtotime("+10 minutes")); // OTP valid for 10 minutes
+            $update_query = "UPDATE usersretailers SET otp = ?, otp_expiry = ? WHERE user_id = ?";
+            $update_stmt = $conn->prepare($update_query);
+            $update_stmt->bind_param("ssi", $otp, $otp_expiry, $user['user_id']);
+            $update_stmt->execute();
+            $_SESSION['authType'] = "login";
+            // Send OTP email
+            sendOTPEmail($user['email'], $otp, $user['username']);
+
+            // Store user info in session for OTP verification
+            $_SESSION['user'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
+
+            // Redirect to OTP verification page
+            header("Location:verify_otp.php");
+            exit(0);
         } else {
-            // Incorrect password, set error flag
+            // Incorrect password
             $incorrect_password = true;
         }
     } else {
-        // No user found, set error flag
+        // User not found
         $user_not_found = true;
     }
 }
 ?>
+
+<!-- The rest of your HTML login form remains unchanged -->
 
 <!DOCTYPE html>
 <html lang="en">
