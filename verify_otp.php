@@ -6,16 +6,30 @@ include('db_connect.php');
 if(isset($_SESSION['user_id'])){
     header("Location:user_dashboard.php");
 }
+if(isset($_SESSION['admin_id'])){
+    header("Location:admin_dashboard.php");
+}
 // Check if username and email is not set
-if (!isset($_SESSION['user']) && !isset($_SESSION['email'])) {
-    if($_SESSION['authType'] == 'login'){
-        header("Location:login.php");
-        exit(0);
-    } elseif($_SESSION['authType'] == 'register'){
-        header("Location:register.php");
-        exit(0);
+if (!isset($_SESSION['auth_user']) && !isset($_SESSION['auth_email'])) {
+    if($_SESSION['user_or_admin'] === 'user'){
+        if($_SESSION['authType'] == 'login'){
+            header("Location:user_login.php");
+            exit(0);
+        } elseif($_SESSION['authType'] == 'register'){
+            header("Location:user_register.php");
+            exit(0);
+        }
+    }elseif($_SESSION['user_or_admin'] === 'admin'){
+        if($_SESSION['authType'] == 'login'){
+            header("Location:admin_login.php");
+            exit(0);
+        } elseif($_SESSION['authType'] == 'register'){
+            header("Location:admin_register.php");
+            exit(0);
+        }
     }
 }
+
 
 // Handle OTP verification
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

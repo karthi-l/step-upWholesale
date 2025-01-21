@@ -1,4 +1,35 @@
 <?php
+
+if(!isset($_SESSION['AdminID'])){
+    echo "
+    <!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Account Center - Wholesale Footwear Management</title>
+        <!-- Bootstrap 5 CSS -->
+        <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+    </head>
+    <body>
+        <div class='container row mt-5 m-auto'>
+            <div class='alert alert-danger text-center col-12 col-md-9 col-lg-8   m-auto'>
+                <h2>With Great Powers Comes Grate Responsibilities.</h2>
+                <h5>You must be logged in as a Admin to access.</h5>
+                <div class='d-flex justify-content-center mt-3'>
+                <a href='user_login.php' class='btn btn-primary mx-2'>Login</a>
+                <a href='index.php' class='btn btn-info mx-2'>Home</a>
+                <a href='user_dashboard.php' class='btn btn-primary mx-2'>User-Portal</a>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap 5 JS -->
+        <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js'></script>
+    </body>
+    </html>";
+    exit;
+}
+
 if (isset($_SESSION['success_message'])) {
     echo '<div class="alert alert-success text-center">' . htmlspecialchars($_SESSION['success_message']) . '</div>';
     unset($_SESSION['success_message']);
@@ -8,9 +39,7 @@ if (isset($_SESSION['error_message'])) {
     echo '<div class="alert alert-danger text-center">' . htmlspecialchars($_SESSION['error_message']) . '</div>';
     unset($_SESSION['error_message']);
 }
-?>
 
-<?php
 session_start();
 include('db_connect.php');
 
@@ -54,6 +83,7 @@ $result = $conn->query($query);
         <div class="d-flex align-items-center">
         <input type="text" class=" form-control mx-2" placeholder="search model">
         <a href="upload_footwear.php" class="btn btn-primary w-100">Add New Model</a>
+        <a href="index.php" class="btn btn-primary w-50">Home</a>
         </div>
     </div>
 

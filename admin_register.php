@@ -6,8 +6,8 @@ session_start(); // Always start the session at the beginning of your script
 // Before redirecting, check session variables
 
 // Redirect if the user is already logged in
-if (isset($_SESSION['user_id'])) {
-    header("Location:user_dashboard.php");
+if (isset($_SESSION['admin_id'])) {
+    header("Location:admin_dashboard.php");
     exit();
 }
 
@@ -54,8 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Send OTP to the user's email
             $_SESSION['authType'] = "register"; 
             sendOTPEmail($email, $otp, $username);
-            $_SESSION['user'] = $username;
-            $_SESSION['email'] = $email;
+            $_SESSION['auth_user'] = $username;
+            $_SESSION['user_or_admin'] = "admin";
+            $_SESSION['auth_email'] = $email;
             header('Location:verify_otp.php'); // Redirect to OTP verification page
             exit(0);
         } else {
@@ -104,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="row w-100 border rounded p-3">
             <div class="col-12 col-md-8 col-lg-6 mx-auto">
                 <h2 class="text-center mb-4">Register</h2>
-                <form action="register.php" method="POST">
+                <form action="user_register.php" method="POST">
                     <!-- Shop Name and Shop Details (Same Row on Larger Screens) -->
                     <div class="row">
                         <div class="col-12 col-xl-6">

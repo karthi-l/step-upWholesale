@@ -54,8 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Send OTP to the user's email
             $_SESSION['authType'] = "register"; 
             sendOTPEmail($email, $otp, $username);
-            $_SESSION['user'] = $username;
-            $_SESSION['email'] = $email;
+            $_SESSION['auth_user'] = $username;
+            $_SESSION['user_or_admin'] = "user";
+            $_SESSION['auth_email'] = $email;
             header('Location:verify_otp.php'); // Redirect to OTP verification page
             exit(0);
         } else {

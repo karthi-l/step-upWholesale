@@ -43,8 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             sendOTPEmail($user['email'], $otp, $user['username']);
 
             // Store user info in session for OTP verification
-            $_SESSION['user'] = $user['username'];
-            $_SESSION['email'] = $user['email'];
+            $_SESSION['auth_user'] = $user['username'];
+            $_SESSION['user_or_admin'] = "user";
+            $_SESSION['auth_email'] = $user['email'];
 
             // Redirect to OTP verification page
             header("Location:verify_otp.php");
@@ -81,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         Registration successful! You can now login here.
                     </div>
                 <?php endif; ?>
-                <form action="login.php" method="POST">
+                <form action="user_login.php" method="POST">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" id="username" name="username" class="form-control" required>

@@ -12,19 +12,18 @@ $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
 // Build query based on the filter
 switch ($filter) {
     case 'available':
-        $query = "SELECT brand_name, image_file, catalogue_file, sub_brand FROM brands WHERE catalogue_file IS NOT NULL";
+        $query = "SELECT main_brand, image_file, catalogue_file, sub_brand FROM brands WHERE catalogue_file IS NOT NULL";
         break;
     case 'unavailable':
-        $query = "SELECT brand_name, image_file, catalogue_file, sub_brand FROM brands WHERE catalogue_file IS NULL";
+        $query = "SELECT main_brand, image_file, catalogue_file, sub_brand FROM brands WHERE catalogue_file IS NULL";
         break;
     default:
-        $query = "SELECT brand_name, image_file, catalogue_file, sub_brand FROM brands";
+        $query = "SELECT main_brand, image_file, catalogue_file, sub_brand FROM brands";
         break;
 }
 
 // Fetch brand details from the database
 $result = $conn->query($query);
-
 if (!$result || $result->num_rows === 0) {
     echo "
     <!DOCTYPE html>
@@ -105,8 +104,8 @@ while ($row = $result->fetch_assoc()) {
         <?php foreach ($brands as $brand): ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="brand-card">
-                    <img src="<?php echo $imageDirectory . htmlspecialchars($brand['image_file']); ?>" alt="<?php echo htmlspecialchars($brand['brand_name']); ?>" class="image-fluid border border-rounded shadow-lg">
-                    <h5 class="mt-3"><?php echo htmlspecialchars($brand['brand_name']).' '.htmlspecialchars($brand['sub_brand']); ?></h5>
+                    <img src="<?php echo $imageDirectory . htmlspecialchars($brand['image_file']); ?>" alt="<?php echo htmlspecialchars($brand['main_brand']); ?>" class="image-fluid border border-rounded shadow-lg">
+                    <h5 class="mt-3"><?php echo htmlspecialchars($brand['main_brand']).' '.htmlspecialchars($brand['sub_brand']); ?></h5>
                     <?php if (!empty($brand['catalogue_file'])): ?>
                         <a href="<?php echo $catalogueDirectory . htmlspecialchars($brand['catalogue_file']); ?>" class="btn btn-primary me-2" target="_blank">View Catalogue</a>
                         <a href="<?php echo $catalogueDirectory . htmlspecialchars($brand['catalogue_file']); ?>" class="btn btn-light border" download>Download Catalogue</a>

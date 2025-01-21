@@ -66,7 +66,7 @@ if (isset($_SESSION['user_id'])) {
                 <h4>You must be logged in as a user to access.</h4>
                 <p>Please log in to access your account.</p>
                 <div class='d-flex justify-content-center'>
-                <a href='login.php' class='btn btn-primary mx-2'>Login</a>
+                <a href='user_login.php' class='btn btn-primary mx-2'>Login</a>
                 <a href='index.php' class='btn btn-info mx-2'>Home</a>
                 <a href='admin_dashboard.php' class='btn btn-primary mx-2'>Admin-Portal</a>
                 </div>

@@ -6,9 +6,9 @@ session_start();
 include('db_connect.php');
 
 // Check if the user is logged in
-if (isset($_SESSION['AdminID'])) {
+if (isset($_SESSION['admin_id'])) {
     // User is logged in, fetch their details from the database
-    $AdminID = $_SESSION['AdminID'];
+    $AdminID = $_SESSION['admin_id'];
 
     // Use prepared statements to prevent SQL injection
     $query = "SELECT Role FROM admins WHERE AdminID = ?";
@@ -66,7 +66,7 @@ if (isset($_SESSION['AdminID'])) {
                 <h2>With Great Powers Comes Grate Responsibilities.</h2>
                 <h5>You must be logged in as a Admin to access.</h5>
                 <div class='d-flex justify-content-center mt-3'>
-                <a href='login.php' class='btn btn-primary mx-2'>Login</a>
+                <a href='admin_login.php' class='btn btn-primary mx-2'>Login</a>
                 <a href='index.php' class='btn btn-info mx-2'>Home</a>
                 <a href='user_dashboard.php' class='btn btn-primary mx-2'>User-Portal</a>
                 </div>

@@ -61,7 +61,7 @@ session_start();
                   <h2>It is a Step Up in Wholesale</h2>
                   <p>Your trusted partner in wholesale footwear distribution.</p>
                   <div class="hero-buttons d-flex justify-content-center">
-                    <a href="catalogue.php" class="btn btn-primary mx-2 mb-2 mb-lg-0">Explore Products</a>
+                    <a href="products.php" class="btn btn-primary mx-2 mb-2 mb-lg-0">Explore Products</a>
                    
                   </div>
                 </div>
