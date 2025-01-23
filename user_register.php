@@ -53,10 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($stmt->execute()) {
             // Send OTP to the user's email
             $_SESSION['authType'] = "register"; 
-            sendOTPEmail($email, $otp, $username);
-            $_SESSION['auth_user'] = $username;
-            $_SESSION['user_or_admin'] = "user";
+            $_SESSION['user_or_admin'] = 'user';
+            $_SESSION['auth_name'] = $username;
             $_SESSION['auth_email'] = $email;
+            sendOTPEmail($email, $otp, $username);
             header('Location:verify_otp.php'); // Redirect to OTP verification page
             exit(0);
         } else {
@@ -65,8 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
-
+<?php if(!isset($_SESSION['admin_id'])): ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="row w-100 border rounded p-3">
             <div class="col-12 col-md-8 col-lg-6 mx-auto">
                 <h2 class="text-center mb-4">Register</h2>
-                <form action="register.php" method="POST">
+                <form action="user_register.php" method="POST">
                     <!-- Shop Name and Shop Details (Same Row on Larger Screens) -->
                     <div class="row">
                         <div class="col-12 col-xl-6">
@@ -166,3 +165,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </body>
 </html>
+<?php  else: echo" 
+    <!DOCTYPE html>
+        <html lang='en'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>Account Center - Wholesale Footwear Management</title>
+            <!-- Bootstrap 5 CSS -->
+            <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
+        </head>
+        <body>
+            <div class='container text-center mt-5'>
+                <div class='alert alert-warning m-auto text-center'>
+                    <h4>You dont have the previlages to access the page</h4>
+                     <div class='d-flex justify-content-center'>
+                    <a href='index.php' class='btn btn-primary mx-2'>Home</a>
+                </div>
+                </div>
+                
+
+            </div>
+        <body>
+        </html>
+
+"; endif;?>

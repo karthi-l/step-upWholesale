@@ -10,6 +10,9 @@ include('generate_otp.php');
 if(isset($_SESSION['user_id'])){
     header("Location:user_dashboard.php");
 }
+if(isset($_SESSION['admin_id'])){
+    header("Location:admin_dashboard.php");
+}
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get form data and sanitize
@@ -39,13 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $update_stmt->bind_param("ssi", $otp, $otp_expiry, $user['user_id']);
             $update_stmt->execute();
             $_SESSION['authType'] = "login";
+            $_SESSION['user_or_admin'] = "user";
+            $_SESSION['auth_name'] = $user['username'];
+            $_SESSION['auth_email'] = $user['email'];
             // Send OTP email
             sendOTPEmail($user['email'], $otp, $user['username']);
 
             // Store user info in session for OTP verification
-            $_SESSION['auth_user'] = $user['username'];
-            $_SESSION['user_or_admin'] = "user";
-            $_SESSION['auth_email'] = $user['email'];
 
             // Redirect to OTP verification page
             header("Location:verify_otp.php");

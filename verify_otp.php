@@ -10,7 +10,7 @@ if(isset($_SESSION['admin_id'])){
     header("Location:admin_dashboard.php");
 }
 // Check if username and email is not set
-if (!isset($_SESSION['auth_user']) && !isset($_SESSION['auth_email'])) {
+if (!isset($_SESSION['auth_name']) && !isset($_SESSION['auth_email'])) {
     if($_SESSION['user_or_admin'] === 'user'){
         if($_SESSION['authType'] == 'login'){
             header("Location:user_login.php");
@@ -33,11 +33,15 @@ if (!isset($_SESSION['auth_user']) && !isset($_SESSION['auth_email'])) {
 
 // Handle OTP verification
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_SESSION['email']; // Retrieve email from session
+    $email = $_SESSION['auth_email']; // Retrieve email from session
     $otp = mysqli_real_escape_string($conn, $_POST['otp']); // Get OTP from the form
 
     // Fetch OTP and expiry from the database
-    $sql = "SELECT otp, otp_expiry, user_id FROM usersretailers WHERE email = ?";
+    if($_SESSION['user_or_admin'] === 'user'){
+        $sql = "SELECT otp, otp_expiry, user_id FROM usersretailers WHERE email = ?";
+    }elseif($_SESSION['user_or_admin'] === 'admin'){
+        $sql = "SELECT otp, otp_expiry, admin_id FROM admins WHERE email = ?";
+    }    
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -47,9 +51,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result['otp'] == $otp && strtotime($result['otp_expiry']) > time()) {
             // OTP is valid; clear OTP and update session
             if($_SESSION['authType'] == 'register'){
-                $sql_update = "UPDATE usersretailers SET otp = NULL, otp_expiry = NULL, registrationDate = Now(), LastLogin = NOW() WHERE email = ?";
+                if($_SESSION['user_or_admin'] === 'user'){
+                    $sql_update = "UPDATE usersretailers SET otp = NULL, otp_expiry = NULL, userCreationDate = Now() WHERE email = ?";
+                }elseif($_SESSION['user_or_admin'] === 'admin'){
+                    $sql_update = "UPDATE admins SET otp = NULL, otp_expiry = NULL , CreatedDate = Now() WHERE email = ?";
+                }
             }elseif($_SESSION['authType'] == 'login'){
-                $sql_update = "UPDATE usersretailers SET otp = NULL, otp_expiry = NULL, LastLogin = NOW() WHERE email = ?";
+                if($_SESSION['user_or_admin'] === 'user'){
+                    $sql_update = "UPDATE usersretailers SET otp = NULL, otp_expiry = NULL, LastLogin = Now() WHERE email = ?";
+                }elseif($_SESSION['user_or_admin'] === 'admin'){
+                    $sql_update = "UPDATE admins SET otp = NULL, otp_expiry = NULL, LastLogin = Now() WHERE email = ?";
+                }
             }
             $stmt_update = $conn->prepare($sql_update);
             $stmt_update->bind_param("s", $email);
@@ -57,11 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Set session variable for successful login
             $_SESSION['is_verified'] = true;
-            $_SESSION['user_id'] = $result['user_id'];
-
-            // Redirect to account/dashboard page
-            header('Location:user_dashboard.php');
-            exit(0);
+            if($_SESSION['user_or_admin'] === 'user'){
+                $_SESSION['user_id'] = $result['user_id'];
+                // Redirect to account/dashboard page
+                header('Location:user_dashboard.php');
+                exit(0);
+            }elseif($_SESSION['user_or_admin'] === 'admin'){
+                $_SESSION['admin_id'] = $result['admin_id'];
+                // Redirect to account/dashboard page
+                header('Location:admin_dashboard.php');
+            }
         } else {
             $alert = "<div class='alert alert-danger'>Invalid or expired OTP. Please try again.</div>";
             $sql_update = "UPDATE usersretailers SET otp = NULL, otp_expiry = NULL WHERE email = ?";

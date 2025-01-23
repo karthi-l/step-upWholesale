@@ -20,43 +20,41 @@ include('generate_otp.php');
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Sanitize and get form data
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $adminname = mysqli_real_escape_string($conn, $_POST['adminname']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
-    $owner_name = mysqli_real_escape_string($conn, $_POST['owner_name']);
-    $shop_name = mysqli_real_escape_string($conn, $_POST['shop_name']);
-    $shop_address = mysqli_real_escape_string($conn, $_POST['shop_address']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
     $mobile_number = mysqli_real_escape_string($conn, $_POST['mobile_number']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $role = mysqli_real_escape_string($conn, $_POST['role']);
 
     // Hash the password
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Check if the username or email already exists
-    $check_query = "SELECT * FROM usersretailers WHERE username = ? OR email = ?";
+    $check_query = "SELECT * FROM admins WHERE adminname = ? OR email = ?";
     $stmt = $conn->prepare($check_query);
-    $stmt->bind_param("ss", $username, $email);
+    $stmt->bind_param("ss", $adminname, $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        echo "<div class='alert alert-danger'>Username or Email already exists. Please use a different one.</div>";
+        echo "<div class='alert alert-danger'>Adminname or Email already exists. Please use a different one.</div>";
     } else {
         // Generate OTP
         $otp = generateOTP();
         $otp_expiry = date('Y-m-d H:i:s', strtotime('+10 minutes')); // Set expiry time to 10 minutes
 
         // Insert user data along with OTP and OTP expiry into the database
-        $insert_query = "INSERT INTO usersretailers (username, password, shop_name, shop_address, email, mobile_number, otp, otp_expiry, owner_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $insert_query = "INSERT INTO admins (adminname, password, mobile_number, email, role, otp, otp_expiry) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($insert_query);
-        $stmt->bind_param("sssssssss", $username, $hashed_password, $shop_name, $shop_address, $email, $mobile_number, $otp, $otp_expiry,$owner_name);
+        $stmt->bind_param("sssssss", $adminname, $hashed_password, $mobile_number, $email, $role, $otp, $otp_expiry);
 
         if ($stmt->execute()) {
             // Send OTP to the user's email
             $_SESSION['authType'] = "register"; 
-            sendOTPEmail($email, $otp, $username);
-            $_SESSION['auth_user'] = $username;
+            $_SESSION['auth_name'] = $adminname;
             $_SESSION['user_or_admin'] = "admin";
             $_SESSION['auth_email'] = $email;
+            sendOTPEmail($email, $otp, $adminname);
             header('Location:verify_otp.php'); // Redirect to OTP verification page
             exit(0);
         } else {
@@ -104,14 +102,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
         <div class="row w-100 border rounded p-3">
             <div class="col-12 col-md-8 col-lg-6 mx-auto">
-                <h2 class="text-center mb-4">Register</h2>
-                <form action="user_register.php" method="POST">
+                <h2 class="text-center mb-4">Admin-Register</h2>
+                <form action="admin_register.php" method="POST">
                     <!-- Shop Name and Shop Details (Same Row on Larger Screens) -->
                     <div class="row">
                         <div class="col-12 col-xl-6">
                             <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" id="username" name="username" class="form-control" required>
+                                <label for="adminname" class="form-label">Admin-name</label>
+                                <input type="text" id="adminname" name="adminname" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-12 col-xl-6">
@@ -137,25 +135,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="owner_name" class="form-label">Owner Name</label>
-                        <input type="text" id="owner_name" name="owner_name" class="form-control" required>
+                    <div class="row">
+                        <div class="col-6 mx-auto">
+                            <div class="mb-3">
+                                <label for="role" class="form-label">Role</label>
+                                <select name="role" id="role" class="form-select">
+                                    <option value="">Select Role</option>
+                                    <option value="Super-Admin">Super-Admin</option>
+                                    <option value="Stock-Manager">Stock-Manager</option>
+                                    <option value="Order-Manager">Order-Manager</option>
+                                    <option value="Delivery-Manager">Delivery-Manager</option>
+                                    <option value="Accountant-Manager">Accountant-Manager</option>
+                                    <option value="User-Manager">User-Manager</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="shop_name" class="form-label">Shop Name</label>
-                        <input type="text" id="shop_name" name="shop_name" class="form-control" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="shop_address" class="form-label">Shop Address</label>
-                        <textarea id="shop_address" name="shop_address" class="form-control" rows="3" required></textarea>
-                    </div>
-
                     <!-- Submit Button -->
-                    <button type="submit" name="submitRegistration" class="btn btn-primary w-100">Register</button>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <button type="submit" name="submitRegistration" class="btn btn-primary mx-auto">Register</button>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-center">Go to Home Page <a href="index.php">Home-Page</a></p>
                 </form>
                 
-                <p class="mt-3 text-center">Go to Home Page <a href="index.php">Home-Page</a></p>
             </div>
         </div>
     </div>

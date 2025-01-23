@@ -13,41 +13,41 @@ if(isset($_SESSION['admin_id'])){
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get form data and sanitize
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $adminname = mysqli_real_escape_string($conn, $_POST['adminname']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     
     // Query to fetch user data based on username
-    $query = "SELECT user_id, username, password, email FROM usersretailers WHERE username = ?";
+    $query = "SELECT admin_id, adminname, password, email FROM admins WHERE adminname = ?";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $username);
+    $stmt->bind_param("s", $adminname);
     $stmt->execute();
     $result = $stmt->get_result();
 
     // Check if user exists
     if ($result->num_rows == 1) {
-        $user = $result->fetch_assoc();
+        $admin = $result->fetch_assoc();
 
         // Verify the password
-        if (password_verify($password, $user['password'])) {
+        if (password_verify($password, $admin['password'])) {
             // Password is correct; generate OTP
             $otp = generateOTP();
 
             // Save OTP and its expiry in the database
             $otp_expiry = date("Y-m-d H:i:s", strtotime("+10 minutes")); // OTP valid for 10 minutes
-            $update_query = "UPDATE usersretailers SET otp = ?, otp_expiry = ? WHERE user_id = ?";
+            $update_query = "UPDATE admins SET otp = ?, otp_expiry = ? WHERE admin_id = ?";
             $update_stmt = $conn->prepare($update_query);
-            $update_stmt->bind_param("ssi", $otp, $otp_expiry, $user['user_id']);
+            $update_stmt->bind_param("ssi", $otp, $otp_expiry, $admin['admin_id']);
             $update_stmt->execute();
             $_SESSION['authType'] = "login";
             // Send OTP email
-            sendOTPEmail($user['email'], $otp, $user['username']);
-
+            
             // Store user info in session for OTP verification
-            $_SESSION['auth_user'] = $user['username'];
+            $_SESSION['auth_name'] = $admin['adminname'];
             $_SESSION['user_or_admin'] = "admin";
-            $_SESSION['auth_email'] = $user['email'];
-
+            $_SESSION['auth_email'] = $admin['email'];
+            
             // Redirect to OTP verification page
+            sendOTPEmail($admin['email'], $otp, $admin['adminname']);
             header("Location:verify_otp.php");
             exit(0);
         } else {
@@ -82,10 +82,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         Registration successful! You can now login here.
                     </div>
                 <?php endif; ?>
-                <form action="user_login.php" method="POST">
+                <form action="admin_login.php" method="POST">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" id="username" name="username" class="form-control" required>
+                        <label for="adminname" class="form-label">Admin-name</label>
+                        <input type="text" id="adminname" name="adminname" class="form-control" required>
                     </div>
                     
                     <div class="mb-3">
