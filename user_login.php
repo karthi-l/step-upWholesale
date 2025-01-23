@@ -1,9 +1,8 @@
 <?php
 // Start the session
-session_start();
 
 // Include database connection
-include('db_connect.php');
+include('session_dbConn.php');
 include('generate_otp.php');
 
 //If the user is logged in Redirect to Account dashboard

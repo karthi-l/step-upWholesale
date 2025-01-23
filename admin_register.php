@@ -1,7 +1,7 @@
 <?php
 // Start the session
 
-session_start(); // Always start the session at the beginning of your script
+ // Always start the session at the beginning of your script
 
 // Before redirecting, check session variables
 
@@ -12,7 +12,7 @@ if (isset($_SESSION['admin_id'])) {
 }
 
 // Include your database connection and PHPMailer files
-include('db_connect.php');
+include('session_dbConn.php');
 include('generate_otp.php');
 
 

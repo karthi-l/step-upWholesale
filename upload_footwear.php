@@ -1,8 +1,8 @@
 <?php
-include('db_connect.php');
+include('session_dbConn.php');
 
 $alert_message = ""; // Variable to store the alert message
-if(!isset($_SESSION['AdminID'])){
+if(!isset($_SESSION['admin_id'])){
     echo "
     <!DOCTYPE html>
     <html lang='en'>

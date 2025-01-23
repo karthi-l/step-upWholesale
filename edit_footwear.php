@@ -1,8 +1,8 @@
 <?php
-session_start();
-include('db_connect.php'); // Include database connection
 
-if(!isset($_SESSION['AdminID'])){
+include('session_dbConn.php'); // Include database connection
+
+if(!isset($_SESSION['admin_id'])){
     echo "
     <!DOCTYPE html>
     <html lang='en'>

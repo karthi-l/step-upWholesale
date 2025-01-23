@@ -1,7 +1,5 @@
 <?php
-session_start();
-
-include('db_connect.php');
+include('session_dbConn.php');
 // Check if user is already logged in
 if(isset($_SESSION['user_id'])){
     header("Location:user_dashboard.php");

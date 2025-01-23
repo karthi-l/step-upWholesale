@@ -1,6 +1,6 @@
 <?php
-session_start();
-if(!isset($_SESSION['AdminID'])){
+
+if(!isset($_SESSION['admin_id'])){
     echo "
     <!DOCTYPE html>
     <html lang='en'>
@@ -29,7 +29,7 @@ if(!isset($_SESSION['AdminID'])){
     </html>";
     exit;
 }
-include('db_connect.php');
+include('session_dbConn.php');
 
 if (isset($_GET['model_id'])) {
     $model_id = intval($_GET['model_id']);

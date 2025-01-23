@@ -1,10 +1,11 @@
 <?php
 // Start session to access session variables
-session_start();
 
 // Include your database connection file
-include('db_connect.php');
-
+include('session_dbConn.php');
+if(isset($_SESSION['admin_id'])){
+    header('Location:admin_dashboard.php');
+}
 // Check if the user is logged in
 if (isset($_SESSION['user_id'])) {
     // User is logged in, fetch their details from the database

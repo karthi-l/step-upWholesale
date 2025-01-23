@@ -1,6 +1,6 @@
 <?php
-session_start();
-include('db_connect.php'); // Include database connection
+
+include('session_dbConn.php'); // Include database connection
 
 // Define directories
 $imageDirectory = "brand_img/";

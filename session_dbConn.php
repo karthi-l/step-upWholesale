@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 $servername = "localhost";  // Database host
 $username = "root";         // Database username
 $password = "";             // Database password

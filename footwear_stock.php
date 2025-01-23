@@ -1,6 +1,7 @@
 <?php
 
-if(!isset($_SESSION['AdminID'])){
+include('session_dbConn.php');
+if(!isset($_SESSION['admin_id'])){
     echo "
     <!DOCTYPE html>
     <html lang='en'>
@@ -10,7 +11,7 @@ if(!isset($_SESSION['AdminID'])){
         <title>Account Center - Wholesale Footwear Management</title>
         <!-- Bootstrap 5 CSS -->
         <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
-    </head>
+    </head> 
     <body>
         <div class='container row mt-5 m-auto'>
             <div class='alert alert-danger text-center col-12 col-md-9 col-lg-8   m-auto'>
@@ -40,8 +41,7 @@ if (isset($_SESSION['error_message'])) {
     unset($_SESSION['error_message']);
 }
 
-session_start();
-include('db_connect.php');
+
 
 // Fetch footwear models
 $query = "SELECT model_id, main_brand, sub_brand, commodity, article, color,  price, stock_available, image_type, image_data, type, material FROM footwear_models ORDER BY main_brand, sub_brand";
