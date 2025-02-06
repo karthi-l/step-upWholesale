@@ -27,9 +27,7 @@
                         <button class="navbar-toggler mx-1 mx-xs-0 border border-white hov-nav" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                    </div>
-                    
-
+                    </div>         
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item  mx-1 border border-white rounded my-1 my-lg-0"><a class="nav-link active text-light hov-nav nav-align" href="index.php">Home</a></li>

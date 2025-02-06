@@ -113,9 +113,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Edit Footwear Model</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        
         .data-field input, .data-field select{
             margin:auto;
             width:80%;
+        }
+        div button,a{
+           
+            width:40%;
         }
         .data-field label{
             margin-left:10%;
@@ -131,6 +136,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
              .main-container, .responsive-image {
                 width: 70%; 
             }
+            div button,a{
+               
+                width:30%;
+            }
         }
         @media (min-width: 1200px) {
             .data-field input, .data-field select, .main-container{
@@ -142,6 +151,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             .responsive-image{
                 width:40%;
+            }
+            div button,a{
+                width:15%;
             }
             
         }
@@ -225,14 +237,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo"Failed to Update the Cumstom-size stock";
             }
             ?>
-        
-            
-                <div class="col-12 col-lg-6 data-field">
+                <div class="col-12 col-lg-6 data-field m-auto">
                     <label for="price" class="form-label">Price (₹)</label>
                     <input type="number" step="0.01" name="price" id="price" class="form-control" value="<?php echo htmlspecialchars($row['price']); ?>" required>
                 </div>
             </div><!-- closing div(row) of the no of sets available/custom stock and price --> 
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center mb-4 mt-4">
+                <div class="d-grid gap-2 d-flex justify-content-center mb-4 mt-4">
                     <button type="submit" class="btn btn-success">Update</button>
                     <a href="footwear_stock.php" class="btn btn-secondary">Cancel</a>
                 </div>

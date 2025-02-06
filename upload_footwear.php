@@ -19,7 +19,7 @@ if(!isset($_SESSION['admin_id'])){
                 <h2>With Great Powers Comes Grate Responsibilities.</h2>
                 <h5>You must be logged in as a Admin to access.</h5>
                 <div class='d-flex justify-content-center mt-3'>
-                <a href='user_login.php' class='btn btn-primary mx-2'>Login</a>
+                <a href='admin_login.php' class='btn btn-primary mx-2'>Login</a>
                 <a href='index.php' class='btn btn-info mx-2'>Home</a>
                 <a href='user_dashboard.php' class='btn btn-primary mx-2'>User-Portal</a>
                 </div>
@@ -150,14 +150,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="POST" enctype="multipart/form-data" class="mt-4">
     <div class="row d-flex justify-content-center">
         <div class="mb-3 col-xs-12 col-md-6 col-lg-4 col-xl-3">
-            <label for="main_brand" class="form-label">Main Brand</label>
-            <input type="text" name="main_brand" id="main_brand" class="form-control" required>
+        <label for="main_brand" class="form-label">Brand</label>
+            <select name="main_brand" id="main_brand" class="form-select">
+                <option value="">Select Brand</option>
+                <?php
+                $brands_query = "SELECT DISTINCT main_brand FROM brands";
+                $brands_result = $conn->query($brands_query);
+                while ($brand = $brands_result->fetch_assoc()) {
+                    echo "<option value='" . htmlspecialchars($brand['main_brand']) . "'>" . htmlspecialchars($brand['main_brand']) . "</option>";
+                }
+                ?>
+            </select>
         </div>
-        
-        
         <div class="mb-3 col-xs-12 col-md-6 col-lg-4 col-xl-3">
-            <label for="sub_brand" class="form-label">Sub-Brand (Optional)</label>
-            <input type="text" name="sub_brand" id="sub_brand" class="form-control">
+            <label for="sub_brand" class="form-label">Sub-Brand</label>
+            <select name="sub_brand" id="sub_brand" class="form-select">
+                <option value="">Select Sub-Brand</option>
+                <?php
+                    $sub_brands_query = "SELECT DISTINCT sub_brand FROM brands where sub_brand IS NOT NULL";
+                    $sub_brands_result = $conn->query($sub_brands_query);
+                    while ($sub_brand = $sub_brands_result->fetch_assoc()) {
+                        echo "<option value='" . htmlspecialchars($sub_brand['sub_brand']) . "'>" . htmlspecialchars($sub_brand['sub_brand']) . "</option>";
+                    }
+                ?>
+            </select>
         </div>
     </div>
     <div class="row d-flex justify-content-center">
@@ -279,5 +295,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="script.js"></script>
+
+   
 </body>
 </html>

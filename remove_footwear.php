@@ -1,5 +1,5 @@
 <?php
-
+include('session_dbConn.php');
 if(!isset($_SESSION['admin_id'])){
     echo "
     <!DOCTYPE html>
@@ -17,7 +17,7 @@ if(!isset($_SESSION['admin_id'])){
                 <h2>With Great Powers Comes Grate Responsibilities.</h2>
                 <h5>You must be logged in as a Admin to access.</h5>
                 <div class='d-flex justify-content-center mt-3'>
-                <a href='user_login.php' class='btn btn-primary mx-2'>Login</a>
+                <a href='admin_login.php' class='btn btn-primary mx-2'>Login</a>
                 <a href='index.php' class='btn btn-info mx-2'>Home</a>
                 <a href='user_dashboard.php' class='btn btn-primary mx-2'>User-Portal</a>
                 </div>
