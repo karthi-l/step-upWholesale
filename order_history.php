@@ -1,6 +1,6 @@
 <?php
 
-include('session_dbConn.php');
+include('includes/session_dbConn.php');
 
 if (!isset($_SESSION['user_id'])) {
     echo "<div class='alert alert-danger'>You must be logged in to view your order history. <a href='user_login.php'>Login here</a></div>";
