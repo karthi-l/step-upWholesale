@@ -1,7 +1,7 @@
 
     <nav class="navbar navbar-dark fixed-top navbar-expand-lg bg-dark shadow-sm">
         <div class="container-fluid d-flex align-items-center">
-            <a href="index.php" class="navbar-brand">
+            <a href="http://localhost:80/step-upWholesale-gitx/step-upWholesale/index.php" class="navbar-brand">
                 <img src="/step-upWholesale-git/step-upWholesale/img/st-logo.png" alt="st-logo" id="nav-logo" class="img-fluid rounded d-inline-block border border-white" >
             </a>
             <div class="d-flex align-items-center justify-content-center">

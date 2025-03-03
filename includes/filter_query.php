@@ -18,7 +18,7 @@ if (isset($_POST['search']) && !empty($_POST['search'])) {
             fm.stock_available LIKE '%" . $search . "%' OR
             fm.type LIKE '%" . $search . "%' OR
             fm.material LIKE '%" . $search . "%' OR
-            fs.size_variation LIKE '%" . $search . "%' OR
+            fs.size_variati on LIKE '%" . $search . "%' OR
             fs.custom_size LIKE '%" . $search . "%') 
         ";
     }

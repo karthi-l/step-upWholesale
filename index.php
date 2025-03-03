@@ -1,6 +1,5 @@
 <?php
 include('includes/session_dbConn.php');
-include('includes/bootstrap-css-js.php');
 $imageDirectory = "brand_img/";
 
 $main_query = " SELECT * FROM brands WHERE sub_brand IS NULL ";
@@ -14,7 +13,14 @@ $sub_brand = $conn->query($sub_query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <?php 
+    include('includes/inc_styles.php');
+    ?>
     <style>
+        .carousel {
+            width: 60vw; /* Makes the carousel 80% of the viewport width */
+        }
+
         .carousel-item{
             border-radius: 0.33rem;
         }
@@ -30,59 +36,58 @@ $sub_brand = $conn->query($sub_query);
     <!-- Including the main navbar -->
     <?php include('includes/main_nav.php'); ?>    
     <div class="container">
-
         <section class="hero row bg-light m-auto border  rounded  m-auto " id="hero-sec">
             <!-- Content Column -->
             <div class="hero-image col-lg-4 col-12 d-flex justify-content-center py-2">
-            <img src="img/Walkaroo_logo.jpg" alt="Wholesale Footwear" class="border rounded-circle" width="192px">
-        </div>
-        <div class="hero-content col-lg-8 col-12 d-flex flex-column align-items-center text-center pt-3">
-            <h1>Welcome to Saleem Traders</h1>
-            <h2>It is a Step Up in Wholesale</h2>
-            <p>Your trusted partner in wholesale footwear distribution.</p>
-        </div>
-    </section>
-    <h2 class="display-6 display-xl-3">Brands we have dealership : </h2>
-    <div id="carouselExampleControls1" class="carousel slide border rounded m-auto w-xl-75 h-xl-75 mt-1 " data-bs-ride="carousel">
-        <?php if ($main_brand->num_rows > 0): ?>
-            <div class="carousel-inner">
-                <?php $isFirstItem = true; // Flag to mark the first item as active ?>
-                <?php while($row = $main_brand->fetch_assoc()): ?>
-                    <div class="carousel-item <?php echo $isFirstItem ? 'active' : ''; ?>">
-                        <img src="<?php echo $imageDirectory . htmlspecialchars($row['image_file']); ?>" alt="<?php echo htmlspecialchars($row['main_brand']); ?>" class="d-block w-100">
-                    </div>
-                    <?php $isFirstItem = false; // Set flag to false after the first item ?>
-                <?php endwhile; ?>
+                <img src="img/Walkaroo_logo.jpg" alt="Wholesale Footwear" class="border rounded-circle" width="192px">
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls1" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls1" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </a>
-        <?php endif; ?>
+            <div class="hero-content col-lg-8 col-12 d-flex flex-column align-items-center text-center pt-3">
+                <h1>Welcome to Saleem Traders</h1>
+                <h2>It is a Step Up in Wholesale</h2>
+                <p>Your trusted partner in wholesale footwear distribution.</p>
+            </div>
+        </section>
+        <h2 class="display-6 display-xl-3 text-center">Brands we have dealership : </h2>
+        <div id="carouselExampleControls1" class="carousel slide border rounded m-auto  mt-1 " data-bs-ride="carousel">
+            <?php if ($main_brand->num_rows > 0): ?>
+                <div class="carousel-inner">
+                    <?php $isFirstItem = true; // Flag to mark the first item as active ?>
+                    <?php while($row = $main_brand->fetch_assoc()): ?>
+                        <div class="carousel-item <?php echo $isFirstItem ? 'active' : ''; ?>">
+                            <img src="<?php echo $imageDirectory . htmlspecialchars($row['image_file']); ?>" alt="<?php echo htmlspecialchars($row['main_brand']); ?>" class="d-block w-100">
+                        </div>
+                        <?php $isFirstItem = false; // Set flag to false after the first item ?>
+                    <?php endwhile; ?>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls1" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls1" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </a>
+            <?php endif; ?>
+        </div>
+        <h2 class="display-6 display-xl-3 text-center">Sub-brands we have dealership : </h2>
+        <div id="carouselExampleControls2" class="carousel slide border rounded m-auto  mt-1 " data-bs-ride="carousel">
+            <?php if ($sub_brand->num_rows > 0): ?>
+                <div class="carousel-inner">
+                    <?php $isFirstItem = true; // Flag to mark the first item as active ?>
+                    <?php while($row = $sub_brand->fetch_assoc()): ?>
+                        <div class="carousel-item <?php echo $isFirstItem ? 'active' : ''; ?>">
+                            <img src="<?php echo $imageDirectory . htmlspecialchars($row['image_file']); ?>" alt="<?php echo htmlspecialchars($row['main_brand']).htmlspecialchars($row['sub_brand']); ?>" class="d-block w-100">
+                        </div>
+                        <?php $isFirstItem = false; // Set flag to false after the first item ?>
+                    <?php endwhile; ?>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </a>
+            <?php endif; ?>
+        </div>         
     </div>
-    <h2 class="display-6 display-xl-3">Sub-brands we have dealership : </h2>
-    <div id="carouselExampleControls2" class="carousel slide border rounded m-auto w-xl-75 h-xl-75 mt-1 " data-bs-ride="carousel">
-        <?php if ($sub_brand->num_rows > 0): ?>
-            <div class="carousel-inner">
-                <?php $isFirstItem = true; // Flag to mark the first item as active ?>
-                <?php while($row = $sub_brand->fetch_assoc()): ?>
-                    <div class="carousel-item <?php echo $isFirstItem ? 'active' : ''; ?>">
-                        <img src="<?php echo $imageDirectory . htmlspecialchars($row['image_file']); ?>" alt="<?php echo htmlspecialchars($row['main_brand']).htmlspecialchars($row['sub_brand']); ?>" class="d-block w-100">
-                    </div>
-                    <?php $isFirstItem = false; // Set flag to false after the first item ?>
-                <?php endwhile; ?>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls2" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls2" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            </a>
-        <?php endif; ?>
-    </div>         
-</div>
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur qui nulla saepe architecto nesciunt, reprehenderit placeat quam, quisquam perferendis, dolorum libero quibusdam sed distinctio fuga. Nemo illum reiciendis laudantium quasi.
 Sunt ratione repellat eligendi illum cumque laborum quidem accusantium nulla doloremque! Sapiente exercitationem distinctio illo dolorem molestias hic repellendus, numquam ratione ea cum quas in libero consequatur. Recusandae, tempore consequuntur.
@@ -184,5 +189,8 @@ Vitae perferendis sapiente sed, voluptas ex qui a asperiores quia voluptatum ven
 Ea, neque inventore consectetur totam ullam excepturi accusantium explicabo unde natus perferendis laborum incidunt, odio hic! Numquam eveniet error tempora, minima fugiat facere itaque non, laudantium ipsum ipsa autem esse.
 Atque ex est recusandae consectetur similique beatae adipisci debitis quia amet, aspernatur excepturi neque porro et natus ea? Rem ad ipsa saepe quam eius expedita optio dolorum? Error, nemo facere?
 Repudiandae quia culpa magnam laboriosam harum. Pariatur porro ab reprehenderit? Nihil, praesentium impedit doloribus magni cum, libero iste tempore amet harum voluptas voluptatum ex rem a placeat non dicta provident?
+<?php 
+include('includes/inc_scripts.php');
+?>
 </body>
 </html>

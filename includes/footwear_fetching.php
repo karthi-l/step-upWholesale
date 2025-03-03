@@ -108,7 +108,7 @@
                                 <a href="remove_footwear.php?model_id=<?php echo $row['model_id']; ?>" style="font-size:13px;" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to remove this model?');">Remove</a>
                             <?php elseif(isset($_SESSION['user_id'])): ?>
                                 <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center">
-                                    <a href="cart.php"><img src="../img/cart-logo.png" alt="cart symbol" style="width:20px;"></a>
+                                    <a href="user_cart.php"><img src="../img/cart-logo.png" alt="cart symbol" style="width:20px;"></a>
                                 </div>
                             <?php else: ?>
                                 <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center">YouCantOrder!</div>
