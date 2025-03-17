@@ -1,4 +1,4 @@
-<form method="POST" action="products.php" class="dropdown-item bg-light">
+<form id="filterForm" method="POST"  class="dropdown-item bg-light">
     <h1 class="text-center bg-info text-white w-50 m-auto mb-2 border rounded d-md-none">Filter</h1>
     <div class="mb-1 ">
             <input type="text" name="search" id="search" class="form-control" placeholder="Search-Here">

@@ -107,12 +107,26 @@
                                 <a href="edit_footwear.php?model_id=<?php echo $row['model_id']; ?>" class="btn btn-sm btn-success mb-1 mb-xxl-0 me-1" style="font-size:13px;">Change Stock/Price</a>
                                 <a href="remove_footwear.php?model_id=<?php echo $row['model_id']; ?>" style="font-size:13px;" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to remove this model?');">Remove</a>
                             <?php elseif(isset($_SESSION['user_id'])): ?>
-                                <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center">
-                                    <a href="user_cart.php"><img src="../img/cart-logo.png" alt="cart symbol" style="width:20px;"></a>
+                                <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center align-items-center">
+                                    <!-- Quantity Input -->
+                                    <input type="number" id="quantity_<?php echo $row['model_id']; ?>" value="1" min="1" class="form-control" style="width: 50px;">
+                                    
+                                    <!-- Cart Button -->
+                                    <button class="btn btn-light add-to-cart ms-2 " data-model-id="<?php echo $row['model_id']; ?>" id="add-to-cart-<?= $row['model_id'] ?>" >
+                                        <img src="../img/cart.png" alt="cart symbol" style="width:20px;">
+                                    </button>
+
+                                    <!-- Success Tick -->
+                                    <span id="cart-status-<?php echo $row['model_id']; ?>" class="mx-1"></span> 
+
+                                    <button class="remove-from-cart btn btn-light" data-model-id="<?= $row['model_id']; ?>" id="remove-from-cart-<?= $row['model_id'] ?>"  >
+                                        <img src="../img/cart-rm-logo.png" style="width:20px;" alt="">
+                                    </button>
+                                    <span id="cart-status-<?= $row['model_id'] ?>" class="mx-1"></span>                              
                                 </div>
                             <?php else: ?>
-                                <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center">YouCantOrder!</div>
-                            <?php endif;?>          
+                                <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center">You Can't Order!</div>
+                            <?php endif; ?>
                         </div>
                     </div>  
                 </div>
