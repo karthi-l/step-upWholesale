@@ -109,8 +109,7 @@
                             <?php elseif(isset($_SESSION['user_id'])): ?>
                                 <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center align-items-center">
                                     <!-- Quantity Input -->
-                                    <input type="number" id="quantity_<?php echo $row['model_id']; ?>" value="1" min="1" class="form-control" style="width: 50px;">
-                                    
+                                                                
                                     <!-- Cart Button -->
                                     <button class="btn btn-light add-to-cart ms-2 " data-model-id="<?php echo $row['model_id']; ?>" id="add-to-cart-<?= $row['model_id'] ?>" >
                                         <img src="../img/cart.png" alt="cart symbol" style="width:20px;">
