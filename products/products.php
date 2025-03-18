@@ -114,7 +114,6 @@ if (isset($_SESSION['error_message'])) {
         });
     }
 });
-
     $(document).ready(function() {
         $(".remove-from-cart").click(function() {
             var model_id = $(this).data("model-id");
@@ -148,7 +147,48 @@ if (isset($_SESSION['error_message'])) {
             });
         });
     });
+    document.addEventListener('DOMContentLoaded', function() {
+    const removeButtons = document.querySelectorAll('.remove-btn');
 
+    removeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const modelId = this.getAttribute('data-model-id');
+            const productCardId = `product-card-${modelId}`;
+            const productCard = document.getElementById(productCardId);
+
+            if (confirm('Are you sure you want to remove this model?')) {
+                fetch('remove_footwear.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'model_id=' + encodeURIComponent(modelId)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('AJAX Response:', data); // Check the entire response
+                    if (data.success) {
+                        console.log('Removing card with ID:', productCardId);
+                        if (productCard) {
+                            productCard.remove();
+                            console.log('Card removed successfully from DOM.');
+                            // Optionally display a success message
+                        } else {
+                            console.error('Product card not found:', productCardId);
+                        }
+                    } else {
+                        console.error('Error removing model:', data.message);
+                        // Optionally display an error message to the user
+                    }
+                })
+                .catch(error => {
+                    console.error('There was an error with the AJAX request:', error);
+                    // Optionally display a generic error message to the user
+                });
+            }
+        });
+    });
+});
     </script>
 </body>
 </html>

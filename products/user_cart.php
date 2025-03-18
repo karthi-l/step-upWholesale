@@ -88,7 +88,7 @@ $stmt->close();
     <?php include("../includes/main_nav.php");?>
     <div class="container">
         <?php while ($row = $result->fetch_assoc()): ?>
-        <div class="row border border-rounded my-2 p-2 align-items-center" id="footwear-model-<?php echo $row['model_id'];?>" data-price="<?php echo htmlspecialchars($row['price']); ?>">
+        <div class="row border rounded p-2  align-items-center" id="footwear-model-<?php echo $row['model_id'];?>" data-price="<?php echo htmlspecialchars($row['price']); ?>">
             <!-- Product Image -->
             <div class="col-3 p-2">
                 <img src="data:<?php echo htmlspecialchars($row['image_type']); ?>;base64,<?php echo base64_encode($row['image_data']); ?>" 

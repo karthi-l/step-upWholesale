@@ -2,7 +2,7 @@
 
 include('../includes/session_dbConn.php'); // Include database connection
 include('../includes/bootstrap-css-js.php');
-include('../auth/ua-auth/admin  _auth.php');
+include('../auth/ua-auth/admin_auth.php');
 // Get the footwear ID from the URL
 if (!isset($_GET['model_id']) || empty($_GET['model_id'])) {
     echo "<script>alert('Invalid request!'); window.location.href='products.php';</script>";
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Redirect or show success message
     if ($model_updated) {
-        echo "<script>alert('Footwear model updated successfully!'); window.location.href='footwear_stock.php';</script>";
+        echo "<script>alert('Footwear model updated successfully!'); window.location.href='products.php';</script>";
         exit;
     } else {
         echo "<script>alert('Failed to update the footwear model. Please try again.');</script>";

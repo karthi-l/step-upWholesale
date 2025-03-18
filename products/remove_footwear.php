@@ -1,10 +1,13 @@
 <?php
 include('../includes/session_dbConn.php');
-include('../includes/bootstrap-css-js.php');
+
 include('../auth/ua-auth/admin_auth.php');
 
-if (isset($_GET['model_id'])) {
-    $model_id = intval($_GET['model_id']);
+// Set the content type to application/json
+header('Content-Type: application/json');
+
+if (isset($_POST['model_id'])) {
+    $model_id = intval($_POST['model_id']);
 
     // Start transaction
     $conn->begin_transaction();
@@ -25,23 +28,19 @@ if (isset($_GET['model_id'])) {
         // Commit transaction
         $conn->commit();
 
-        // Redirect back with a success message
-        $_SESSION['success_message'] = "Model removed successfully.";
-        header("Location: products.php");
+        // Send a JSON success response
+        echo json_encode(['success' => true, 'message' => 'Model removed successfully.']);
     } catch (Exception $e) {
         // Rollback transaction in case of an error
         $conn->rollback();
 
-        // Redirect back with an error message
-        $_SESSION['error_message'] = "Failed to remove the model: " . $e->getMessage();
-        header("Location: products.php");
+        // Send a JSON error response
+        echo json_encode(['success' => false, 'message' => 'Failed to remove the model: ' . $e->getMessage()]);
     }
 } else {
-    // Redirect back if no model_id is provided
-    $_SESSION['error_message'] = "Invalid model selected.";
-    header("Location: products.php");
+    // Send a JSON error response if no model_id is provided
+    echo json_encode(['success' => false, 'message' => 'Invalid model selected.']);
 }
 
 exit();
 ?>
-    

@@ -60,9 +60,9 @@
             </div>
         </div>
         <!-- Footwear List -->
-        <div class=" col-md-6 col-lg-8 col-xl-9 col-xxl-10 footwear_list">
+        <div class=" col-md-6 col-lg-8 col-xl-9 col-xxl-10 footwear_list d-flex flex-column ">
             <?php if(isset($_SESSION['admin_id']) || isset($_SESSION['user_id'])) : ?>    
-                <div class="d-flex justify-content-between align-items-center mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1 w-100">
                     <h1 class=""><?php echo $headtag; ?></h1>
                     <div class="d-flex align-items-center justify-content-center">
                         <a href="<?php echo $processpage;?>" class="btn btn-primary mx-1" style="width:120%"><?php echo $process;?></a>
@@ -72,10 +72,10 @@
             <?php if ($result->num_rows > 0): ?>
             <div class="row g-3">
                 <?php while ($row = $result->fetch_assoc()): ?>
-                <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 col-xxl-3">
+                <div class="col-sm-6 col-md-12 col-lg-6 col-xl-4 col-xxl-3" id="product-card-<?php echo $row['model_id']; ?>"   >
                     <div class="card shadow-sm">
                         <img src="data:<?php echo htmlspecialchars($row['image_type']); ?>;base64,<?php echo base64_encode($row['image_data']); ?>" alt="<?php echo htmlspecialchars($row['main_brand']); ?>" class="card-img-top rounded">
-                        <div class="card-body pb-0">
+                        <div class="card-body pb-0"> 
                             <h6 class="card-title text-center">
                             <?php 
                             echo '<strong>'. htmlspecialchars($row['main_brand']) . ' ' . 
@@ -105,7 +105,7 @@
                         <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center">
                             <?php if(isset($_SESSION['admin_id'])): ?>
                                 <a href="edit_footwear.php?model_id=<?php echo $row['model_id']; ?>" class="btn btn-sm btn-success mb-1 mb-xxl-0 me-1" style="font-size:13px;">Change Stock/Price</a>
-                                <a href="remove_footwear.php?model_id=<?php echo $row['model_id']; ?>" style="font-size:13px;" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to remove this model?');">Remove</a>
+                                <button class="btn btn-sm btn-danger remove-btn" style="font-size:13px;" data-model-id="<?php echo $row['model_id']; ?>">Remove</button>
                             <?php elseif(isset($_SESSION['user_id'])): ?>
                                 <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center align-items-center">
                                     <!-- Quantity Input -->
@@ -132,8 +132,10 @@
                 <?php endwhile; ?>
             </div>
             <?php else: ?>
-            <div class="alert alert-warning text-center d-flex justify-content-center align-items-center">
-                <p>No footwear models available.</p>
+            <div class="d-flex justify-content-center align-items-center flex-grow-1">
+                <div class="alert alert-info text-center">
+                    <p class="m-0">No footwear models available.</p>
+                </div>
             </div>
             <?php endif; ?>
         </div>
