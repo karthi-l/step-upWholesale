@@ -75,6 +75,7 @@ if (isset($_SESSION['error_message'])) {
                     success: function(response) {
                         console.log("Server response:", response);
                         if (response.trim() === "success") {
+                            $("#cart-status-" + model_id).css("display","block");
                             $("#cart-status-" + model_id).html("✔️");
                             $("#add-to-cart-" + model_id).css("display","none");
                             $("#remove-from-cart-" + model_id).css("display","block");
@@ -133,7 +134,7 @@ if (isset($_SESSION['error_message'])) {
                 success: function(response) {
                     console.log("Server response:", response);
                     if (response.status === "success") {
-                        $("#cart-status-" + model_id).html("");
+                        $("#cart-status-" + model_id).css("display","none");
                         $("#remove-from-cart-" + model_id).css("display","none");
                         $("#add-to-cart-" + model_id).css("display","block");
 

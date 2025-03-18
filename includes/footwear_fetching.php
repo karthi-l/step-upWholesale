@@ -107,24 +107,28 @@
                                 <a href="edit_footwear.php?model_id=<?php echo $row['model_id']; ?>" class="btn btn-sm btn-success mb-1 mb-xxl-0 me-1" style="font-size:13px;">Change Stock/Price</a>
                                 <button class="btn btn-sm btn-danger remove-btn" style="font-size:13px;" data-model-id="<?php echo $row['model_id']; ?>">Remove</button>
                             <?php elseif(isset($_SESSION['user_id'])): ?>
-                                <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center align-items-center">
+                                <div class="d-flex flex-column flex-xxl-row justify-content-center align-items-center">
                                     <!-- Quantity Input -->
                                                                 
                                     <!-- Cart Button -->
-                                    <button class="btn btn-light add-to-cart ms-2 " data-model-id="<?php echo $row['model_id']; ?>" id="add-to-cart-<?= $row['model_id'] ?>" >
+                                    <button class="btn btn-light add-to-cart ms-2 border rounded p-2" data-model-id="<?php echo $row['model_id']; ?>" id="add-to-cart-<?= $row['model_id'] ?>" >
                                         <img src="../img/cart.png" alt="cart symbol" style="width:20px;">
                                     </button>
 
                                     <!-- Success Tick -->
-                                    <span id="cart-status-<?php echo $row['model_id']; ?>" class="mx-1"></span> 
+                                    <span id="cart-status-<?php echo $row['model_id']; ?>" class="mx-1 border rounded p-2"></span> 
 
-                                    <button class="remove-from-cart btn btn-light" data-model-id="<?= $row['model_id']; ?>" id="remove-from-cart-<?= $row['model_id'] ?>"  >
+                                    <button class="remove-from-cart btn btn-light border rounded p-2" data-model-id="<?= $row['model_id']; ?>" id="remove-from-cart-<?= $row['model_id'] ?>"  >
                                         <img src="../img/cart-rm-logo.png" style="width:20px;" alt="">
                                     </button>
                                     <span id="cart-status-<?= $row['model_id'] ?>" class="mx-1"></span>                              
                                 </div>
                             <?php else: ?>
-                                <div class="card-footer d-flex flex-column flex-xxl-row justify-content-center">You Can't Order!</div>
+                                <div class="d-flex flex-column flex-xxl-row justify-content-center align-items-center">
+                                    <button class="btn btn-light border rounded"  data-model-id="<?= $row['model_id']; ?>" id="remove-from-cart-<?= $row['model_id'] ?>"  >
+                                        <img src="../img/cart-disabled.png" style="width:20px;" alt="">
+                                    </button>
+                                </div>
                             <?php endif; ?>
                         </div>
                     </div>  
