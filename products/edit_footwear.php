@@ -1,7 +1,6 @@
 <?php
 
 include('../includes/session_dbConn.php'); // Include database connection
-include('../includes/bootstrap-css-js.php');
 include('../auth/ua-auth/admin_auth.php');
 // Get the footwear ID from the URL
 if (!isset($_GET['model_id']) || empty($_GET['model_id'])) {
@@ -83,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Footwear Model</title>
+    <?php include('../includes/inc_styles.php'); ?>
     <style>
         
         .data-field input, .data-field select{

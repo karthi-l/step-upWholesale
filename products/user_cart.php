@@ -74,6 +74,29 @@ if($result->num_rows == 0 ){
 }
 
 $stmt->close();
+
+$userTypeQuery = "SELECT userType FROM usersretailers WHERE user_id = ?";
+$userTypeStmt = $conn->prepare($userTypeQuery);
+$userTypeStmt->bind_param("i", $user_id);
+$userTypeStmt->execute();
+$userTypeResult = $userTypeStmt->get_result();
+$userTypeRow = $userTypeResult->fetch_assoc();
+$userTypeStmt->close();
+
+$discountPercentage = 0;
+if ($userTypeRow) {
+    switch ($userTypeRow['userType']) {
+        case 'Regular':
+            $discountPercentage = 30;
+            break;
+        case 'Frequent':
+            $discountPercentage = 32;
+            break;
+        case 'VIP':
+            $discountPercentage = 34;
+            break;
+    }
+}
 ?>
 
 
@@ -88,6 +111,18 @@ $stmt->close();
     <?php include("../includes/main_nav.php");?>
     <div class="container">
         <?php while ($row = $result->fetch_assoc()): ?>
+        <?php
+        $grandTotal = 0;
+        $grandGrossTotal = 0;    
+        ?>
+        <?php
+            $total = $row['price'] * $row['quantity'];
+            $discountAmount = $total * ($discountPercentage / 100);
+            $grossTotal = $total - $discountAmount;
+            $grandTotal += $total;
+            $grandGrossTotal += $grossTotal;
+           
+        ?>
         <div class="row border rounded p-2  align-items-center" id="footwear-model-<?php echo $row['model_id'];?>" data-price="<?php echo htmlspecialchars($row['price']); ?>">
             <!-- Product Image -->
             <div class="col-3 p-2">
@@ -123,81 +158,128 @@ $stmt->close();
                 </div>
                 <strong>Total: ₹<span id="total-<?php echo $row['model_id']; ?>"><?php echo htmlspecialchars($row['price'] * $row['quantity']); ?></span></strong>
                 <br>
+                <strong>Gross Total: ₹<span id="gross-total-<?php echo $row['model_id']; ?>"></span></strong>
+                <br>
                 <div data-model-id="<?php echo $row['model_id'];?>">
                     <button class="btn btn-sm btn-danger mt-2 remove-from-cart" data-model-id="<?php echo $row['model_id']; ?>" >Remove</button>
                 </div>
             </div>
         </div>
-    <?php endwhile; ?>
+        <?php endwhile; ?>
+        <div class="mt-4 text-end">
+            <strong>Grand Total: ₹<span id="grand-total"></span></strong><br>
+            <strong>Grand Gross Total: ₹<span id="grand-gross-total"></span></strong><br>
+            <button class="btn btn-primary mt-2">Place Order</button>
+        </div>
+    </div>
     <script>
-    function updateQuantity(button, action, model_id) {
-        let qtyInput = document.getElementById('qty-' + model_id);
-        let totalSpan = document.getElementById('total-' + model_id);
-
-        // Get the price from the data-price attribute of the parent row
-        let price = parseFloat(document.getElementById('footwear-model-' + model_id).getAttribute('data-price'));
-
-        let quantity = parseInt(qtyInput.value);
-        if (action === 'increase') {
-            quantity++;
-        } else if (action === 'decrease' && quantity > 1) {
-            quantity--;
+        const discountPercentage = <?php echo $discountPercentage; ?>;
+        function calculateGrossTotal(price, quantity) {
+            const discount = (price * quantity) * (discountPercentage / 100);
+            return (price * quantity) - discount;
         }
 
-        qtyInput.value = quantity;
-        totalSpan.innerText = (price * quantity).toFixed(2);
+        function updateQuantity(button, action, model_id) {
+            let qtyInput = document.getElementById('qty-' + model_id);
+            let totalSpan = document.getElementById('total-' + model_id);
+            let grossTotalSpan = document.getElementById('gross-total-' + model_id);
+            let price = parseFloat(document.getElementById('footwear-model-' + model_id).getAttribute('data-price'));
+            let quantity = parseInt(qtyInput.value);
 
-        // You should also make an AJAX call here to update the quantity in the database/session
-        $.ajax({
-            url: "update_cart_quantity.php", // Create this new PHP file
-            type: "POST",
-            data: { model_id: model_id, quantity: quantity },
-            success: function(response) {
-                console.log("Quantity updated:", response);
-                // Optionally handle success messages
-            },
-            error: function(xhr, status, error) {
-                console.error("Error updating quantity:", error);
-                // Optionally handle error messages (e.g., revert quantity)
-            }
-        });
-    }
-
-
-    $(document).ready(function() {
-        $(".remove-from-cart").click(function() {
-            var model_id = $(this).data("model-id");
-            var user_id = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
-
-            if (user_id === null) {
-                alert("You need to log in to remove items from the cart.");
-                return;
+            if (action === 'increase') {
+                quantity++;
+            } else if (action === 'decrease' && quantity > 1) {
+                quantity--;
             }
 
-            console.log("Removing item:", { model_id: model_id, user_id: user_id });
+            qtyInput.value = quantity;
+            totalSpan.innerText = (price * quantity).toFixed(2);
+            grossTotalSpan.innerText = calculateGrossTotal(price, quantity).toFixed(2);
 
+
+            // You should also make an AJAX call here to update the quantity in the database/session
             $.ajax({
-                url: "removefrom_cart.php",
+                url: "update_cart_quantity.php", // Create this new PHP file
                 type: "POST",
-                dataType: "json", // Expect JSON response
-                data: { model_id: model_id, user_id: user_id },
+                data: { model_id: model_id, quantity: quantity },
                 success: function(response) {
-                    console.log("Server response:", response);
-                    if (response && response.status === "success") {
-                        console.log("Successfully removed item:", model_id);
-                        $("#footwear-model-" + model_id).hide(); // Use .hide() for display: none
-                    } else {
-                        alert("Failed to remove from cart! Try again.");
-                    }
+                    console.log("Quantity updated:", response);
+                    // Optionally handle success messages
+                    updateGrandTotals();
                 },
                 error: function(xhr, status, error) {
-                    console.log("AJAX error:", status, error);
-                    console.log("Response Text:", xhr.responseText); // Log the raw response
+                    console.error("Error updating quantity:", error);
+                    // Optionally handle error messages (e.g., revert quantity)
                 }
             });
+            updateGrandTotals();
+        }
+        function updateGrandTotals() {
+            let grandTotal = 0;
+            let grandGrossTotal = 0;
+
+            $(".row.border.rounded").each(function() {  // Loop through each footwear model row
+                const modelId = $(this).attr("id").split('-').pop();
+                const total = parseFloat($("#total-" + modelId).text()) || 0;
+                const grossTotal = parseFloat($("#gross-total-" + modelId).text()) || 0;
+
+                grandTotal += total;
+                grandGrossTotal += grossTotal;
+            });
+
+            $("#grand-total").text(grandTotal.toFixed(2));
+            $("#grand-gross-total").text(grandGrossTotal.toFixed(2));
+        }
+
+
+        $(document).ready(function() {
+
+            // Initial grand total calculation
+            $(".row.border.rounded").each(function() { // Loop through each footwear model row
+                const modelId = $(this).attr("id").split('-').pop();
+                const price = parseFloat($(this).data("price"));
+                const quantity = parseInt($("#qty-" + modelId).val());
+
+                // Set the correct gross total initially
+                $("#gross-total-" + modelId).text(calculateGrossTotal(price, quantity).toFixed(2));
+            });
+
+            updateGrandTotals();
+
+            $(".remove-from-cart").click(function() {
+                var model_id = $(this).data("model-id");
+                var user_id = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
+
+                if (user_id === null) {
+                    alert("You need to log in to remove items from the cart.");
+                    return;
+                }
+
+                console.log("Removing item:", { model_id: model_id, user_id: user_id });
+
+                $.ajax({
+                    url: "removefrom_cart.php",
+                    type: "POST",
+                    dataType: "json", // Expect JSON response
+                    data: { model_id: model_id, user_id: user_id },
+                    success: function(response) {
+                        console.log("Server response:", response);
+                        if (response && response.status === "success") {
+                            console.log("Successfully removed item:", model_id);
+                            $("#footwear-model-" + model_id).remove(); // Use .hide() for display: none
+                            updateGrandTotals();
+                        } else {
+                            alert("Failed to remove from cart! Try again.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("AJAX error:", status, error);
+                        console.log("Response Text:", xhr.responseText); // Log the raw response
+                    }
+                });
+                updateGrandTotals();
+            });
         });
-    });
-</script>
-    </div>
+    </script>
 </body>
 </html>

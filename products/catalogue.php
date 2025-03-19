@@ -1,7 +1,6 @@
 <?php
 
 include('../includes/session_dbConn.php'); // Include database connection
-include('../includes/bootstrap-css-js.php');
 // Define directories
 $imageDirectory = "brand_img/";
 $catalogueDirectory = "brand_catalogues/";
@@ -63,6 +62,7 @@ while ($row = $result->fetch_assoc()) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Catalogue</title>
+        <?php include('../includes/inc_styles.php'); ?>
         <style>
             .brand-card {
             border: 1px solid #ddd;
@@ -112,4 +112,4 @@ while ($row = $result->fetch_assoc()) {
         </div>
     </div>
 </body>
-</html>
+</html> 
