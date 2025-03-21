@@ -123,7 +123,7 @@ if ($userTypeRow) {
             $grandGrossTotal += $grossTotal;
            
         ?>
-        <div class="row border rounded p-2  align-items-center" id="footwear-model-<?php echo $row['model_id'];?>" data-price="<?php echo htmlspecialchars($row['price']); ?>">
+        <div class="row border rounded p-2 m-2  align-items-center" id="footwear-model-<?php echo $row['model_id'];?>" data-price="<?php echo htmlspecialchars($row['price']); ?>">
             <!-- Product Image -->
             <div class="col-3 p-2">
                 <img src="data:<?php echo htmlspecialchars($row['image_type']); ?>;base64,<?php echo base64_encode($row['image_data']); ?>" 
@@ -166,10 +166,10 @@ if ($userTypeRow) {
             </div>
         </div>
         <?php endwhile; ?>
-        <div class="mt-4 text-end">
-            <strong>Grand Total: ₹<span id="grand-total"></span></strong><br>
-            <strong>Grand Gross Total: ₹<span id="grand-gross-total"></span></strong><br>
-            <button class="btn btn-primary mt-2">Place Order</button>
+        <div class="mt-4 p-2 m-2 text-end border rounded d-flex flex-row justify-content-center align-items-center ">
+            <strong class="mx-2">Grand Total: ₹<span id="grand-total"></span></strong>
+            <strong class="mx-2">Grand Gross Total: ₹<span id="grand-gross-total"></span></strong>
+            <button class="btn btn-primary mx-2"><a href="ordering.php" class="text-white" style="text-decoration:none;">Place Order</a></button>
         </div>
     </div>
     <script>
