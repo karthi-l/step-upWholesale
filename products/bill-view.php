@@ -82,6 +82,10 @@ function generateBillNo(){
 function generateOrderNo(){
     return rand(1000,9999); 
 }
+
+$_SESSION['invno'] = generateInvoiceNo();
+$_SESSION['billno'] = generateBillNo();
+$_SESSION['orderno'] = generateOrderNo();
 ?>
 
 <!DOCTYPE html>
@@ -159,9 +163,9 @@ function generateOrderNo(){
         <hr>
         <table class="details-table-1">
             <tr>
-                <td><strong>Invoice No: <?php echo generateInvoiceNo();?></strong></td>
-                <td><strong>Bill No: <?php echo generateBillNo();?></strong></td>
-                <td><strong>Order No: <?php echo generateOrderNo();?></strong></td>
+                <td><strong>Invoice No: <?php echo $_SESSION['invno'];?></strong></td>
+                <td><strong>Bill No: <?php echo $_SESSION['billno'];?></strong></td>
+                <td><strong>Order No: <?php echo $_SESSION['orderno'];?></strong></td>
             </tr>
             <tr>
                 <td><strong>GSTIN: <?php echo $userRow['gstin'] ? $userRow['gstin'] : ''; ?></td>
@@ -234,7 +238,8 @@ function generateOrderNo(){
                 </tr>
                 <tr>
                     <td ><strong>Grand Total:</strong></td>
-                    <td class="text-right"><strong>₹<?php echo number_format($total_amount * 1.12, 2); ?></strong></td>
+                    <td class="text-right"><strong>₹<?php echo number_format($total_amount * 1.12, 2);  ?></strong></td>
+                    <?php $_SESSION['grandTotal'] = number_format($total_amount * 1.12, 2); ?>
                 </tr>
             </table>
         </div>

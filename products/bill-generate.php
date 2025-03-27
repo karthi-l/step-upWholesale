@@ -74,15 +74,6 @@ do {
 } while ($today->format('l') !== 'Saturday');
 $expected_delivery = $today->format('Y-m-d');
 
-function generateInvoiceNo(){
-    return rand(1000,9999);
-}
-function generateBillNo(){
-    return rand(1000,9999);
-}
-function generateOrderNo(){
-    return rand(1000,9999); 
-}
 ?>
 
 <!DOCTYPE html>
@@ -161,9 +152,9 @@ function generateOrderNo(){
         <hr>
         <table class="details-table-1">
             <tr>
-                <td><strong>Invoice No: <?php echo generateInvoiceNo();?></strong></td>
-                <td><strong>Bill No: <?php echo generateBillNo();?></strong></td>
-                <td><strong>Order No: <?php echo generateOrderNo();?></strong></td>
+                <td><strong>Invoice No: <?php echo $_SESSION['invno'];?></strong></td>
+                <td><strong>Bill No: <?php echo $_SESSION['billno'];?></strong></td>
+                <td><strong>Order No: <?php echo $_SESSION['orderno'];?></strong></td>
             </tr>
             <tr>
                 <td><strong>GSTIN: <?php echo $userRow['gstin'] ? $userRow['gstin'] : ''; ?></td>

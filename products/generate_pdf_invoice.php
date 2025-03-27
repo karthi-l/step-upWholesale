@@ -18,14 +18,17 @@ $html = ob_get_clean();
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-
+$invoiceNo = $_SESSION['invno'];
+$billNo = $_SESSION['billno'];
+$orderNo = $_SESSION['orderno'];
 
 // Save PDF to a file instead of forcing download
 $pdfOutput = $dompdf->output();
-$filePath = 'invoices/invoice_' . time() . '.pdf'; // Save with timestamp
+$filePath = 'invoices/invoice_' .$invoiceNo .'_'.$billNo.'_'.$orderNo. '.pdf'; // Save with timestamp
 file_put_contents($filePath, $pdfOutput);
 // Output the PDF for download
 
-header("Location:".$filePath);
+header("Location:order-processing.php");
+
 exit;
 ?>
