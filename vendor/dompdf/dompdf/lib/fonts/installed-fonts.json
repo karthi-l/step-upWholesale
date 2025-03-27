@@ -1,0 +1,17 @@
+{
+    "ubuntu sans": {
+        "100_italic": "ubuntu_sans_100_italic_5b4c2f0974f2da1c8afacd554c2966cc",
+        "200_italic": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_200_italic_928cd37646f4c96d06455a0cb44705e2",
+        "300_italic": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_300_italic_6246060260ae406fb841299a959cc669",
+        "italic": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_italic_f3c067f807f9cc139480aade0f1bfad3",
+        "500_italic": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_500_italic_353c959f0a9f379b41db5de9a7d55d87",
+        "600_italic": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_600_italic_eebfbaa2ba7bcc9dc020e038987f6b4f",
+        "bold_italic": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_bold_italic_ac934a2a0d4431ba0cad10cb1db38ecb",
+        "800_italic": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_800_italic_7b0e776df9f903132e722f7f6d027e9d",
+        "100": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_100_eba7d822416826852260d767a5f736aa",
+        "200": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_200_fc930e8d53d02048260c55a86513b06b",
+        "300": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_300_4151a5abbf0028975b9e1db0f15d65f2",
+        "normal": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_normal_d583197d3994e3a1456b947f73c15bb4",
+        "500": "C:\\xampp\\htdocs\\step-upWholesale-git\\step-upWholesale\\vendor\\dompdf\\dompdf\/lib\/fonts\/ubuntu_sans_500_f3675f74708d747fec5a00ad3ece6d57"
+    }
+}

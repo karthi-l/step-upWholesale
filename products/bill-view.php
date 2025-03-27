@@ -40,31 +40,6 @@ $stmt->execute();
 // Get the result
 $result = $stmt->get_result();
 
-if($result->num_rows == 0 ){
-    echo "
-    <!DOCTYPE html>
-    <html lang='en'>
-    <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>Empty Cart - Wholesale Footwear Management</title>
-    </head>
-    <body>
-        <div class='container mt-5 row m-auto'>
-            <div class='alert alert-danger text-center col-12 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-auto'>
-                <h4>Your Cart is Empty.</h4>
-                    <p>Add Products to Cart to show here</p>
-                    <div class='d-flex justify-content-center'>
-                        <a href='products.php' class='btn btn-primary mx-2'>Products</a>
-                        <a href='../index.php' class='btn btn-info mx-2'>Home</a>
-                    </div>
-            </div>
-        </div>
-    </body>
-    </html>
-    ";
-    exit();              
-}
 
 $stmt->close();
 
@@ -99,15 +74,14 @@ do {
 $expected_delivery = $today->format('Y-m-d');
 
 function generateInvoiceNo(){
-    return rand(100000,999999);
+    return rand(1000,9999);
 }
 function generateBillNo(){
-    return rand(100000,999999);
+    return rand(1000,9999);
 }
 function generateOrderNo(){
-    return rand(100000,999999);
+    return rand(1000,9999); 
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -117,8 +91,8 @@ function generateOrderNo(){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .invoice-container { width: 80%; margin: auto; border: 1px solid #ddd; padding: 20px; }
+        body { font-family: Arial, 'DejaVu Sans', 'Noto Sans', sans-serif; }
+        .invoice-container {  margin: auto; border: 1px solid #ddd; padding: 20px; }
         .header { text-align: center; }
         .header img { max-width: 100px; }
         .header h2 { margin: 5px 0; }
@@ -137,8 +111,12 @@ function generateOrderNo(){
         .details-table-1 td, .details-table-2 td, .product-table td, .product-table th { 
             border: 1px solid #ddd; 
             padding: 6px; 
-            text-align: left; 
+            text-align: left;
             word-wrap: break-word; /* Ensures long text doesn't break the layout */
+        }
+        .details-table-1 td, .details-table-2 td, .product-table td, .product-table th{
+          
+            font-weight:100px;
         }
         .product-table th { 
             background-color: #f2f2f2; /* Optional: Add background to header */
@@ -146,14 +124,12 @@ function generateOrderNo(){
         .text-right { text-align: right; }
         
         /* Optional: Define specific widths for columns in product table */
-        .product-table th:nth-child(1), .product-table td:nth-child(1) { width: 4%; }
-        .product-table th:nth-child(2), .product-table td:nth-child(2) { width: 35%; }
-        .product-table th:nth-child(3), .product-table td:nth-child(3) { width: 9%; }
-        .product-table th:nth-child(4), .product-table td:nth-child(4) { width: 9%; }
-        .product-table th:nth-child(5), .product-table td:nth-child(5) { width: 9%; }
-        .product-table th:nth-child(6), .product-table td:nth-child(6) { width: 10%; }
-        .product-table th:nth-child(7), .product-table td:nth-child(7) { width: 10%; }
-        .product-table th:nth-child(8), .product-table td:nth-child(8) { width: 15%; }
+        .product-table th:nth-child(1), .product-table td:nth-child(1) { width: 7%; }
+        .product-table th:nth-child(2), .product-table td:nth-child(2) { width: 50%; }
+        .product-table th:nth-child(3), .product-table td:nth-child(3) { width: 8%; }
+        .product-table th:nth-child(4), .product-table td:nth-child(4) { width: 10%; }
+        .product-table th:nth-child(5), .product-table td:nth-child(5) { width: 10%; }
+        .product-table th:nth-child(6), .product-table td:nth-child(6) { width: 15%; }
         
         /* Adjusting details table to match with product table's last two columns */
       
@@ -164,7 +140,7 @@ function generateOrderNo(){
         }
         .header{
             display:flex;
-            justify-content:space-around;
+            justify-content:space-between;
             align-items:center;
         }
     </style>
@@ -175,7 +151,10 @@ function generateOrderNo(){
         <div class="header">
             <img src="../img/st-logo.png" style="border-radius:.33rem;"alt="Shop Logo">
             <h2>SALEEM TRADERS</h2>
-            <p>Raja Mill Road, Pollachi 642 001</p>
+            <h3>GSTIN:33ABZPF1979R1ZL</h3>
+        </div>
+        <div class="">
+            <p>No.201, Raja Mill Road, Pollachi 642001</p>
         </div>
         <hr>
         <table class="details-table-1">
@@ -204,9 +183,7 @@ function generateOrderNo(){
                 <tr>
                     <th>S.No</th>
                     <th>Product Description</th>
-                    <th>HSN/SAC</th>
-                    <th>Price(MRP)</th>
-                    <th>Discount</th>
+                    <th>CD%</th>
                     <th>Net Rate</th>
                     <th>Quantity</th>
                     <th>Total</th>
@@ -225,26 +202,26 @@ function generateOrderNo(){
                 ?>
                 <tr>
                     <td><?php echo $i; ?></td>
-                    <td><?php echo htmlspecialchars($products['main_brand']) . ' ' . 
-                        (!empty($products['sub_brand']) ? htmlspecialchars($products['sub_brand']) . ' ' : '') .  // Ternary operator fixed
-                        htmlspecialchars($products['type']) . ' ' . 
+                    <td><?php echo htmlspecialchars($products['main_brand']) . '-' . 
+                        (!empty($products['sub_brand']) ? htmlspecialchars($products['sub_brand']) . ' (' : ' (') .  // Ternary operator fixed
+                        htmlspecialchars($products['type']) . ') ' . 
                         htmlspecialchars($products['article']) . ' ' . 
-                        htmlspecialchars($products['color']);
+                        htmlspecialchars($products['color']). ' - '. 
+                        htmlspecialchars($products['price']);
                     ?></td>
-                    <td>640299</td>
-                    <td><?php echo $products['price'];?></td>
                     <td><?php echo $discountPercentage;?>%</td>
                     <td><?php echo $netrate;?></td>
                     <td><?php echo $products['quantity'];?></td>
                     <td><?php echo $total;?></td>
                 </tr>
+                <?php $i+=1; ?>
                 <?php } ?>
             </tbody>
         </table>
         <div class="totalsSection">
             <table class="details-table-2">
                 <tr>
-                    <td><strong>Total:</strong><?echo $totalnos;?></td>
+                    <td><strong>Total: </strong><?php echo $totalnos;?> Pair</td>
                     <td class="text-right">₹<?php echo number_format($total_amount, 2); ?></td>
                 </tr>
                 <tr>
@@ -261,6 +238,9 @@ function generateOrderNo(){
                 </tr>
             </table>
         </div>
+        <button class="btn btn-primary mx-2"><a href="user_cart.php" class="text-white" style="text-decoration:none;">Back</a></button>
+        <button class="btn btn-primary mx-2"><a href="generate_pdf_invoice.php" class="text-white" style="text-decoration:none;">Confirm Order</a></button>
     </div>
+    
 </body>
 </html>

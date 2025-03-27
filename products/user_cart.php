@@ -169,7 +169,8 @@ if ($userTypeRow) {
         <div class="mt-4 p-2 m-2 text-end border rounded d-flex flex-row justify-content-center align-items-center ">
             <strong class="mx-2">Grand Total: ₹<span id="grand-total"></span></strong>
             <strong class="mx-2">Grand Gross Total: ₹<span id="grand-gross-total"></span></strong>
-            <button class="btn btn-primary mx-2"><a href="ordering.php" class="text-white" style="text-decoration:none;">Place Order</a></button>
+            <button class="btn btn-primary mx-2"><a href="bill-view.php" class="text-white" style="text-decoration:none;">Place Order</a></button>
+           
         </div>
     </div>
     <script>
