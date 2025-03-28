@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 22, 2025 at 05:59 AM
+-- Generation Time: Mar 28, 2025 at 07:26 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -174,8 +174,8 @@ INSERT INTO `footwear_stock` (`stock_id`, `model_id`, `description`, `article`, 
 (26, 10, 'VKC Slippons Boys 0707 Black', '0707', 'Black', 'Custom-Sizes', 4, 3),
 (27, 10, 'VKC Slippons Boys 0707 Black', '0707', 'Black', 'Custom-Sizes', 5, 3),
 (28, 10, 'VKC Slippons Boys 0707 Black', '0707', 'Black', 'Custom-Sizes', 6, 3),
-(45, 21, 'Walkaroo Gents PU Gents W1030 Tan', 'W1030', 'Tan', '7*10', NULL, 8),
-(46, 22, 'Walkaroo Gents PU Gents WG5002 Blue', 'WG5002', 'Blue', '7*10', NULL, 5),
+(45, 21, 'Walkaroo Gents PU Gents W1030 Tan', 'W1030', 'Tan', '7*10', NULL, 3),
+(46, 22, 'Walkaroo Gents PU Gents WG5002 Blue', 'WG5002', 'Blue', '7*10', NULL, 0),
 (50, 26, 'Walkaroo Ladies PU Ladies W187 Blue', 'W187', 'Blue', 'Custom-Sizes', 5, 2),
 (51, 26, 'Walkaroo Ladies PU Ladies W187 Blue', 'W187', 'Blue', 'Custom-Sizes', 6, 2);
 
@@ -187,9 +187,9 @@ INSERT INTO `footwear_stock` (`stock_id`, `model_id`, `description`, `article`, 
 
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
-  `order_no` varchar(50) NOT NULL,
   `user_id` int(11) NOT NULL,
   `order_placed_time` datetime NOT NULL DEFAULT current_timestamp(),
+  `order_updated_time` datetime NOT NULL DEFAULT current_timestamp(),
   `order_packaged_time` datetime DEFAULT NULL,
   `packaged_by` int(11) DEFAULT NULL,
   `bill_no` varchar(50) NOT NULL,
@@ -197,10 +197,15 @@ CREATE TABLE `orders` (
   `bill_file` varchar(255) DEFAULT NULL,
   `delivery_status` enum('Pending','Packaged','Shipped','Delivered','Cancelled') NOT NULL DEFAULT 'Pending',
   `delivered_time` datetime DEFAULT NULL,
-  `estimated_delivery_date` date DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `estimated_delivery_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `user_id`, `order_placed_time`, `order_updated_time`, `order_packaged_time`, `packaged_by`, `bill_no`, `bill_amount`, `bill_file`, `delivery_status`, `delivered_time`, `estimated_delivery_date`) VALUES
+(1, 1, '2025-03-28 11:46:28', '2025-03-28 11:46:28', NULL, NULL, '', 2344.16, 'invoices/invoice_9860_5582_2753.pdf', 'Pending', NULL, '2025-03-29');
 
 -- --------------------------------------------------------
 
@@ -232,7 +237,7 @@ CREATE TABLE `usersretailers` (
 --
 
 INSERT INTO `usersretailers` (`user_id`, `username`, `password`, `shop_name`, `shop_address`, `email`, `mobile_number`, `gstin`, `otp`, `otp_expiry`, `is_email_verified`, `owner_name`, `userCreationDate`, `LastLogin`, `userType`, `Status`) VALUES
-(1, 'karthi-l', '$2y$10$WKZSz0HSG61l/GYwIE3hd.W3LfWfl/sI.iRAob.V0JBhWdYBIdVD6', 'New Kavitha Textiles, Fancy and Footwear', '38/4, Baba Complex, Sethumadai Main Road, Vettaikaranpudur 642 129.', 'karthi9442685754@gmail.com', '9442685754', '', NULL, NULL, 0, 'Lakshmanram V', '2025-01-10 12:28:05', '2025-03-21 12:03:31', 'Regular', 'Active'),
+(1, 'karthi-l', '$2y$10$WKZSz0HSG61l/GYwIE3hd.W3LfWfl/sI.iRAob.V0JBhWdYBIdVD6', 'New Kavitha Textiles, Fancy and Footwear', '38/4, Baba Complex, Sethumadai Main Road, Vettaikaranpudur 642 129.', 'karthi9442685754@gmail.com', '9442685754', '', NULL, NULL, 0, 'Lakshmanram V', '2025-01-10 12:28:05', '2025-03-28 11:41:41', 'Regular', 'Active'),
 (2, 'Selva', '$2y$10$ma5sguD6LnW5CCUCt81AfO9TlzV0urN.6E1mS8F6D62W1mr9xBLDi', 'Selva Stores', 'Chennai', 'selvapriyaofficial@gmail.com', '1234567890', '', NULL, NULL, 0, 'Selva', '2025-01-10 14:28:17', '2025-01-10 14:28:51', 'Regular', 'Active'),
 (3, 'Gowrika', '$2y$10$SqHQ9zFhIddaNIXnxpxpVeQg.LJmdMsSImdlzjw69Qw/LPvUojcpa', 'Gowri Footwear', 'Dhali, UDT', 'gowrigowrika001@gmail.com', '6374596095', '', NULL, NULL, 0, 'Gowrika Duraisamy', '2025-01-22 13:03:35', '2025-01-22 13:05:37', 'Regular', 'Active'),
 (6, 'naveen', '$2y$10$JjwrSjpERTJDOgFN9IDdc.4c6nGBGzTUy7QTmnjl/4lIdS1V22e02', 'naveen footwear', 's ponnapuram', 'rn16903@gmail.com', '1029834756', '', NULL, NULL, 0, 'naveen', '2025-01-23 09:57:34', '2025-01-23 09:58:34', 'Regular', 'Active'),
@@ -250,14 +255,6 @@ CREATE TABLE `user_cart` (
   `user_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL CHECK (`quantity` > 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `user_cart`
---
-
-INSERT INTO `user_cart` (`cart_id`, `model_id`, `user_id`, `quantity`) VALUES
-(188, 21, 1, 5),
-(191, 22, 1, 5);
 
 --
 -- Indexes for dumped tables
@@ -295,7 +292,6 @@ ALTER TABLE `footwear_stock`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
-  ADD UNIQUE KEY `order_no` (`order_no`),
   ADD UNIQUE KEY `bill_no` (`bill_no`),
   ADD KEY `fk_orders_user` (`user_id`),
   ADD KEY `fk_orders_packaged_by` (`packaged_by`);
@@ -346,7 +342,7 @@ ALTER TABLE `footwear_stock`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `usersretailers`

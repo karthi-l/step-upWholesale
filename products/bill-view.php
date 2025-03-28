@@ -239,7 +239,7 @@ $_SESSION['orderno'] = generateOrderNo();
                 <tr>
                     <td ><strong>Grand Total:</strong></td>
                     <td class="text-right"><strong>₹<?php echo number_format($total_amount * 1.12, 2);  ?></strong></td>
-                    <?php $_SESSION['grandTotal'] = number_format($total_amount * 1.12, 2); ?>
+                    <?php $_SESSION['grandTotal'] = number_format($total_amount * 1.12, 2, '.', ''); ?>
                 </tr>
             </table>
         </div>

@@ -97,7 +97,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="mt-4 d-flex justify-content-between flex-wrap">
             <a href="edit_profile.php" class="btn btn-primary mb-2">Edit Profile</a>
             <a href="../change_password.php" class="btn btn-warning mb-2">Change Password</a>
-            <a href="order_history.php" class="btn btn-info mb-2">Order History</a>
+            <a href="../../orders/order_history.php" class="btn btn-info mb-2">Order History</a>
             <a href="wishlist.php" class="btn btn-secondary mb-2">Wishlist</a>
             <a href="notifications.php" class="btn btn-light mb-2">Notifications</a>
             <a href="support.php" class="btn btn-outline-primary mb-2">Get Support</a>
