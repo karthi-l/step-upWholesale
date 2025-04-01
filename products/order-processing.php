@@ -6,7 +6,7 @@ $invoiceNo = $_SESSION['invno'];
 $billNo = $_SESSION['billno'];
 $orderNo = $_SESSION['orderno'];
 $bill_file = 'invoices/invoice_'.$invoiceNo.'_'.$billNo.'_'.$orderNo.'.pdf';
-$grand_total = $_SESSION['grandTotal'];
+$grand_total = $_SESSION['grandTotal']; 
 
 $today = new DateTime();
 $saturday = new DateTime('next saturday');
@@ -62,6 +62,7 @@ try {
 } catch (Exception $e) {
     $conn->rollback();
     echo "Order failed: " . $e->getMessage();
+    
 }
 
 $conn->close();

@@ -9,6 +9,9 @@ if(isset($_SESSION['user_id'])){
 }elseif (isset($_SESSION['admin_id'])){
     $order_query = "SELECT * FROM orders";
     $order_stmt = $conn->prepare($order_query);
+}else{
+    include("../auth/ua-auth/admin_auth.php");
+    exit(0);
 }
 
 $order_stmt->execute();
@@ -32,7 +35,8 @@ $orders = $order_stmt->get_result();
                 <thead class="table-dark">
                     <tr>
                         <th>Order ID</th>
-                        <th>Order Placed</th>
+                        <th>Orderd By</th>
+                        <th>Ordered Time</th>
                         <th>Updated Time</th>
                         <th>Packaged Time</th>
                         <th>Packaged By</th>
@@ -47,6 +51,12 @@ $orders = $order_stmt->get_result();
                     <?php while ($row = $orders->fetch_assoc()) { ?>
                         <tr>
                             <td><?= $row['order_id'] ?></td>
+                            <?php
+                                $query= "SELECT username FROM usersretailers WHERE user_id = ".$row['user_id'] ." LIMIT 1";
+                                $result = $conn->query($query);
+                                $username = $result->fetch_assoc();
+                            ?>
+                            <td><?= $username['username'] ?></td>
                             <td><?= $row['order_placed_time'] ?></td>
                             <td><?= $row['order_updated_time'] ?></td>
                             <td><?= $row['order_packaged_time'] ?: 'N/A' ?></td>

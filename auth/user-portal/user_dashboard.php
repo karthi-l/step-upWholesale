@@ -9,66 +9,9 @@ if(isset($_SESSION['admin_id'])){
 }
 // Check if the user is logged in
 if (isset($_SESSION['user_id'])) {
-    // User is logged in, fetch their details from the database
-    $user_id = $_SESSION['user_id'];
-
-    // Use prepared statements to prevent SQL injection
-    $query = "SELECT username, shop_name, shop_address, email, mobile_number FROM usersretailers WHERE user_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Check if a user was found
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-    } else {
-        echo "
-        <!DOCTYPE html>
-        <html lang='en'>
-        <head>
-            <meta charset='UTF-8'>
-            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-            <title>Account Center - Wholesale Footwear Management</title>
-        </head>
-        <body>
-            <div class='container text-center mt-5'>
-                <div class='alert alert-warning m-auto text-center'>
-                    <h4>Unable to fetch your details. Please contact support.</h4>
-                    <div class='d-flex justify-content-center'>
-                        <a href='../logout.php' class='btn btn-primary mx-2'>Logout</a>
-                        <a href='../../index.php' class='btn btn-info mx-2'>Home</a>
-                    </div>
-                </div>
-            </div>
-        <body>
-        </html>
-        ";
-        exit;
-    }
+    include('../ua-auth/fetching_details.php');
 } else {
-    // User is not logged in, display the login and register buttons
-    echo "
-    <!DOCTYPE html>
-    <html lang='en'>
-    <head>
-        <meta charset='UTF-8'>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-        <title>Account Center - Wholesale Footwear Management</title>
-    </head>
-    <body>
-        <div class='container row mt-5 m-auto'>
-            <div class='alert alert-danger text-center col-12 col-md-9 col-lg-8 col-xl-6 col-xxl-5 m-auto'>
-                <h4>You must be logged in as a user to access.</h4>
-                <p>Please log in to access your account.</p>
-                <div class='d-flex justify-content-center'>
-                    <a href='user_login.php' class='btn btn-primary mx-2'>Login</a>
-                    <a href='../../index.php' class='btn btn-info mx-2'>Home</a>
-                </div>
-            </div>
-        </div>
-    </body>
-    </html>";
+   include('../ua-auth/user_auth.php');
     exit;
 }
 ?>
@@ -83,13 +26,13 @@ if (isset($_SESSION['user_id'])) {
 <body>
     <div class="container mt-5">
         <!-- Welcome Section -->
-        <h2 class="text-center">Welcome, <?php echo htmlspecialchars($user['username']); ?></h2>
+        <h2 class="text-center">Welcome, <?php echo htmlspecialchars($userDetails['username']); ?></h2>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Shop Name: <?php echo htmlspecialchars($user['shop_name']); ?></h5>
-                <p><strong>Shop Address:</strong> <?php echo htmlspecialchars($user['shop_address']); ?></p>
-                <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-                <p><strong>Mobile Number:</strong> <?php echo htmlspecialchars($user['mobile_number']); ?></p>
+                <h5 class="card-title">Shop Name: <?php echo htmlspecialchars($userDetails['shop_name']); ?></h5>
+                <p><strong>Shop Address:</strong> <?php echo htmlspecialchars($userDetails['shop_address']); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($userDetails['email']); ?></p>
+                <p><strong>Mobile Number:</strong> <?php echo htmlspecialchars($userDetails['mobile_number']); ?></p>
             </div>
         </div>
 
