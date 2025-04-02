@@ -12,7 +12,7 @@
             <h4>You must be logged in to view this page.</h4>
             <p>Please log in to get access.</p>
             <div class='d-flex justify-content-center'>
-                <a href='../auth/user-portal/user_login.php' class='btn btn-primary mx-2'>Login</a>
+                <a href='../user-portal/user_login.php' class='btn btn-primary mx-2'>Login</a>
                 <a href='../index.php' class='btn btn-info mx-2'>Home</a>
             </div>
         </div>
