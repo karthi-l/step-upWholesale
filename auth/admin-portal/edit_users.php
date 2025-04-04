@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
             <?php endforeach; ?>
         </tbody>
     </table>

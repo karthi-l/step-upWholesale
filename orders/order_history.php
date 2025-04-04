@@ -15,48 +15,67 @@ if(isset($_SESSION['user_id'])){
     
         $order_id = trim($_POST['order_id']);
         $deliverystatus = trim($_POST['delivery_status']); 
-    
+        $check_query = "SELECT delivery_status FROM orders WHERE order_id = ?";
+        $check_stmt = $conn->prepare($check_query);
+        $check_stmt->bind_param("i", $order_id);
+        $check_stmt->execute();
+        $check_result = $check_stmt->get_result();
+        $order = $check_result->fetch_assoc();
+        $current_status = $order['delivery_status'];
+
         // Validate input
         $errors = [];
     
         if (empty($errors)) {
             // Fetch admin details if needed
             if ($deliverystatus === 'Packaged' || $deliverystatus === 'Delivered') {
-
                 $admin_id = $_SESSION['admin_id'] ?? null;
-    
             }
-    
+            $allowed_transitions = [
+                'Pending' => ['Packaged'],
+                'Packaged' => ['Shipped'],
+                'Shipped' => ['Delivered'],
+                'Delivered' => [] // No further updates after Delivered
+            ];
+            if (!isset($allowed_transitions[$current_status]) || !in_array($deliverystatus, $allowed_transitions[$current_status])) {
+                $_SESSION['alertMessage'] = "Invalid status transition from $current_status to $deliverystatus.";
+                $_SESSION['alertType'] = "danger";
+                header("Location: order_history.php");
+                exit();
+            } else {
             // Prepare update query
-            if ($deliverystatus === 'Packaged') {
-                $query = "UPDATE orders SET order_updated_time = NOW(), delivery_status = ?, packaged_by = ?, order_packaged_time = NOW() WHERE order_id = ?";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("ssi", $deliverystatus, $admin_id, $order_id);
-            } elseif ($deliverystatus === 'Delivered') {
-                $query = "UPDATE orders SET order_updated_time = NOW(), delivery_status = ?, delivered_by = ?, delivered_time = NOW() WHERE order_id = ?";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("ssi", $deliverystatus, $admin_id, $order_id);
-            } else {
-                $query = "UPDATE orders SET order_updated_time = NOW(), delivery_status = ? WHERE order_id = ?";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("si", $deliverystatus, $order_id);
-            }
-    
-            if ($stmt->execute()) {
-                $alertMessage = "Order updated successfully!";
-                $alertType = "success";
-            } else {
-                $alertMessage = "Failed to update order.";
-                $alertType = "danger";
+                if ($deliverystatus === 'Packaged') {
+                    $query = "UPDATE orders SET order_updated_time = NOW(), delivery_status = ?, packaged_by = ?, order_packaged_time = NOW() WHERE order_id = ?";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bind_param("ssi", $deliverystatus, $admin_id, $order_id);
+                } elseif ($deliverystatus === 'Delivered') {
+                    $query = "UPDATE orders SET order_updated_time = NOW(), delivery_status = ?, delivered_by = ?, delivered_time = NOW() WHERE order_id = ?";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bind_param("ssi", $deliverystatus, $admin_id, $order_id);
+                } else {
+                    $query = "UPDATE orders SET order_updated_time = NOW(), delivery_status = ? WHERE order_id = ?";
+                    $stmt = $conn->prepare($query);
+                    $stmt->bind_param("si", $deliverystatus, $order_id);
+                }
+        
+                if ($stmt->execute()) {
+                    $_SESSION['alertMessage'] = "Order updated successfully!";
+                    $_SESSION['alertType'] = "success";
+                } else {
+                    $_SESSION['alertMessage'] = "Failed to update order.";
+                    $_SESSION['alertType'] = "danger";
+                }
             }
         } else {
-            $alertMessage = implode("<br>", $errors);
-            $alertType = "danger";
+            $_SESSION['alertMessage'] = implode("<br>", $errors);
+            $_SESSION['alertType'] = "danger";
+            header("Location: order_history.php");
+            exit();
         }
     
         // Refresh user list
         $result = $conn->query("SELECT * FROM orders");
-        $users = $result->fetch_all(MYSQLI_ASSOC);
+        $orders = $result->fetch_all(MYSQLI_ASSOC);
     }
 }else{
     include("../auth/ua-auth/auth.php");
@@ -79,6 +98,10 @@ $orders = $order_stmt->get_result();
 <body>
 <div class="container mt-5">
         <h2 class="mb-4">Order History</h2>
+        <?php if (isset($_SESSION['alertMessage'])) { ?>
+            <div class="alert alert-<?= $_SESSION['alertType']; ?>"><?= $_SESSION['alertMessage']; ?></div>
+            <?php unset($_SESSION['alertMessage'], $_SESSION['alertType']); // Clear after showing ?>
+        <?php } ?>
         <?php if ($orders->num_rows > 0) { ?>
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
@@ -172,6 +195,11 @@ $orders = $order_stmt->get_result();
                                                         <option value="Shipped">Shipped</option>
                                                         <option value="Delivered">Delivered</option>
                                                     </select>
+                                                </div>
+                                                <div class="text-center">
+                                                    <?php if ($row['bill_file']) { ?>
+                                                        <a href="../products/<?= $row['bill_file'] ?>" class="btn btn-primary mb-3" target="_blank">View Invoice</a>
+                                                    <?php } else { echo 'N/A'; } ?>
                                                 </div>
                                                 <div class="text-center">
                                                     <button type="submit" name="edit_status" class="btn btn-success">Save Changes</button>

@@ -1,7 +1,10 @@
 <?php
 
 include('../includes/session_dbConn.php'); // Include database connection
+if(!isset($_SESSION['admin_id'])){
 include('../auth/ua-auth/admin_auth.php');
+exit;
+}
 // Get the footwear ID from the URL
 if (!isset($_GET['model_id']) || empty($_GET['model_id'])) {
     echo "<script>alert('Invalid request!'); window.location.href='products.php';</script>";

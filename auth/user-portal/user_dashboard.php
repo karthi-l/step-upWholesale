@@ -45,13 +45,36 @@ if (isset($_SESSION['user_id'])) {
             <a href="notifications.php" class="btn btn-light mb-2">Notifications</a>
             <a href="support.php" class="btn btn-outline-primary mb-2">Get Support</a>
         </div>
+        <?php 
+            $query = "SELECT 
+            COUNT(order_id) AS total_orders, 
+            SUM(bill_amount) AS total_bill, 
+            MIN(bill_amount) AS min_bill, 
+            MAX(bill_amount) AS max_bill, 
+            AVG(bill_amount) AS avg_bill 
+          FROM orders";
 
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+
+            $totalOrders = $row['total_orders'] ?? 0;
+            $totalBill = $row['total_bill'] ?? 0.00;
+            $minBill = $row['min_bill'] ?? 0.00;
+            $maxBill = $row['max_bill'] ?? 0.00;
+            $avgBill = $row['avg_bill'] ?? 0.00;
+
+        ?>
         <!-- Account Statistics -->
         <div class="card mt-4">
             <div class="card-body">
                 <h5 class="card-title">Account Statistics</h5>
-                <p><strong>Total Purchases:</strong> 20</p>
-                <p><strong>Total Amount Spent:</strong> $1,500</p>
+                <p><strong>Total Purchases:</strong> <?php echo $totalOrders;?></p>
+                <p><strong>Total Amount Spent:</strong> &#8377;<?php echo $totalBill;?></p>
+                <p><strong>Highest Bill Amount:</strong> &#8377;<?php echo $maxBill;?></p>
+                <p><strong>Lowest Bill Amount:</strong> &#8377;<?php echo $minBill;?></p>
+                <p><strong>Average Bill Amount:</strong> &#8377;<?php echo $avgBill;?></p>
             </div>
         </div>
 
