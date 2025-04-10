@@ -2,7 +2,7 @@
 
 include('../includes/session_dbConn.php');
 include('../includes/bootstrap-css-js.php');
-include('ua-auth/user_auth.php');
+
 
 $user_id = $_SESSION['user_id'];
 

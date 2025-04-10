@@ -216,6 +216,7 @@ $expected_delivery = $today->format('Y-m-d');
                 <tr>
                     <td><strong>Total: </strong><?php echo $totalnos;?> Pair</td>
                     <td class="text-right">&#8377;<?php echo number_format($total_amount, 2); ?></td>
+                    <?php $_SESSION['totalnos'] = $totalnos;?>
                 </tr>
                 <tr>
                     <td ><strong>CGST (6%):</strong></td>

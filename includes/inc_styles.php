@@ -2,3 +2,4 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" >
 <link rel="stylesheet" href="http://localhost:80/step-upWholesale-git/step-upWholesale/includes/styles&scripts/app.css">
+<link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">

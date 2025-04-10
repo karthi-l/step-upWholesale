@@ -1,7 +1,6 @@
 <?php
 // Start session
 include('../../includes/session_dbConn.php');
-include('../../includes/bootstrap-css-js.php');
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
@@ -26,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
     $gstin = isset($_POST['gstin']) ? trim($_POST['gstin']) : null;
     $mobile_number = trim($_POST['mobile_number']);
     $user_type = trim($_POST['user_type']);
-    
+
     // Validate input
     $errors = [];
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -40,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
         $query = "UPDATE usersretailers SET shop_name = ?, shop_address = ?, email = ?, mobile_number = ?, gstin = ?, userType = ? WHERE user_id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ssssssi",  $shopname, $shop_address, $email, $mobile_number, $gstin, $user_type, $user_id);
-        
+
         if ($stmt->execute()) {
             $alertMessage = "User updated successfully!";
             $alertType = "success";
@@ -52,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
         $alertMessage = implode("<br>", $errors);
         $alertType = "danger";
     }
-    
+
     // Refresh user list
     $result = $conn->query("SELECT * FROM usersretailers");
     $users = $result->fetch_all(MYSQLI_ASSOC);
@@ -64,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Users</title>
+    <?php include('../../includes/inc_styles.php');?>
 </head>
 <body>
 <div class="container mt-5">
@@ -76,85 +76,100 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
             <?php echo $alertMessage; ?>
         </div>
     <?php endif; ?>
+
+    <?php
+    $userTypes = ['All', 'VIP', 'Frequent', 'Regular'];
+    ?>
+    <?php
+    // Count users by type
+    $userCounts = [
+        'All' => count($users),
+        'VIP' => 0,
+        'Frequent' => 0,
+        'Regular' => 0
+    ];
     
-    <table class="table table-bordered table-striped mt-3">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Shop Name</th>
-                <th>Mobile</th>
-                <th>User Type</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($users as $user): ?>
-                <tr>
-                    <td><?php echo $user['user_id']; ?></td>
-                    <td><?php echo $user['username']; ?></td>
-                    <td><?php echo $user['shop_name']; ?></td>
-                    <td><?php echo $user['mobile_number']; ?></td>
-                    <td><?php echo $user['userType']; ?></td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal<?php echo $user['user_id']; ?>">Edit</button>
-                    </td>
-                </tr>
-                <!-- Edit User Modal -->
-                <div class="modal fade" id="editUserModal<?php echo $user['user_id']; ?>" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Edit User</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
+    foreach ($users as $u) {
+        if (isset($userCounts[$u['userType']])) {
+            $userCounts[$u['userType']]++;
+        }
+    }
+    ?>
+
+<ul class="nav nav-tabs mt-4" id="userTab" role="tablist">
+    <?php foreach ($userTypes as $index => $type): ?>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link <?php echo $index === 0 ? 'active' : ''; ?>" id="<?php echo $type; ?>-tab" data-bs-toggle="tab" data-bs-target="#<?php echo $type; ?>" type="button" role="tab">
+                <?php echo $type; ?> Users
+                <span class="badge bg-info"><?php echo $userCounts[$type]; ?></span>
+            </button>
+        </li>
+    <?php endforeach; ?>
+</ul>
+
+
+    <div class="tab-content mt-3" id="userTabContent">
+        <?php foreach ($userTypes as $index => $type): ?>
+            <div class="tab-pane fade <?php echo $index === 0 ? 'show active' : ''; ?>" id="<?php echo $type; ?>" role="tabpanel">
+                <div class="accordion" id="accordion<?php echo $type; ?>">
+                    <?php
+                    $filteredUsers = $type === 'All' ? $users : array_filter($users, fn($u) => $u['userType'] === $type);
+                    foreach ($filteredUsers as $i => $user):
+                        $collapseId = $type . 'Collapse' . $user['user_id'];
+                    ?>
+                    <div class="accordion-item mb-2">
+                        <h2 class="accordion-header" id="heading<?php echo $user['user_id']; ?>">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#<?php echo $collapseId; ?>">
+                                <?php echo htmlspecialchars($user['username']); ?> (<?php echo htmlspecialchars($user['userType']); ?>)
+                            </button>
+                        </h2>
+                        <div id="<?php echo $collapseId; ?>" class="accordion-collapse collapse">
+                            <div class="accordion-body">
                                 <form method="POST" action="">
                                     <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
                                     <div class="mb-3">
-                                        <label for="username" class="form-label">Username</label>
-                                        <input type="text" class="form-control" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required disabled>
+                                        <label class="form-label">Username</label>
+                                        <input type="text" class="form-control" value="<?php echo htmlspecialchars($user['username']); ?>" disabled>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="username" class="form-label">Shop Name</label>
+                                        <label class="form-label">Shop Name</label>
                                         <input type="text" class="form-control" name="shopname" value="<?php echo htmlspecialchars($user['shop_name']); ?>" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="shop_address" class="form-label">Shop Address</label>
+                                        <label class="form-label">Shop Address</label>
                                         <textarea class="form-control" name="shop_address" required><?php echo htmlspecialchars($user['shop_address']); ?></textarea>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
+                                        <label class="form-label">Email</label>
                                         <input type="email" class="form-control" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="mobile_number" class="form-label">GST IN</label>
+                                        <label class="form-label">GST IN</label>
                                         <input type="text" class="form-control" name="gstin" value="<?php echo htmlspecialchars($user['gstin']); ?>">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="mobile_number" class="form-label">Mobile Number</label>
+                                        <label class="form-label">Mobile Number</label>
                                         <input type="text" class="form-control" name="mobile_number" value="<?php echo htmlspecialchars($user['mobile_number']); ?>" required>
-                                    </div>  
+                                    </div>
                                     <div class="mb-3">
-                                        <label for="user_type" class="form-label">User Type</label>
-                                        <select class="form-select" aria-label="Default select example" name="user_type">
-                                            <option selected value="<?php echo htmlspecialchars($user['userType']);?>"><?php echo htmlspecialchars($user['userType']);?></option>
-                                            <option value="Regular">Regular</option>
-                                            <option value="Frequent">Frequent</option>
-                                            <option value="VIP">VIP</option>
+                                        <label class="form-label">User Type</label>
+                                        <select class="form-select" name="user_type">
+                                            <option value="Regular" <?php echo $user['userType'] === 'Regular' ? 'selected' : ''; ?>>Regular</option>
+                                            <option value="Frequent" <?php echo $user['userType'] === 'Frequent' ? 'selected' : ''; ?>>Frequent</option>
+                                            <option value="VIP" <?php echo $user['userType'] === 'VIP' ? 'selected' : ''; ?>>VIP</option>
                                         </select>
                                     </div>
-                                    <div class="text-center">
-                                        <button type="submit" name="edit_user" class="btn btn-success">Save Changes</button>
-                                    </div>
+                                    <button type="submit" name="edit_user" class="btn btn-success">Save Changes</button>
                                 </form>
                             </div>
                         </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </div>
+        <?php endforeach; ?>
+    </div>
 </div>
+<?php include('../../includes/inc_scripts.php');?>
 </body>
 </html>

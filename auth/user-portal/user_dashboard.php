@@ -22,6 +22,11 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Center - Wholesale Footwear Management</title>
+    <style>
+        .sm-button{
+            width:15%;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -29,21 +34,28 @@ if (isset($_SESSION['user_id'])) {
         <h2 class="text-center">Welcome, <?php echo htmlspecialchars($userDetails['username']); ?></h2>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Shop Name: <?php echo htmlspecialchars($userDetails['shop_name']); ?></h5>
+                <h5 class="card-title mb-3">Shop Name: <?php echo htmlspecialchars($userDetails['shop_name']); ?></h5>
                 <p><strong>Shop Address:</strong> <?php echo htmlspecialchars($userDetails['shop_address']); ?></p>
                 <p><strong>Email:</strong> <?php echo htmlspecialchars($userDetails['email']); ?></p>
                 <p><strong>Mobile Number:</strong> <?php echo htmlspecialchars($userDetails['mobile_number']); ?></p>
+                <p><strong>Your tier:</strong> <?php echo htmlspecialchars($userDetails['userType']); ?></p>
+                <p><strong>Joined :</strong> <?php echo htmlspecialchars($userDetails['userCreationDate']); ?></p>
+                <p><strong>Last Login:</strong> <?php echo htmlspecialchars($userDetails['LastLogin']); ?></p>
             </div>
         </div>
 
         <!-- Action Buttons -->
         <div class="mt-4 d-flex justify-content-between flex-wrap">
-            <a href="edit_profile.php" class="btn btn-primary mb-2">Edit Profile</a>
-            <a href="../change_password.php" class="btn btn-warning mb-2">Change Password</a>
-            <a href="../../orders/order_history.php" class="btn btn-info mb-2">Order History</a>
-            <a href="wishlist.php" class="btn btn-secondary mb-2">Wishlist</a>
-            <a href="notifications.php" class="btn btn-light mb-2">Notifications</a>
-            <a href="support.php" class="btn btn-outline-primary mb-2">Get Support</a>
+            <a href="edit_profile.php" class="btn btn-primary mb-2 sm-button">Edit Profile</a>
+            <a href="../change_password.php" class="btn btn-warning mb-2 sm-button">Change Password</a>
+            <a href="../../get_support.php" class="btn btn-outline-primary mb-2 sm-button">Get Support</a>
+            <a href="../../my_announcements.php" class="btn btn-light mb-2 sm-button">Announcements</a>
+        </div>
+        <div class="mt-4 d-flex justify-content-between flex-wrap">
+        <a href="../../orders/order_history.php" class="btn btn-info mb-2 sm-button">Order History</a>
+            <a href="../../products/products.php" class="btn btn-info mb-2 sm-button">Products</a>
+            <a href="../../products/user_cart.php" class="btn btn-secondary mb-2 sm-button">Cart</a>
+            <a href="wishlist.php" class="btn btn-secondary mb-2 sm-button">Wishlist</a>
         </div>
         <?php 
             $query = "SELECT 
@@ -69,7 +81,7 @@ if (isset($_SESSION['user_id'])) {
         <!-- Account Statistics -->
         <div class="card mt-4">
             <div class="card-body">
-                <h5 class="card-title">Account Statistics</h5>
+                <h5 class="card-title text-center">Account Statistics</h5>
                 <p><strong>Total Purchases:</strong> <?php echo $totalOrders;?></p>
                 <p><strong>Total Amount Spent:</strong> &#8377;<?php echo $totalBill;?></p>
                 <p><strong>Highest Bill Amount:</strong> &#8377;<?php echo $maxBill;?></p>
@@ -79,9 +91,9 @@ if (isset($_SESSION['user_id'])) {
         </div>
 
         <div class="mt-4 d-flex justify-content-between flex-wrap">
-            <a href="../../index.php" class="btn btn-primary mt-3" >Home</a>
+            <a href="../../index.php" class="btn btn-primary mt-3 sm-button" >Home</a>
             <!-- Logout Button -->
-            <a href="../logout.php" class="btn btn-danger mt-3" onclick="return confirm('Are you sure you want to log out?');">Logout</a>
+            <a href="../logout.php" class="btn btn-danger mt-3 sm-button" onclick="return confirm('Are you sure you want to log out?');">Logout</a>
         </div>
     </div>
 </body>

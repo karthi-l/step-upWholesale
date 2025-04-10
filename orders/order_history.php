@@ -97,7 +97,14 @@ $orders = $order_stmt->get_result();
 </head>
 <body>
 <div class="container mt-5">
-        <h2 class="mb-4">Order History</h2>
+        <h2 class="mb-4">
+            <?php if(isset($_SESSION['user_id'])){
+                echo "My Orders";
+            }elseif(isset($_SESSION['admin_id'])){
+                echo "Manage Orders";
+            }
+            ?>    
+        </h2>
         <?php if (isset($_SESSION['alertMessage'])) { ?>
             <div class="alert alert-<?= $_SESSION['alertType']; ?>"><?= $_SESSION['alertMessage']; ?></div>
             <?php unset($_SESSION['alertMessage'], $_SESSION['alertType']); // Clear after showing ?>

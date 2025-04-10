@@ -71,7 +71,7 @@ $query = "
     LEFT JOIN footwear_stock fs ON fm.model_id = fs.model_id
     " . $whereSql . " 
     GROUP BY fm.model_id
-    ORDER BY fm.main_brand, fm.sub_brand
+    ORDER BY RAND()
 ";
 
 $result = $conn->query($query);

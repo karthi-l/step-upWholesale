@@ -1,0 +1,77 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36" version="26.1.0">
+  <diagram name="Page-1" id="pxNCTotLaWRQBIgrMbgC">
+    <mxGraphModel dx="1151" dy="725" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-16" value="User" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="20" y="129" width="92" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-17" value="View Footwear Models" style="ellipse;strokeWidth=2;whiteSpace=wrap;resizeWidth=1;resizeHeight=1;" vertex="1" parent="1">
+          <mxGeometry x="210" y="134" width="175" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-18" value="Stock Verification" style="ellipse;strokeWidth=2;whiteSpace=wrap;resizeWidth=1;resizeHeight=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="123.5" width="141" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-19" value="Update User Cart" style="ellipse;strokeWidth=2;whiteSpace=wrap;resizeWidth=1;resizeHeight=1;" vertex="1" parent="1">
+          <mxGeometry x="641" y="220" width="139" height="56" as="geometry" />
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-21" value="Invoice Generation" style="ellipse;strokeWidth=2;whiteSpace=wrap;resizeWidth=1;resizeHeight=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="290" width="151" height="59" as="geometry" />
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-22" value="Orders, Bill File" style="shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;strokeWidth=2;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="9" y="340" width="127" height="77" as="geometry" />
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-23" value="Admin" style="whiteSpace=wrap;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="20" y="250" width="105" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-24" value="Select Model" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;rounded=0;" edge="1" parent="1" source="BJWpQRJsVuz9VFp80MpE-16" target="BJWpQRJsVuz9VFp80MpE-17">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-25" value="Check Availability" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0;entryY=0.5;rounded=0;" edge="1" parent="1" source="BJWpQRJsVuz9VFp80MpE-17" target="BJWpQRJsVuz9VFp80MpE-18">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-26" value="Add to Cart" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;entryX=0.275;entryY=0.026;rounded=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="BJWpQRJsVuz9VFp80MpE-18" target="BJWpQRJsVuz9VFp80MpE-19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-27" value="Confirm Order" style="curved=1;startArrow=none;endArrow=block;rounded=0;" edge="1" parent="1" source="BJWpQRJsVuz9VFp80MpE-19" target="BJWpQRJsVuz9VFp80MpE-20">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-28" value="Generate Bill" style="curved=1;startArrow=none;endArrow=block;exitX=1;exitY=0.5;rounded=0;entryX=1.007;entryY=0.565;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="BJWpQRJsVuz9VFp80MpE-20" target="BJWpQRJsVuz9VFp80MpE-21">
+          <mxGeometry x="0.553" y="8" relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint x="1001.9999999999998" y="280.5" as="sourcePoint" />
+            <mxPoint x="690" y="267" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-29" value="Save to Database" style="startArrow=none;endArrow=block;entryX=1.004;entryY=0.398;rounded=0;exitX=0;exitY=1;exitDx=0;exitDy=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="BJWpQRJsVuz9VFp80MpE-21" target="BJWpQRJsVuz9VFp80MpE-22">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="680" y="250" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-30" value="Notify Admin" style="startArrow=none;endArrow=block;exitX=0.029;exitY=0.347;entryX=1;entryY=0.5;rounded=0;exitDx=0;exitDy=0;exitPerimeter=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="BJWpQRJsVuz9VFp80MpE-21" target="BJWpQRJsVuz9VFp80MpE-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-32" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.049;exitY=0.365;entryX=0;entryY=0.5;rounded=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="BJWpQRJsVuz9VFp80MpE-20" target="BJWpQRJsVuz9VFp80MpE-20">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+            <mxPoint x="1001.9999999999998" y="280.5" as="sourcePoint" />
+            <mxPoint x="680.0000000000009" y="266.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BJWpQRJsVuz9VFp80MpE-20" value="Order Creation" style="ellipse;strokeWidth=2;whiteSpace=wrap;resizeWidth=1;resizeHeight=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="302" width="122" height="47" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
