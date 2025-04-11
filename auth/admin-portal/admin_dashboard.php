@@ -113,7 +113,7 @@ $orderresult = $orders->fetch_assoc();
                 <div class="card dashboard-card shadow action-card p-3">
                     <img src="https://cdn-icons-png.flaticon.com/512/726/726623.png" alt="Support" class="mx-auto">
                     <div class="card-body">
-                        <a href="../../get_support.php" class="stretched-link text-decoration-none fw-bold">View FAQ</a>
+                        <a href="view_support.php" class="stretched-link text-decoration-none fw-bold">View FAQ</a>
                     </div>
                 </div>
             </div>

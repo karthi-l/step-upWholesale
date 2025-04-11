@@ -81,7 +81,7 @@
                             echo '<strong>'. htmlspecialchars($row['main_brand']) . ' ' . 
                                 (!empty($row['sub_brand']) ? htmlspecialchars($row['sub_brand']) . ' ' : '') . 
                                 htmlspecialchars($row['commodity']) . ' ' . htmlspecialchars($row['material']) .' ' . 
-                                htmlspecialchars($row['article']).' '. htmlspecialchars($row['color']).'</strong>'; 
+                                htmlspecialchars($row['article']).' '. htmlspecialchars($row['color']).' '.htmlspecialchars($row['type']).'</strong>'; 
                             ?>
                             </h6>
                             <p class="card-text">
@@ -107,22 +107,27 @@
                                 <a href="edit_footwear.php?model_id=<?php echo $row['model_id']; ?>" class="btn btn-sm btn-success mb-1 mb-xxl-0 me-1" style="font-size:13px;">Change Stock/Price</a>
                                 <button class="btn btn-sm btn-danger remove-btn" style="font-size:13px;" data-model-id="<?php echo $row['model_id']; ?>">Remove</button>
                             <?php elseif(isset($_SESSION['user_id'])): ?>
-                                <div class="d-flex flex-column flex-xxl-row justify-content-center align-items-center">
-                                    <!-- Quantity Input -->
-                                                                
-                                    <!-- Cart Button -->
-                                    <button class="btn btn-light add-to-cart ms-2 border rounded p-2" data-model-id="<?php echo $row['model_id']; ?>" id="add-to-cart-<?= $row['model_id'] ?>" >
+                                <div class="product-card d-flex flex-column flex-xxl-row justify-content-center align-items-center" data-model-id="<?= $row['model_id']; ?>">
+                                    
+                                    <!-- Add to Cart Button -->
+                                    <button class="btn btn-light add-to-cart ms-2 border rounded p-2" 
+                                        data-model-id="<?= $row['model_id']; ?>" 
+                                        id="add-to-cart-<?= $row['model_id']; ?>">
                                         <img src="../img/cart.png" alt="cart symbol" style="width:20px;">
                                     </button>
 
                                     <!-- Success Tick -->
-                                    <span id="cart-status-<?php echo $row['model_id']; ?>" class="mx-1 border rounded p-2"></span> 
+                                    <span id="cart-status-<?= $row['model_id']; ?>" class="cart-status mx-1 border rounded p-2" style="display: none;"></span>
 
-                                    <button class="remove-from-cart btn btn-light border rounded p-2" data-model-id="<?= $row['model_id']; ?>" id="remove-from-cart-<?= $row['model_id'] ?>"  >
-                                        <img src="../img/cart-rm-logo.png" style="width:20px;" alt="">
+                                    <!-- Remove from Cart Button -->
+                                    <button class="remove-from-cart btn btn-light border rounded p-2" 
+                                        data-model-id="<?= $row['model_id']; ?>" 
+                                        id="remove-from-cart-<?= $row['model_id']; ?>" 
+                                        style="display: none;">
+                                        <img src="../img/cart-rm-logo.png" style="width:20px;" alt="Remove from cart">
                                     </button>
-                                    <span id="cart-status-<?= $row['model_id'] ?>" class="mx-1"></span>                              
                                 </div>
+
                             <?php else: ?>
                                 <div class="d-flex flex-column flex-xxl-row justify-content-center align-items-center">
                                     <button class="btn btn-light border rounded"  data-model-id="<?= $row['model_id']; ?>" id="remove-from-cart-<?= $row['model_id'] ?>"  >

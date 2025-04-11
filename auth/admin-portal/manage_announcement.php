@@ -60,11 +60,7 @@ $result = $conn->query("SELECT a.*, u.username FROM announcements a LEFT JOIN us
         ?>
       </select>
     </div>
-    <div class="mb-3">
-      <label class="form-label">Expiry Date/Time</label>
-      <input type="datetime-local" name="expires_at" class="form-control" required>
-    </div>
-    <button type="submit" class="btn btn-success">Create</button>
+    <button type="submit" class="btn btn-success m-auto" style="width:15%;">Create</button>
   </form>
 
   <h3>Active Announcements</h3>

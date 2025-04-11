@@ -122,14 +122,21 @@ $(function () {
             });
         } else if (type === 'date') {
             $('#filterOptions').html(`
-                <select id="dateRange" class="form-select w-auto d-inline">
-                    <option value="1">Current Month</option>
-                    <option value="3">Last 3 Months</option>
-                    <option value="6">Last 6 Months</option>
-                    <option value="12">Last Year</option>
-                </select>
-                <button class="btn btn-primary ms-2" id="fetchDateReport">Go</button>
-            `);
+        <select id="dateRange" class="form-select w-auto d-inline">
+            <option value="1">Current Month</option>
+            <option value="3">Last 3 Months</option>
+            <option value="6">Last 6 Months</option>
+            <option value="12">Last Year</option>
+        </select>
+        <button class="btn btn-primary ms-2" id="fetchDateReport">Go</button>
+    `);
+
+    // Auto-load current month data
+    $('#reportContent').html('Loading...');
+    $.get('fetch_report_data.php?type=date&months=', function (data) {
+        $('#reportContent').html(data);
+    });
+
         }
     });
 
@@ -148,13 +155,16 @@ $(function () {
             new bootstrap.Modal(document.getElementById('userStatsModal')).show();
         });
     });
-});
     $(document).on('click', '.view-more', function () {
         const type = $(this).data('type');
         $.get('fetch_report_data.php?type=' + type + '&viewall=1', function (data) {
             $('#reportContent').html(data);
         });
     });
+    $('.filter-btn[data-type="user"]').trigger('click');
+
+});
+
 </script>
 
 </body>

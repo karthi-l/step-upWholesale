@@ -90,64 +90,72 @@ if (isset($_SESSION['error_message'])) {
             });
         });
         $(document).ready(function() {
-    var user_id = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
-
-    if (user_id !== null) {
-        // Fetch cart data for logged-in user
-        $.ajax({
-            url: "check_cart.php",  // PHP file to check cart items
-            type: "POST",
-            data: { user_id: user_id },
-            success: function(response) {
-                console.log("Cart items:", response);
-                var cartItems = JSON.parse(response); // Convert response to JSON object
-
-                // Loop through cart items and update UI
-                cartItems.forEach(function(item) {
-                    $("#cart-status-" + item.model_id).html("✔️");
-                    $("#add-to-cart-"+ item.model_id).css("display","none");
-                    $("#remove-from-cart-"+ item.model_id).css("display","block");
-                });
-            },
-            error: function(xhr, status, error) {
-                console.log("AJAX error:", status, error);
-            }
-        });
-    }
-});
-    $(document).ready(function() {
-        $(".remove-from-cart").click(function() {
-            var model_id = $(this).data("model-id");
             var user_id = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
 
-            if (user_id === null) {
-                alert("You need to log in to remove items from the cart.");
-                return;
-            }
+            if (user_id !== null) {
+                $.ajax({
+                    url: "check_cart.php",
+                    type: "POST",
+                    data: { user_id: user_id },
+                    success: function(response) {
+                        console.log("Cart items:", response);
+                        var cartItems = JSON.parse(response);
+                        var cartModelIds = cartItems.map(item => item.model_id); // Extract all model_ids from cart
 
-            console.log("Removing item:", { model_id: model_id, user_id: user_id });
+                        $(".product-card").each(function() {
+                            var model_id = $(this).data("model-id"); // make sure each card has data-model-id
 
-            $.ajax({
-                url: "removefrom_cart.php",
-                type: "POST",
-                data: { model_id: model_id, user_id: user_id },
-                success: function(response) {
-                    console.log("Server response:", response);
-                    if (response.status === "success") {
-                        $("#cart-status-" + model_id).css("display","none");
-                        $("#remove-from-cart-" + model_id).css("display","none");
-                        $("#add-to-cart-" + model_id).css("display","block");
-
-                    } else {
-                        alert("Failed to remove from cart! Try again.");
+                            if (cartModelIds.includes(model_id)) {
+                                $("#cart-status-" + model_id).html("✔️").show();
+                                $("#add-to-cart-" + model_id).hide();
+                                $("#remove-from-cart-" + model_id).show();
+                            } else {
+                                $("#cart-status-" + model_id).hide();
+                                $("#remove-from-cart-" + model_id).hide();
+                                $("#add-to-cart-" + model_id).show();
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("AJAX error:", status, error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    console.log("AJAX error:", status, error);
+                });
+            }
+        });
+
+        $(document).ready(function() {
+            $(".remove-from-cart").click(function() {
+                var model_id = $(this).data("model-id");
+                var user_id = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
+
+                if (user_id === null) {
+                    alert("You need to log in to remove items from the cart.");
+                    return;
                 }
+
+                console.log("Removing item:", { model_id: model_id, user_id: user_id });
+
+                $.ajax({
+                    url: "removefrom_cart.php",
+                    type: "POST",
+                    data: { model_id: model_id, user_id: user_id },
+                    success: function(response) {
+                        console.log("Server response:", response);
+                        if (response.status === "success") {
+                            $("#cart-status-" + model_id).css("display","none");
+                            $("#remove-from-cart-" + model_id).css("display","none");
+                            $("#add-to-cart-" + model_id).css("display","block");
+
+                        } else {
+                            alert("Failed to remove from cart! Try again.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("AJAX error:", status, error);
+                    }
+                });
             });
         });
-    });
     document.addEventListener('DOMContentLoaded', function() {
     const removeButtons = document.querySelectorAll('.remove-btn');
 

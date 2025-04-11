@@ -104,7 +104,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
                 <span class="badge bg-info"><?php echo $userCounts[$type]; ?></span>
             </button>
         </li>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
+        <li class="nav-item d-flex align-items-center ms-auto me-1" role="presentation">
+            <a href="../user-portal/user_register.php" class="btn btn-primary">
+                <i class="bi bi-person-plus-fill"></i>
+            </a>
+        </li>
 </ul>
 
 

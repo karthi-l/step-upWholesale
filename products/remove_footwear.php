@@ -1,7 +1,9 @@
 <?php
 include('../includes/session_dbConn.php');
+if(!isset($_SESSION['admin_id'])){
 
-include('../auth/ua-auth/admin_auth.php');
+    include('../auth/ua-auth/admin_auth.php');
+}
 
 // Set the content type to application/json
 header('Content-Type: application/json');

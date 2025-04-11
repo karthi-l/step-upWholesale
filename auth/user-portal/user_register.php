@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-<?php if(!isset($_SESSION['admin_id'])): ?>
+<?php if(isset($_SESSION['admin_id'])): ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -72,6 +72,7 @@ $query = "
     " . $whereSql . " 
     GROUP BY fm.model_id
     ORDER BY RAND()
+
 ";
 
 $result = $conn->query($query);

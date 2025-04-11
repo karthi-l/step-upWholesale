@@ -41,23 +41,20 @@ function formatProductCard($product) {
     </div>";
 }
 
-
-
 if ($type === 'user') {
-// Top Users by Purchase
-$query = "
-    SELECT u.user_id, u.username, u.shop_name, 
-           COUNT(DISTINCT o.order_id) AS total_orders,
-           SUM(oi.quantity) AS total_quantity,
-           SUM(oi.quantity * oi.unit_price) AS total_spent
-    FROM usersretailers u
-    JOIN orders o ON u.user_id = o.user_id
-    JOIN order_items oi ON o.order_id = oi.order_id
-    GROUP BY u.user_id
-    ORDER BY total_spent DESC
-    LIMIT 10
-";
-
+    // Top Users by Purchase
+    $query = "
+        SELECT u.user_id, u.username, u.shop_name,
+            COUNT(DISTINCT o.order_id) AS total_orders,
+            SUM(oi.quantity) AS total_quantity,
+            SUM(oi.quantity * oi.unit_price) AS total_spent
+        FROM usersretailers u
+        JOIN orders o ON u.user_id = o.user_id
+        JOIN order_items oi ON o.order_id = oi.order_id
+        GROUP BY u.user_id
+        ORDER BY total_spent DESC
+        LIMIT 10
+    ";
 
     $result = $conn->query($query);
     $users = $result->fetch_all(MYSQLI_ASSOC);
@@ -78,17 +75,17 @@ $query = "
 }
 
 if ($type === 'product') {
-// Top Products by Sales
-$query = "
-    SELECT fm.model_id, fm.main_brand, fm.sub_brand, fm.article, fm.color, fm.price, fm.image_name, fm.image_type, fm.image_data,
-           SUM(oi.quantity) AS total_quantity,
-           SUM(oi.quantity * oi.unit_price) AS total_sales
-    FROM footwear_models fm
-    JOIN order_items oi ON fm.model_id = oi.model_id
-    GROUP BY fm.model_id
-    ORDER BY total_sales DESC
-    LIMIT 10
-";
+    // Top Products by Sales
+    $query = "
+        SELECT fm.model_id, fm.main_brand, fm.sub_brand, fm.article, fm.color, fm.price, fm.image_name, fm.image_type, fm.image_data,
+            SUM(oi.quantity) AS total_quantity,
+            SUM(oi.quantity * oi.unit_price) AS total_sales
+        FROM footwear_models fm
+        JOIN order_items oi ON fm.model_id = oi.model_id
+        GROUP BY fm.model_id
+        ORDER BY total_sales DESC
+        LIMIT 10
+    ";
 
     $result = $conn->query($query);
     $products = $result->fetch_all(MYSQLI_ASSOC);
@@ -109,28 +106,27 @@ $query = "
 }
 
 if ($type === 'date') {
+    $viewAll = isset($_GET['viewall']);
+
     $stmt = $conn->prepare("
-        SELECT 
-        o.order_id,
-        o.user_id,
-        oi.model_id, 
-        oi.quantity,
-        SUM(oi.quantity) AS total_qty, 
-        SUM(oi.quantity * oi.unit_price) AS total_sales,
-        u.username, 
-        u.shop_name,
-        fm.commodity, 
-        fm.article, 
-        fm.color, 
-        fm.image_data, 
-        fm.image_type
-            FROM orders o
-            JOIN order_items oi ON o.order_id = oi.order_id
-            JOIN usersretailers u ON o.user_id = u.user_id
-            JOIN footwear_models fm ON oi.model_id = fm.model_id
-            WHERE o.order_placed_time >= DATE_SUB(CURDATE(), INTERVAL ? MONTH)
-            GROUP BY oi.model_id, o.user_id
-            ORDER BY total_sales DESC
+        SELECT
+            o.order_id,
+            o.user_id,
+            oi.model_id,
+            oi.quantity,
+            oi.unit_price,
+            u.username,
+            u.shop_name,
+            fm.commodity,
+            fm.article,
+            fm.color,
+            fm.image_data,
+            fm.image_type
+        FROM orders o
+        JOIN order_items oi ON o.order_id = oi.order_id
+        JOIN usersretailers u ON o.user_id = u.user_id
+        JOIN footwear_models fm ON oi.model_id = fm.model_id
+        WHERE o.order_placed_time >= DATE_SUB(CURDATE(), INTERVAL ? MONTH)
     ");
     $stmt->bind_param("i", $months);
     $stmt->execute();
@@ -138,9 +134,11 @@ if ($type === 'date') {
 
     $productStats = [];
     $userStats = [];
-    
+
     while ($row = $result->fetch_assoc()) {
-        // Store product info
+        $saleAmount = $row['quantity'] * $row['unit_price'];
+
+        // Product Stats
         if (!isset($productStats[$row['model_id']])) {
             $productStats[$row['model_id']] = [
                 'qty' => 0,
@@ -152,10 +150,10 @@ if ($type === 'date') {
                 'image_type' => $row['image_type']
             ];
         }
-        $productStats[$row['model_id']]['qty'] += $row['total_qty'];
-        $productStats[$row['model_id']]['sales'] += $row['total_sales'];
-    
-        // Store user info
+        $productStats[$row['model_id']]['qty'] += $row['quantity'];
+        $productStats[$row['model_id']]['sales'] += $saleAmount;
+
+        // User Stats
         if (!isset($userStats[$row['user_id']])) {
             $userStats[$row['user_id']] = [
                 'sales' => 0,
@@ -165,20 +163,23 @@ if ($type === 'date') {
                 'shopname' => $row['shop_name']
             ];
         }
-        
-        $userStats[$row['user_id']]['sales'] += $row['total_sales'];
-        $userStats[$row['user_id']]['qty'] += $row['total_qty'];
-        
-        // Track unique orders
+
+        $userStats[$row['user_id']]['sales'] += $saleAmount;
+        $userStats[$row['user_id']]['qty'] += $row['quantity'];
+
         if (!in_array($row['order_id'], $userStats[$row['user_id']]['orders'])) {
             $userStats[$row['user_id']]['orders'][] = $row['order_id'];
         }
-    }        
+    }
+
     arsort($productStats);
     arsort($userStats);
 
+    $productSlice = $viewAll ? $productStats : array_slice($productStats, 0, 3, true);
+    $userSlice = $viewAll ? $userStats : array_slice($userStats, 0, 3, true);
+
     echo "<h4>📦 Most Sold Products</h4><div class='row'>";
-    foreach (array_slice($productStats, 0, 3, true) as $pid => $stat) {
+    foreach ($productSlice as $pid => $stat) {
         $img = 'data:' . $stat['image_type'] . ';base64,' . base64_encode($stat['image_data']);
         echo "
         <div class='col-md-4 mb-3'>
@@ -191,17 +192,19 @@ if ($type === 'date') {
                         <strong>Article:</strong> {$stat['article']}<br>
                         <strong>Color:</strong> {$stat['color']}<br>
                         <strong>Quantity:</strong> {$stat['qty']}<br>
-                        <strong>Sales:</strong> ₹" . number_format($stat['sales']) . "
+                        <strong>Sales:</strong> ₹" . number_format($stat['sales'], 2) . "
                     </p>
                 </div>
             </div>
         </div>";
     }
-    echo "</div><hr>";
-    
-    echo "<h4>👥 Top Users (By Purchase)</h4><div class='row'>";
-    foreach (array_slice($userStats, 0, 3, true) as $uid => $stat) {
+    echo "</div>";
+    if (count($productStats) > 3 && !$viewAll) {
+        echo "<div class='col-12 text-center'><button class='btn btn-outline-secondary view-more' data-type='date'>View More</button></div>";
+    }
 
+    echo "<hr><h4>👥 Top Users (By Purchase)</h4><div class='row'>";
+    foreach ($userSlice as $uid => $stat) {
         $totalOrders = count($stat['orders']);
         echo "
         <div class='col-md-4 mb-3'>
@@ -212,13 +215,15 @@ if ($type === 'date') {
                         <strong>Shop:</strong> {$stat['shopname']}<br>
                         <strong>Total Orders:</strong> {$totalOrders}<br>
                         <strong>Total Quantity:</strong> {$stat['qty']}<br>
-                        <strong>Total Spent:</strong> ₹" . number_format($stat['sales']) . "
+                        <strong>Total Spent:</strong> ₹" . number_format($stat['sales'], 2) . "
                     </p>
                 </div>
             </div>
         </div>";
-        
     }
     echo "</div>";
+    if (count($userStats) > 3 && !$viewAll) {
+        echo "<div class='col-12 text-center'><button class='btn btn-outline-secondary view-more' data-type='date'>View More</button></div>";
+    }
 }
 ?>
