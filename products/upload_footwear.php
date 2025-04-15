@@ -1,6 +1,6 @@
 <?php
 include('../includes/session_dbConn.php');
-include('../includes/bootstrap-css-js.php');
+
 
 $alert_message = ""; // Variable to store the alert message
 
@@ -113,6 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Footwear Model</title>
+    <?php include('../includes/inc_styles.php');?>
 </head>
 <body>
 <div class="container mt-5 mb-5">
@@ -262,6 +263,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
     
 </div>
-
+<?php include('../includes/inc_scripts.php');?>
 </body>
 </html>

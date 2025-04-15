@@ -15,7 +15,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item  mx-1 border border-white rounded my-1 my-lg-0"><a class="nav-link active text-light hov-nav nav-align" href="/step-upWholesale-git/step-upWholesale/index.php">Home</a></li>
-                    <li class="nav-item  mx-1 border border-white rounded my-1 my-lg-0"><a href="/step-upWholesale-git/step-upWholesale/about.php" class="nav-link active text-light hov-nav nav-align">About-Us</a></li>
+                    <li class="nav-item  mx-1 border border-white rounded my-1 my-lg-0"><a href="/step-upWholesale-git/step-upWholesale/index.php#about" class="nav-link active text-light hov-nav nav-align">About-Us</a></li>
                     <li class="nav-item  mx-1 border border-white rounded my-1 my-lg-0"><a href="/step-upWholesale-git/step-upWholesale/products/products.php" class="nav-link active text-light hov-nav nav-align">Products</a></li>
                     <li class="nav-item  mx-1 border border-white rounded my-1 my-lg-0"><a href="/step-upWholesale-git/step-upWholesale/products/catalogue.php" class="nav-link active text-light hov-nav nav-align">Catalogue</a></li>
                     <li class="nav-item  mx-1 my-1 my-lg-0">

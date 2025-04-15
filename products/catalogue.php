@@ -111,5 +111,6 @@ while ($row = $result->fetch_assoc()) {
             <?php endforeach; ?>
         </div>
     </div>
+    <?php include('../includes/inc_scripts.php');?>
 </body>
 </html> 

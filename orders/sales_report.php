@@ -69,14 +69,17 @@ function getMonthlyReport($conn, $months = 1) {
 
 <!DOCTYPE html>
 <html>
-<head>
+<head>    
     <title>Sales Report</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <?php include('../includes/inc_styles.php');?>
 </head>
 
 <body class="container py-4">
 
-    <h2 class="mb-4">📊 Sales Report Dashboard</h2>
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <h2 class="mb-4">📊 Sales Report Dashboard</h2>
+        <a href="../index.php" class="btn btn-primary ms-auto"><i class="bi bi-house-door-fill"></i> Home</a>
+    </div>
 
     <div class="mb-4">
         <div class="btn-group" role="group">
@@ -87,7 +90,6 @@ function getMonthlyReport($conn, $months = 1) {
     </div>
 
     <div id="filterOptions" class="mb-4"></div>
-
     <div id="reportContent"></div>
 
     <!-- User Stats Modal -->
@@ -104,7 +106,7 @@ function getMonthlyReport($conn, $months = 1) {
         </div>
       </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<?php include('../includes/inc_scripts.php');?>
 <script>
 $(function () {
     $('.filter-btn').on('click', function () {
@@ -133,7 +135,7 @@ $(function () {
 
     // Auto-load current month data
     $('#reportContent').html('Loading...');
-    $.get('fetch_report_data.php?type=date&months=', function (data) {
+    $.get('fetch_report_data.php?type=date&months=1', function (data) {
         $('#reportContent').html(data);
     });
 

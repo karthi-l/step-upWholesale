@@ -4,15 +4,13 @@
 // Include database connection
 include('../../includes/session_dbConn.php');
 include('../../includes/generate_otp.php');
-include('../../includes/bootstrap-css-js.php');
+
 
 //If the user is logged in Redirect to Account dashboard
 if(isset($_SESSION['user_id'])){
     header("Location:user_dashboard.php");
 }
-if(isset($_SESSION['admin_id'])){
-    header("Location:../admint-portal/admin_dashboard.php");
-}
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get form data and sanitize
@@ -72,11 +70,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Wholesale Footwear Management</title>
+    <?php include('../../includes/inc_styles.php');?>
 </head>
 <body>
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="row w-100 border rounded">
-            <div class="col-12 col-md-6 col-lg-4 mx-auto">
+        <div class="row w-100 ">
+            <div class="col-12 col-md-6 col-lg-4 mx-auto border rounded p-3">
                 <h2 class="text-center mb-4">Login</h2>
                 <?php if (isset($_GET['registration']) && $_GET['registration'] == 'success'): ?>
                     <div class="alert alert-success text-center mb-4">
@@ -92,7 +91,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" id="password" name="password" class="form-control" required>
+
+                        <!-- Show Password Toggle -->
+                        <div class="form-check mt-2">
+                            <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePassword()">
+                            <label class="form-check-label" for="showPassword">Show Password</label>
+                        </div>
                     </div>
+
 
                     <button type="submit" class="btn btn-primary w-100">Login</button>
                 </form>
@@ -142,9 +148,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 <?php } ?>
 <!-- Bootstrap JS (Bootstrap 5) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+    }
     // Merge the window.onload functionality
     window.onload = function() {
         // Check if the modal for incorrect password should be shown
@@ -160,6 +170,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     };
 </script>
-
+<?php include('../../includes/inc_scripts.php')?>
 </body>
 </html>

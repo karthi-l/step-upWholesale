@@ -36,53 +36,49 @@ $orderresult = $orders->fetch_assoc();
 <body>
     <div class="container mt-5">
         <!-- Welcome Section -->
-<!-- Welcome Banner -->
-<div class="bg-primary text-white rounded-3 p-4 mb-4 shadow text-center">
-    <h2 class="mb-1">Welcome, <?php echo htmlspecialchars($adminDetails['adminname']); ?> 👋</h2>
-    <p class="text-light mb-0">Managing your wholesale operations with ease</p>
-</div>
-
-<!-- Admin Details Section -->
-    <div class="row g-4 mb-4">
-
-        <!-- Account Info Card -->
-        <div class="col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title mb-3"><i class="bi bi-person-circle me-2"></i>Account Information</h5>
-                    <ul class="list-unstyled">
-                        <li><strong>Role:</strong> <?php echo htmlspecialchars($adminDetails['Role']); ?> <small class="text-muted">(ID: <?php echo htmlspecialchars($adminDetails['admin_id']); ?>)</small></li>
-                        <li><strong>Email:</strong> <?php echo htmlspecialchars($adminDetails['email']); ?></li>
-                        <li><strong>Mobile:</strong> <?php echo htmlspecialchars($adminDetails['mobile_number']); ?></li>
-                    </ul>
+        <!-- Welcome Banner -->
+        <div class="bg-primary text-white rounded-3 p-4 mb-4 shadow text-center">
+            <h2 class="mb-1">Welcome, <?php echo htmlspecialchars($adminDetails['adminname']); ?> 👋</h2>
+            <p class="text-light mb-0">Managing your wholesale operations with ease</p>
+        </div>
+        <!-- Admin Details Section -->
+        <div class="row g-4 mb-4">
+            <!-- Account Info Card -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3"><i class="bi bi-person-circle me-2"></i>Account Information</h5>
+                        <ul class="list-unstyled">
+                            <li><strong>Role:</strong> <?php echo htmlspecialchars($adminDetails['Role']); ?> <small class="text-muted">(ID: <?php echo htmlspecialchars($adminDetails['admin_id']); ?>)</small></li>
+                            <li><strong>Email:</strong> <?php echo htmlspecialchars($adminDetails['email']); ?></li>
+                            <li><strong>Mobile:</strong> <?php echo htmlspecialchars($adminDetails['mobile_number']); ?></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Other Details Card -->
-        <div class="col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <h5 class="card-title mb-3"><i class="bi bi-clock-history me-2"></i>Activity</h5>
-                    <ul class="list-unstyled">
-                        <li><strong>Joined:</strong> <?php echo htmlspecialchars($adminDetails['CreatedDate']); ?></li>
-                        <li><strong>Last Login:</strong> <?php echo htmlspecialchars($adminDetails['LastLogin']); ?></li>
-                        <li>
-                            <strong>Status:</strong>
-                            <?php
-                            $status = htmlspecialchars($adminDetails['Status']);
-                            $badgeClass = $status === 'Active' ? 'bg-success' : 'bg-danger';
-                            ?>
-                            <span class="badge <?php echo $badgeClass; ?>"><?php echo $status; ?></span>
-                        </li>
-                    </ul>
+            <!-- Other Details Card -->
+            <div class="col-md-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3"><i class="bi bi-clock-history me-2"></i>Activity</h5>
+                        <ul class="list-unstyled">
+                            <li><strong>Joined:</strong> <?php echo htmlspecialchars($adminDetails['CreatedDate']); ?></li>
+                            <li><strong>Last Login:</strong> <?php echo htmlspecialchars($adminDetails['LastLogin']); ?></li>
+                            <li>
+                                <strong>Status:</strong>
+                                <?php
+                                $status = htmlspecialchars($adminDetails['Status']);
+                                $badgeClass = $status === 'Active' ? 'bg-success' : 'bg-danger';
+                                ?>
+                                <span class="badge <?php echo $badgeClass; ?>"><?php echo $status; ?></span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+
         </div>
-
-    </div>
-
-
         <!-- Dashboard Actions -->
         <div class="row text-center mb-4">
             <div class="col-md-3 mb-3">
@@ -118,7 +114,6 @@ $orderresult = $orders->fetch_assoc();
                 </div>
             </div>
         </div>
-
         <!-- Statistics Cards -->
         <div class="row mb-4">
             <div class="col-md-6 mb-4">
@@ -157,7 +152,6 @@ $orderresult = $orders->fetch_assoc();
                 </div>
             </div>
         </div>
-
         <!-- Home and Logout -->
         <div class="d-flex justify-content-between mt-4">
             <a href="../../index.php" class="btn btn-outline-primary">
@@ -168,8 +162,6 @@ $orderresult = $orders->fetch_assoc();
             </a>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <?php include('http://localhost:80/step-upWholesale-git/step-upWholesale/includes/inc_scripts.php'); ?>
 </body>
 </html>

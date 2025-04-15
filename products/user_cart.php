@@ -28,14 +28,17 @@ $query = "
            GROUP_CONCAT(fs.stock) AS stock,
            uc.model_id AS cart_model_id, 
            uc.user_id, 
-           uc.quantity 
+           uc.quantity,
+           svn.nos_in_set
     FROM footwear_models fm
     LEFT JOIN footwear_stock fs ON fm.model_id = fs.model_id
     LEFT JOIN user_cart uc ON fm.model_id = uc.model_id 
-    WHERE uc.user_id = ?  -- Use '?' placeholder for MySQLi prepared statement
+    LEFT JOIN size_variation_nos svn ON fs.size_variation = svn.size_set
+    WHERE uc.user_id = ?
     GROUP BY fm.model_id
     ORDER BY fm.main_brand, fm.sub_brand;
 ";
+
 
 // Prepare the statement
 $stmt = $conn->prepare($query);
@@ -114,19 +117,26 @@ if ($userTypeRow) {
     <?php include("../includes/main_nav.php");?>
     <div class="container">
         <?php while ($row = $result->fetch_assoc()): ?>
-        <?php
-        $grandTotal = 0;
-        $grandGrossTotal = 0;    
-        ?>
-        <?php
-            $total = $row['price'] * $row['quantity'];
-            $discountAmount = $total * ($discountPercentage / 100);
-            $grossTotal = $total - $discountAmount;
-            $grandTotal += $total;
-            $grandGrossTotal += $grossTotal;
-           
-        ?>
-        <div class="row border rounded p-2 m-2  align-items-center" id="footwear-model-<?php echo $row['model_id'];?>" data-price="<?php echo htmlspecialchars($row['price']); ?>">
+            <?php
+                $grandTotal = 0;
+                $grandGrossTotal = 0;    
+            ?>
+            <?php
+                $nosInSet = $row['nos_in_set'] ?? 1;
+                $pieces = $row['quantity'] * $nosInSet;
+                $total = $row['price'] * $pieces;
+                $discountAmount = $total * ($discountPercentage / 100);
+                $grossTotal = $total - $discountAmount;
+                $grandTotal += $total;
+                $grandGrossTotal += $grossTotal;
+            ?>
+
+<div class="row border rounded p-2 m-2  align-items-center"
+     id="footwear-model-<?php echo $row['model_id'];?>"
+     data-price="<?php echo htmlspecialchars($row['price']); ?>"
+     data-nos-in-set="<?php echo htmlspecialchars($nosInSet); ?>"
+     data-stock-sets="<?php echo htmlspecialchars($row['stock']); ?>">
+
             <!-- Product Image -->
             <div class="col-3 p-2">
                 <img src="data:<?php echo htmlspecialchars($row['image_type']); ?>;base64,<?php echo base64_encode($row['image_data']); ?>" 
@@ -147,25 +157,28 @@ if ($userTypeRow) {
                 <h4 class="card-text mt-3">
                     <strong>Type:</strong> <?php echo htmlspecialchars($row['type']); ?><br>
                     <strong>Price:</strong> ₹<?php echo htmlspecialchars($row['price']); ?><br>
-                    <strong>Size:</strong> <?php echo htmlspecialchars($row['size_variation'] == 'Custom-Sizes' ? $row['custom_size'] : $row['size_variation']); ?><br>
-                    <strong>Stock:</strong> <?php echo htmlspecialchars($row['stock']); ?><br>
+                    <strong>Size variation:</strong> <?php echo htmlspecialchars($row['size_variation'] == 'Custom-Sizes' ? $row['custom_size'] : $row['size_variation']); ?><br>
+                    <strong>Sets Available:</strong> <?php echo htmlspecialchars($row['stock']); ?><br>
                 </h4>
             </div>
 
             <!-- Quantity Control & Remove Button -->
             <div class="col-3 p-2 text-center" >
-                <div class="d-flex align-items-center justify-content-center">
-                    <button class="btn btn-sm btn-outline-secondary quantity-btn" onclick="updateQuantity(this, 'decrease', <?php echo $row['model_id']; ?>)">-</button>
-                    <input type="text" class="form-control text-center mx-2 quantity-input" id="qty-<?php echo $row['model_id']; ?>" value="<?php echo htmlspecialchars($row['quantity']); ?>" readonly style="width: 50px;">
-                    <button class="btn btn-sm btn-outline-secondary quantity-btn" onclick="updateQuantity(this, 'increase', <?php echo $row['model_id']; ?>)">+</button>
-                </div>
-                <strong>Total: ₹<span id="total-<?php echo $row['model_id']; ?>"><?php echo htmlspecialchars($row['price'] * $row['quantity']); ?></span></strong>
-                <br>
-                <strong>Gross Total: ₹<span id="gross-total-<?php echo $row['model_id']; ?>"></span></strong>
-                <br>
-                <div data-model-id="<?php echo $row['model_id'];?>">
-                    <button class="btn btn-sm btn-danger mt-2 remove-from-cart" data-model-id="<?php echo $row['model_id']; ?>" >Remove</button>
-                </div>
+            <div class="d-flex align-items-center justify-content-center">
+    <button class="btn btn-sm btn-outline-secondary quantity-btn" onclick="updateQuantity(this, 'decrease', <?php echo $row['model_id']; ?>)">-</button>
+    <input type="text" class="form-control text-center mx-2 quantity-input" id="qty-<?php echo $row['model_id']; ?>" value="<?php echo htmlspecialchars($row['quantity']); ?>" readonly style="width: 50px;">
+    <button class="btn btn-sm btn-outline-secondary quantity-btn" onclick="updateQuantity(this, 'increase', <?php echo $row['model_id']; ?>)">+</button>
+</div>
+
+<strong>Nos in Set:</strong> <?php echo htmlspecialchars($nosInSet); ?><br>
+<strong>Total Pieces:</strong> <span id="pieces-<?php echo $row['model_id']; ?>"><?php echo $pieces; ?></span><br>
+<strong>Total: ₹<span id="total-<?php echo $row['model_id']; ?>"><?php echo number_format($total, 2); ?></span></strong><br>
+<strong>Gross Total: ₹<span id="gross-total-<?php echo $row['model_id']; ?>"><?php echo number_format($grossTotal, 2); ?></span></strong>
+<br>
+<div data-model-id="<?php echo $row['model_id']; ?>">
+    <button class="btn btn-sm btn-danger mt-2 remove-from-cart" data-model-id="<?php echo $row['model_id']; ?>" >Remove</button>
+</div>
+
             </div>
         </div>
         <?php endwhile; ?>
@@ -178,75 +191,102 @@ if ($userTypeRow) {
     </div>
     <script>
         const discountPercentage = <?php echo $discountPercentage; ?>;
-        function calculateGrossTotal(price, quantity) {
-            const discount = (price * quantity) * (discountPercentage / 100);
-            return (price * quantity) - discount;
+        function calculateGrossTotal(price, sets, nosInSet) {
+    const totalPieces = sets * nosInSet;
+    const total = price * totalPieces;
+    const discount = total * (discountPercentage / 100);
+    return total - discount;
+}
+
+function updateQuantity(button, action, model_id) {
+    let rowEl = document.getElementById('footwear-model-' + model_id);
+    let qtyInput = document.getElementById('qty-' + model_id);
+    let totalSpan = document.getElementById('total-' + model_id);
+    let grossTotalSpan = document.getElementById('gross-total-' + model_id);
+
+    let price = parseFloat(rowEl.getAttribute('data-price'));
+    let nosInSet = parseInt(rowEl.getAttribute('data-nos-in-set')) || 1;
+    let availableSets = parseInt(rowEl.getAttribute('data-stock-sets')) || 0;
+
+    let quantity = parseInt(qtyInput.value);
+
+    if (action === 'increase') {
+        if (quantity < availableSets) {
+            quantity++;
+        } else {
+            alert("Maximum stock limit reached.");
+            return;
         }
+    } else if (action === 'decrease' && quantity > 1) {
+        quantity--;
+    }
 
-        function updateQuantity(button, action, model_id) {
-            let qtyInput = document.getElementById('qty-' + model_id);
-            let totalSpan = document.getElementById('total-' + model_id);
-            let grossTotalSpan = document.getElementById('gross-total-' + model_id);
-            let price = parseFloat(document.getElementById('footwear-model-' + model_id).getAttribute('data-price'));
-            let quantity = parseInt(qtyInput.value);
-
-            if (action === 'increase') {
-                quantity++;
-            } else if (action === 'decrease' && quantity > 1) {
-                quantity--;
-            }
-
-            qtyInput.value = quantity;
-            totalSpan.innerText = (price * quantity).toFixed(2);
-            grossTotalSpan.innerText = calculateGrossTotal(price, quantity).toFixed(2);
+    qtyInput.value = quantity;
+    let totalPieces = quantity * nosInSet;
+    totalSpan.innerText = (price * totalPieces).toFixed(2);
+    grossTotalSpan.innerText = calculateGrossTotal(price, quantity, nosInSet).toFixed(2);
+    document.getElementById("pieces-" + model_id).innerText = totalPieces;
 
 
-            // You should also make an AJAX call here to update the quantity in the database/session
-            $.ajax({
-                url: "update_cart_quantity.php", // Create this new PHP file
-                type: "POST",
-                data: { model_id: model_id, quantity: quantity },
-                success: function(response) {
-                    console.log("Quantity updated:", response);
-                    // Optionally handle success messages
-                    updateGrandTotals();
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error updating quantity:", error);
-                    // Optionally handle error messages (e.g., revert quantity)
-                }
-            });
+    $.ajax({
+        url: "update_cart_quantity.php",
+        type: "POST",
+        data: { model_id: model_id, quantity: quantity },
+        success: function(response) {
+            console.log("Quantity updated:", response);
             updateGrandTotals();
+        },
+        error: function(xhr, status, error) {
+            console.error("Error updating quantity:", error);
         }
-        function updateGrandTotals() {
-            let grandTotal = 0;
-            let grandGrossTotal = 0;
+    });
 
-            $(".row.border.rounded").each(function() {  // Loop through each footwear model row
-                const modelId = $(this).attr("id").split('-').pop();
-                const total = parseFloat($("#total-" + modelId).text()) || 0;
-                const grossTotal = parseFloat($("#gross-total-" + modelId).text()) || 0;
+    updateGrandTotals();
+}
 
-                grandTotal += total;
-                grandGrossTotal += grossTotal;
-            });
+function updateGrandTotals() {
+    let grandTotal = 0;
+    let grandGrossTotal = 0;
 
-            $("#grand-total").text(grandTotal.toFixed(2));
-            $("#grand-gross-total").text(grandGrossTotal.toFixed(2));
-        }
+    $(".row.border.rounded").each(function () {
+        const modelId = $(this).attr("id").split('-').pop();
+        const price = parseFloat($(this).data("price")) || 0;
+        const nosInSet = parseInt($(this).data("nos-in-set")) || 1;
+        const quantity = parseInt($("#qty-" + modelId).val()) || 0;
+
+        const totalPieces = quantity * nosInSet;
+        const total = price * totalPieces;
+        const discount = total * (discountPercentage / 100);
+        const grossTotal = total - discount;
+
+        grandTotal += total;
+        grandGrossTotal += grossTotal;
+    });
+
+    $("#grand-total").text(grandTotal.toFixed(2));
+    $("#grand-gross-total").text(grandGrossTotal.toFixed(2));
+    $("#pieces-" + modelId).text(totalPieces);  // ✅ Add this
+}
+
 
 
         $(document).ready(function() {
 
             // Initial grand total calculation
-            $(".row.border.rounded").each(function() { // Loop through each footwear model row
-                const modelId = $(this).attr("id").split('-').pop();
-                const price = parseFloat($(this).data("price"));
-                const quantity = parseInt($("#qty-" + modelId).val());
+            $(".row.border.rounded").each(function() {
+    const modelId = $(this).attr("id").split('-').pop();
+    const price = parseFloat($(this).data("price"));
+    const quantity = parseInt($("#qty-" + modelId).val());
+    const nosInSet = parseInt($(this).data("nos-in-set")) || 1;
 
-                // Set the correct gross total initially
-                $("#gross-total-" + modelId).text(calculateGrossTotal(price, quantity).toFixed(2));
-            });
+    const totalPieces = quantity * nosInSet;
+    const total = price * totalPieces;
+    const grossTotal = calculateGrossTotal(price, quantity, nosInSet);
+
+    $("#total-" + modelId).text(total.toFixed(2));
+    $("#gross-total-" + modelId).text(grossTotal.toFixed(2));
+});
+
 
             updateGrandTotals();
 

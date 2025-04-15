@@ -1,7 +1,6 @@
 <?php
 
 include('../includes/session_dbConn.php');
-include('../includes/bootstrap-css-js.php');
 
 
 $user_id = $_SESSION['user_id'];
@@ -47,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title>
+    <?php include('../includes/inc_styles.php');?>
 </head>
 <body>
 <div class="container mt-5">
@@ -69,5 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <a href="user-portal/user_dashboard.php" class="btn btn-secondary">Back</a>
     </form>
 </div>
+<?php include('../includes/inc_scripts.php');?>
 </body>
 </html>

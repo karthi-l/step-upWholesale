@@ -1,8 +1,9 @@
 User/Admin-Registration/Login -- yes
 footwear upload and stock management -- yes
 filtering footwear --yes
-ordering footwear --no
-admin/user dashboard --no
-managing cart --no
-invoice generation --no
-account transaction management --no
+ordering footwear --yes
+admin/user dashboard --yes
+managing cart --yes
+invoice generation --yes
+managing users --yes
+announcement and others --yes

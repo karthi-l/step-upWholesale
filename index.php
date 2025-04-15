@@ -45,7 +45,6 @@ $sub_brand = $conn->query($sub_query);
         <div class="mb-3 p-3 border rounded bg-light shadow-sm">
           <h6 class="mb-1"><?= htmlspecialchars($a['title']) ?></h6>
           <p class="mb-1"><?= nl2br(htmlspecialchars($a['message'])) ?></p>
-          <small class="text-muted">🕒 Expires at: <?= date('d M Y, h:i A', strtotime($a['expires_at'])) ?></small>
         </div>
       <?php endforeach; ?>
     </div>
@@ -192,14 +191,71 @@ $sub_brand = $conn->query($sub_query);
                 </div>
             </div>
         </section>
-        <div class="row">
-            <div class="col-md-6">
-
-            </div>
-            <div class="col-md-6">
-                
-            </div>
+        <section class="py-5 bg-light" id="about">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-4 mb-md-0">
+        <img src="your-image.jpg" class="img-fluid rounded shadow" alt="About us image">
+      </div>
+      <div class="col-md-6">
+        <h2 class="mb-4">About Step-up Wholesale</h2>
+        <p>At Step-up Wholesale, we specialize in supplying quality footwear to retail shop owners at competitive prices. With a wide range of stylish and durable options, we help businesses stock up with confidence.</p>
+        <p>Whether you're looking for trendy sneakers, durable work boots, or comfortable everyday wear, we’ve got your back. Our mission is to make wholesale purchasing easy, fast, and reliable.</p>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h2 class="mb-4">About Founder</h2>
+            <p>Born in 1960 in Tiruppur, Saleem Bhai was a 2nd generation businessman who made a significant impact in the footwear industry. Possessing a great passion for this field, he began his career in the early 1980s and became renowned for his unique designs, quality products, and affordable prices. In 1986, he joined the VKC group to take his business to the next level and, through hard work and strong relationships, he helped VKC reach new heights in the Tamilnadu footwear industry.</p>
+            <p>Saleem Bhai dedicated himself to ensuring that VKC products were available in every footwear shop, constantly striving to improve the company. His name was widely recognized in the Tamilnadu footwear industry, and despite his passing in 2017 due to illness, his legacy remains as a testament to his kindness and impact.</p>
         </div>
+        <div class="col-md-6 mb-4 mb-md-0">
+          <img src="your-image.jpg" class="img-fluid rounded shadow" alt="About us image">
+        </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row align-items-center">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <img src="your-image.jpg" class="img-fluid rounded shadow" alt="About us image">
+        </div>
+        <div class="col-md-6">
+            <h2 class="mb-4">About Saleem Footwaer</h2>
+            <p>Saleem Footwear, founded by Mr. M. Saleem in 1986, is a chain dealer for VKC and Walkaroo footwear in Tamilnadu. The company began as a manufacturer of Hawai products in Tiruppur with just 8 employees. Over time, it expanded its branches throughout Tamilnadu and has established a reputation in the VKC and Walkaroo footwear industries.</p>
+            <p>With daily sales of 10,000 pairs of footwear, Saleem Footwear has over 5 branches and serves thousands of customers. The company values its relationships with its customers and has long-standing ties with the majority of them.</p>
+        </div>
+    </div>
+  </div>
+</section>
+<footer class="bg-dark text-white py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <h5>Step-up Wholesale</h5>
+        <p>Your trusted partner in quality footwear supply. Proudly serving retail businesses across the region.</p>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="#about" class="text-white text-decoration-none">About Us</a></li>
+          <li><a href="contact.php" class="text-white text-decoration-none">Contact</a></li>
+          <li><a href="support.php" class="text-white text-decoration-none">Support</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 mb-3">
+        <h5>Contact Info</h5>
+        <p><i class="bi bi-geo-alt-fill me-2"></i>No. 201, Raja Mill Road, Pollachi</p>
+        <p><i class="bi bi-envelope-fill me-2"></i>Saleemfootwear.com</p>
+        <p><i class="bi bi-telephone-fill me-2"></i>+123 456 7890</p>
+      </div>
+    </div>
+    <hr class="bg-white">
+    <p class="text-center mb-0">&copy; 2025 Step-up Wholesale. All rights reserved.</p>
+  </div>
+</footer>
+
     </div>
 <?php 
 include('includes/inc_scripts.php');

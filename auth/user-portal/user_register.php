@@ -2,7 +2,7 @@
 // Include your database connection and PHPMailer files
 include('../../includes/session_dbConn.php');
 include('../../includes/generate_otp.php');
-include('../../includes/bootstrap-css-js.php');
+
 
 // Before redirecting, check session variables
 
@@ -11,7 +11,6 @@ if (isset($_SESSION['user_id'])) {
     header("Location:user_dashboard.php");
     exit();
 }
-
 
 
 // Function to generate a 6-digit OTP
@@ -55,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['auth_name'] = $username;
             $_SESSION['auth_email'] = $email;
             sendOTPEmail($email, $otp, $username);
-            header('Location:verify_otp.php'); // Redirect to OTP verification page
+            header('Location:../verify_otp.php'); // Redirect to OTP verification page
             exit(0);
         } else {
             echo "<div class='alert alert-danger'>Error during registration. Please try again.</div>";
@@ -64,14 +63,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 <?php if(isset($_SESSION['admin_id'])): ?>
-<!DOCTYPE html>
+
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Wholesale Footwear Management</title>
+    <?php include('../../includes/inc_styles.php');?>
+
     <script>
-        // JavaScript function to validate password
+        // JavaScript function to validate password strength
+        function checkPasswordStrength() {
+            var password = document.getElementById('password').value;
+            var strengthBar = document.getElementById('password-strength-bar');
+            var strengthText = document.getElementById('password-strength-text');
+
+            let strength = 0;
+            if (password.length >= 8) strength += 1;
+            if (/[A-Z]/.test(password)) strength += 1;
+            if (/[a-z]/.test(password)) strength += 1;
+            if (/\d/.test(password)) strength += 1;
+            if (/[@$!%*?&]/.test(password)) strength += 1;
+
+            let percent = (strength / 5) * 100;
+            let barClass = 'bg-danger';
+            let text = 'Very Weak';
+
+            if (strength === 2 || strength === 3) {
+                barClass = 'bg-warning';
+                text = 'Weak';
+            } 
+            if (strength === 4) {
+                barClass = 'bg-info';
+                text = 'Good';
+            } 
+            if (strength === 5) {
+                barClass = 'bg-success';
+                text = 'Strong';
+            }
+
+            strengthBar.style.width = percent + '%';
+            strengthBar.className = 'progress-bar ' + barClass;
+            strengthText.innerText = text;
+        }
+
+        // Password validation function (checks password strength pattern)
         function validatePassword() {
             var password = document.getElementById('password').value;
             var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -93,7 +130,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 document.getElementById('mobile-error').style.display = 'none';
             }
         }
+
+        // Email validation function (checks for valid email format)
+        function validateEmail() {
+            var email = document.getElementById('email').value;
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email.match(emailPattern)) {
+                document.getElementById('email-error').style.display = 'block';
+            } else {
+                document.getElementById('email-error').style.display = 'none';
+            }
+        }
+
+        // Toggle password visibility
+        function togglePassword() {
+            var passwordField = document.getElementById('password');
+            var passwordIcon = document.getElementById('password-toggler');
+            if (passwordField.type === "password") {
+                passwordField.type = "text"; // Show password
+                passwordIcon.classList.remove("bi-eye-slash"); // Remove "eye-slash" class
+                passwordIcon.classList.add("bi-eye"); // Add "eye" class
+            } else {
+                passwordField.type = "password"; // Hide password
+                passwordIcon.classList.remove("bi-eye"); // Remove "eye" class
+                passwordIcon.classList.add("bi-eye-slash"); // Add "eye-slash" class
+            }
+        }
+
+        // Prevent form submission if validation fails
+        document.querySelector('form').addEventListener('submit', function(e) {
+            let isPasswordValid = document.getElementById('password-error').style.display === 'none';
+            let isMobileValid = document.getElementById('mobile-error').style.display === 'none';
+            let isEmailValid = document.getElementById('email-error').style.display === 'none';
+
+            if (!isPasswordValid || !isMobileValid || !isEmailValid) {
+                e.preventDefault(); // Prevent form from submitting
+            }
+        });
     </script>
+
+    <!-- Add Bootstrap Icons for the Eye Icon -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -112,7 +189,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="col-12 col-xl-6">
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" id="password" name="password" class="form-control" required>
+                                <div class="input-group">
+                                    <input type="password" id="password" name="password" class="form-control" required oninput="checkPasswordStrength()">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()" id="password-toggler">
+                                        <i class="bi bi-eye-slash"></i> <!-- Initial "eye-slash" icon -->
+                                    </button>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="progress">
+                                        <div id="password-strength-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                    </div>
+                                    <small id="password-strength-text" class="text-muted">Very Weak</small>
+                                </div>
+                                <small id="password-error" class="text-danger" style="display:none;">Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.</small>
                             </div>
                         </div>
                     </div>
@@ -122,13 +211,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="col-12 col-xl-6">
                             <div class="mb-3">
                                 <label for="mobile_number" class="form-label">Mobile Number</label>
-                                <input type="text" id="mobile_number" name="mobile_number" class="form-control" required>
+                                <input type="text" id="mobile_number" name="mobile_number" class="form-control" required onblur="validateMobile()">
+                                <small id="mobile-error" class="text-danger" style="display:none;">Mobile number must be exactly 10 digits.</small>
                             </div>
                         </div>
                         <div class="col-12 col-xl-6">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email ID</label>
-                                <input type="email" id="email" name="email" class="form-control" required>
+                                <input type="email" id="email" name="email" class="form-control" required onblur="validateEmail()">
+                                <small id="email-error" class="text-danger" style="display:none;">Please enter a valid email address.</small>
                             </div>
                         </div>
                     </div>
@@ -154,11 +245,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
-
-
-
+    <?php include('../../includes/inc_scripts.php');?>
 </body>
 </html>
+
 <?php  else: echo" 
     <!DOCTYPE html>
         <html lang='en'>

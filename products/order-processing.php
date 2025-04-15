@@ -34,9 +34,11 @@ try {
 
     // Step 2: Insert order items
     $fetch_cart_items = "
-        SELECT uc.model_id, uc.quantity, fm.price 
+        SELECT uc.model_id, uc.quantity, fm.price, fs.size_variation, svn.nos_in_set
         FROM user_cart uc 
         JOIN footwear_models fm ON uc.model_id = fm.model_id 
+        JOIN footwear_stock fs ON uc.model_id = fs.model_id
+        JOIN size_variation_nos svn ON fs.size_variation = svn.size_set
         WHERE uc.user_id = ?";
     $stmt_items = $conn->prepare($fetch_cart_items);
     $stmt_items->bind_param("i", $user_id);
@@ -50,7 +52,8 @@ try {
 
     $items_inserted = 0;
     while ($item = $result->fetch_assoc()) {
-        $insert_item->bind_param("iiiid", $order_id, $user_id, $item['model_id'], $item['quantity'], $item['price']);
+        $totalNos = $item['quantity'] * $item['nos_in_set'];
+        $insert_item->bind_param("iiiid", $order_id, $user_id, $item['model_id'], $totalNos, $item['price']);
         if ($insert_item->execute()) {
             $items_inserted++;
         }

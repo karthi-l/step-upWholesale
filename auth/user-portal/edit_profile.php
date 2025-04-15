@@ -2,7 +2,6 @@
 // Start session
 
 include('../../includes/session_dbConn.php');
-include('../../includes/bootstrap-css-js.php');
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -100,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
+    <?php include('../../includes/inc_styles.php');?>
 
 </head>
 <body> 
@@ -146,5 +146,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </form>
 </div>
+<?php include('../../includes/inc_scripts.php');?>
 </body>
 </html>

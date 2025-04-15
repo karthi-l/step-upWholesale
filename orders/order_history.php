@@ -56,6 +56,26 @@ if(isset($_SESSION['user_id'])){
                 if ($stmt->execute()) {
                     $_SESSION['alertMessage'] = "Order updated successfully!";
                     $_SESSION['alertType'] = "success";
+                    // Fetch the user_id for the order (if not already available)
+                    $user_fetch_query = "SELECT user_id FROM orders WHERE order_id = ?";
+                    $user_fetch_stmt = $conn->prepare($user_fetch_query);
+                    $user_fetch_stmt->bind_param("i", $order_id);
+                    $user_fetch_stmt->execute();
+                    $user_result = $user_fetch_stmt->get_result();
+                    $user_data = $user_result->fetch_assoc();
+                    $user_id = $user_data['user_id'] ?? null;
+
+                    if ($user_id) {
+                        $title = "Order updated";
+                        $message = "Your order #$order_id has been $deliverystatus.";
+                        $target = "user";
+
+                        $announcement_query = "INSERT INTO announcements (title, message, target, user_id, created_at) VALUES (?, ?, ?, ?, NOW())";
+                        $announcement_stmt = $conn->prepare($announcement_query);
+                        $announcement_stmt->bind_param("sssi", $title, $message, $target, $user_id);
+                        $announcement_stmt->execute(); // You could also check if it's successful
+                    }
+
                 } else {
                     $_SESSION['alertMessage'] = "Failed to update order.";
                     $_SESSION['alertType'] = "danger";
@@ -100,9 +120,12 @@ function getBadgeClass($status) {
 </head>
 <body>
 <div class="container py-5">
-    <h2 class="mb-4 text-center">
-        <?= isset($_SESSION['user_id']) ? 'My Orders' : 'Manage Orders'; ?>
-    </h2>
+        <div class="d-flex justify-content-center align-items-center mb-4">
+            <h2 class="mb-4 text-center">
+                <?= isset($_SESSION['user_id']) ? 'My Orders' : 'Manage Orders'; ?>
+            </h2>
+            <a href="../index.php" class="btn btn-primary ms-auto"><i class="bi bi-house-door-fill"></i> Home</a>
+        </div>
 
     <?php if (isset($_SESSION['alertMessage'])): ?>
         <div class="alert alert-<?= $_SESSION['alertType']; ?> alert-dismissible fade show" role="alert">
@@ -150,15 +173,42 @@ function getBadgeClass($status) {
                             <p><strong>Bill:</strong> ₹<?= number_format($row['bill_amount'], 2) ?></p>
                             <p><strong>Estimated Delivery:</strong> <?= $row['estimated_delivery_date'] ?></p>
                             <?php if (isset($_SESSION['user_id']) && $row['bill_file']): ?>
-                                <a href="../products/<?= $row['bill_file'] ?>" target="_blank" class="btn btn-sm btn-outline-primary">View Invoice</a>
+                                <a href="#" 
+                                class="btn btn-sm btn-outline-primary" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#invoiceModal" 
+                                data-file="../products/<?= $row['bill_file'] ?>">
+                                View Invoice
+                                </a>
                             <?php endif; ?>
                         </div>
                         <?php if (isset($_SESSION['admin_id'])): ?>
-                            <div class="card-footer text-end">
-                                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editStatusModal<?= $row['order_id'] ?>">Edit Status</button>
+                            <div class="card-footer text-end d-flex justify-content-between">
+                            <a href="#" 
+                            class="btn btn-sm btn-outline-primary" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#invoiceModal" 
+                            data-file="../products/<?= $row['bill_file'] ?>">
+                            View Invoice
+                            </a>
+                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editStatusModal<?= $row['order_id'] ?>">Edit Status</button>
                             </div>
                         <?php endif; ?>
                     </div>
+                </div>
+                <!-- Invoice Modal -->
+                <div class="modal fade" id="invoiceModal" tabindex="-1" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="invoiceModalLabel">Invoice Preview</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe id="invoiceFrame" src="" width="100%" height="600px" style="border: none;"></iframe>
+                    </div>
+                    </div>
+                </div>
                 </div>
 
                 <?php if (isset($_SESSION['admin_id'])): ?>
@@ -203,6 +253,24 @@ function getBadgeClass($status) {
         <a href="../index.php" class="btn btn-primary">Back to Home</a>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var invoiceModal = document.getElementById('invoiceModal');
+  invoiceModal.addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget;
+    var file = button.getAttribute('data-file');
+    var iframe = invoiceModal.querySelector('#invoiceFrame');
+    iframe.src = file;
+  });
+
+  // Optional: clear iframe on modal hide to stop playing PDFs or releasing memory
+  invoiceModal.addEventListener('hidden.bs.modal', function () {
+    var iframe = invoiceModal.querySelector('#invoiceFrame');
+    iframe.src = '';
+  });
+});
+</script>
+
 <?php include('../includes/inc_scripts.php'); ?>
 </body>
 </html>

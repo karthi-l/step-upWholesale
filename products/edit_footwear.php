@@ -1,6 +1,6 @@
 <?php
 
-include('../includes/session_dbConn.php'); // Include database connection
+include('../includes/session_dbConn.php');
 if(!isset($_SESSION['admin_id'])){
 include('../auth/ua-auth/admin_auth.php');
 exit;
@@ -223,5 +223,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
     </div>
+
 </body>
 </html>

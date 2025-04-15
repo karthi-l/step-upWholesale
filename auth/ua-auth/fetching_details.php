@@ -16,8 +16,8 @@ if (isset($_SESSION['user_id'])) {
                 <div class='alert alert-warning m-auto text-center'>
                     <h4>Unable to fetch your details. Please contact support.</h4>
                     <div class='d-flex justify-content-center'>
-                        <a href='../logout.php' class='btn btn-primary mx-2'>Logout</a>
-                        <a href='../../index.php' class='btn btn-info mx-2'>Home</a>
+                        <a href='http://localhost:80/step-upWholesale-git/step-upWholesale/auth/logout.php' class='btn btn-primary mx-2'>Logout</a>
+                        <a href='http://localhost:80/step-upWholesale-git/step-upWholesale/index.php' class='btn btn-info mx-2'>Home</a>
                     </div>
                 </div>
             </div>
@@ -42,8 +42,8 @@ if (isset($_SESSION['user_id'])) {
                 <div class='alert alert-warning m-auto text-center'>
                     <h4>Unable to fetch your details. Please contact support.</h4>
                     <div class='d-flex justify-content-center'>
-                        <a href='../logout.php' class='btn btn-primary mx-2'>Logout</a>
-                        <a href='../../index.php' class='btn btn-info mx-2'>Home</a>
+                        <a href='http://localhost:80/step-upWholesale-git/step-upWholesale/auth/logout.php' class='btn btn-primary mx-2'>Logout</a>
+                        <a href='http://localhost:80/step-upWholesale-git/step-upWholesale/index.php' class='btn btn-info mx-2'>Home</a>
                     </div>
                 </div>
             </div>

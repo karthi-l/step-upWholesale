@@ -4,7 +4,7 @@
 // Optional: for checking if user is logged in
 $user_id = $_SESSION['user_id'] ?? null;
 
-$result = $conn->query("SELECT * FROM announcements WHERE is_active = 1 AND is_read = 0 AND (target = 'all' OR target = 'visitors'" . ($user_id ? " OR (target = 'user' AND user_id = $user_id)" : "") . ") ORDER BY created_at DESC");
+$result = $conn->query("SELECT * FROM announcements WHERE is_read = 0 AND (target = 'all' OR target = 'visitors'" . ($user_id ? " OR (target = 'user' AND user_id = $user_id)" : "") . ") ORDER BY created_at DESC");
 ?>
 
 <?php if ($result->num_rows > 0): ?>

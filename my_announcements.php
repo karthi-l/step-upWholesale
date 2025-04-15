@@ -29,7 +29,10 @@ $result = $stmt->get_result();
 </head>
 <body>
 <div class="container py-5">
-    <h2 class="mb-4">My Announcements</h2>
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <h2 class="mb-4">My Announcements</h2>
+        <a href="index.php" class="btn btn-primary ms-auto"><i class="bi bi-house-door-fill"></i> Home</a>
+    </div>
     <?php if ($result->num_rows > 0): ?>
         <div class="list-group">
             <?php while ($row = $result->fetch_assoc()): ?>

@@ -1,11 +1,11 @@
 <?php
 include('../includes/session_dbConn.php');
-include('../includes/bootstrap-css-js.php');
 // Check if user is already logged in
 if(isset($_SESSION['user_id'])){
     header("Location:user-portal/user_dashboard.php");
 }
 if(isset($_SESSION['admin_id'])){
+    
     header("Location:admin-portal/admin_dashboard.php");
 }
 // Check if username and email is not set
@@ -79,11 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 header('Location:admin-portal/admin_dashboard.php');
             }
         } else {
-            $alert = "<div class='alert alert-danger'>Invalid or expired OTP. Please try again.</div>";
-            $sql_update = "UPDATE usersretailers SET otp = NULL, otp_expiry = NULL WHERE email = ?";
-            $stmt_update = $conn->prepare($sql_update);
-            $stmt_update->bind_param("s", $email);
-            $stmt_update->execute();
+            $alert = "<div class='alert alert-danger'>Invalid OTP. Please try again.</div>";
             $_SESSION['is_verified'] = false;
             
         }
@@ -101,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify OTP</title>
+    <?php include('../includes/inc_styles.php');?>
 </head>
 <body>
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -115,5 +112,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit" class="btn btn-primary w-100">Verify OTP</button>
     </form>
 </div>
+<?php include('../includes/inc_scripts.php');?>
 </body>
 </html>

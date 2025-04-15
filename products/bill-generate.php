@@ -21,11 +21,13 @@ $query = "
            GROUP_CONCAT(fs.stock) AS stock,
            uc.model_id AS cart_model_id, 
            uc.user_id, 
-           uc.quantity
+           uc.quantity,
+           svn.nos_in_set
     FROM footwear_models fm
     LEFT JOIN footwear_stock fs ON fm.model_id = fs.model_id
     LEFT JOIN user_cart uc ON fm.model_id = uc.model_id 
-    WHERE uc.user_id = ?  -- Use '?' placeholder for MySQLi prepared statement
+    LEFT JOIN size_variation_nos svn ON fs.size_variation = svn.size_set
+    WHERE uc.user_id = ?
     GROUP BY fm.model_id
     ORDER BY fm.main_brand, fm.sub_brand;
 ";
@@ -189,9 +191,9 @@ $expected_delivery = $today->format('Y-m-d');
                 $total_amount = 0;
                 while ($products = $result->fetch_assoc()) { 
                     $netrate = $products['price'] - ($products['price'] * ($discountPercentage / 100));
-                    $total = $netrate * $products['quantity'];
+                    $total = $netrate * ($products['quantity']* $products['nos_in_set']);
                     $total_amount += $total;
-                    $totalnos += $products['quantity'];
+                    $totalnos += $products['quantity'] * $products['nos_in_set'];
                 ?>
                 <tr>
                     <td><?php echo $i; ?></td>
@@ -204,8 +206,8 @@ $expected_delivery = $today->format('Y-m-d');
                     ?></td>
                     <td class="text-center"><?php echo $discountPercentage;?>%</td>
                     <td class="text-center"><?php echo $netrate;?></td>
-                    <td class="text-center"><?php echo $products['quantity'];?></td>
-                    <td class="text-right"><?php echo $total;?></td>
+                    <td class="text-center"><?php echo ($products['quantity'] * $products['nos_in_set']);?></td>
+                    <td class="text-right"><?php echo number_format($total, 2);?></td>
                 </tr>
                 <?php $i+=1; ?>
                 <?php } ?>
