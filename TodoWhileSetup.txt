@@ -1,0 +1,5 @@
+allow_url_include=On
+
+extension=gd
+
+

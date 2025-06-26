@@ -189,141 +189,139 @@ if ($userTypeRow) {
            
         </div>
     </div>
-    <script>
-        const discountPercentage = <?php echo $discountPercentage; ?>;
-        function calculateGrossTotal(price, sets, nosInSet) {
-    const totalPieces = sets * nosInSet;
-    const total = price * totalPieces;
-    const discount = total * (discountPercentage / 100);
-    return total - discount;
-}
-
-function updateQuantity(button, action, model_id) {
-    let rowEl = document.getElementById('footwear-model-' + model_id);
-    let qtyInput = document.getElementById('qty-' + model_id);
-    let totalSpan = document.getElementById('total-' + model_id);
-    let grossTotalSpan = document.getElementById('gross-total-' + model_id);
-
-    let price = parseFloat(rowEl.getAttribute('data-price'));
-    let nosInSet = parseInt(rowEl.getAttribute('data-nos-in-set')) || 1;
-    let availableSets = parseInt(rowEl.getAttribute('data-stock-sets')) || 0;
-
-    let quantity = parseInt(qtyInput.value);
-
-    if (action === 'increase') {
-        if (quantity < availableSets) {
-            quantity++;
-        } else {
-            alert("Maximum stock limit reached.");
-            return;
-        }
-    } else if (action === 'decrease' && quantity > 1) {
-        quantity--;
-    }
-
-    qtyInput.value = quantity;
-    let totalPieces = quantity * nosInSet;
-    totalSpan.innerText = (price * totalPieces).toFixed(2);
-    grossTotalSpan.innerText = calculateGrossTotal(price, quantity, nosInSet).toFixed(2);
-    document.getElementById("pieces-" + model_id).innerText = totalPieces;
-
-
-    $.ajax({
-        url: "update_cart_quantity.php",
-        type: "POST",
-        data: { model_id: model_id, quantity: quantity },
-        success: function(response) {
-            console.log("Quantity updated:", response);
-            updateGrandTotals();
-        },
-        error: function(xhr, status, error) {
-            console.error("Error updating quantity:", error);
-        }
-    });
-
-    updateGrandTotals();
-}
-
-function updateGrandTotals() {
-    let grandTotal = 0;
-    let grandGrossTotal = 0;
-
-    $(".row.border.rounded").each(function () {
-        const modelId = $(this).attr("id").split('-').pop();
-        const price = parseFloat($(this).data("price")) || 0;
-        const nosInSet = parseInt($(this).data("nos-in-set")) || 1;
-        const quantity = parseInt($("#qty-" + modelId).val()) || 0;
-
-        const totalPieces = quantity * nosInSet;
+<script>
+            const discountPercentage = <?php echo $discountPercentage; ?>;
+            function calculateGrossTotal(price, sets, nosInSet) {
+        const totalPieces = sets * nosInSet;
         const total = price * totalPieces;
         const discount = total * (discountPercentage / 100);
-        const grossTotal = total - discount;
+        return total - discount;
+    }
 
-        grandTotal += total;
-        grandGrossTotal += grossTotal;
-    });
+    function updateQuantity(button, action, model_id) {
+        let rowEl = document.getElementById('footwear-model-' + model_id);
+        let qtyInput = document.getElementById('qty-' + model_id);
+        let totalSpan = document.getElementById('total-' + model_id);
+        let grossTotalSpan = document.getElementById('gross-total-' + model_id);
 
-    $("#grand-total").text(grandTotal.toFixed(2));
-    $("#grand-gross-total").text(grandGrossTotal.toFixed(2));
-    $("#pieces-" + modelId).text(totalPieces);  // ✅ Add this
-}
+        let price = parseFloat(rowEl.getAttribute('data-price'));
+        let nosInSet = parseInt(rowEl.getAttribute('data-nos-in-set')) || 1;
+        let availableSets = parseInt(rowEl.getAttribute('data-stock-sets')) || 0;
+
+        let quantity = parseInt(qtyInput.value);
+
+        if (action === 'increase') {
+            if (quantity < availableSets) {
+                quantity++;
+            } else {
+                alert("Maximum stock limit reached.");
+                return;
+            }
+        } else if (action === 'decrease' && quantity > 1) {
+            quantity--;
+        }
+
+        qtyInput.value = quantity;
+        let totalPieces = quantity * nosInSet;
+        totalSpan.innerText = (price * totalPieces).toFixed(2);
+        grossTotalSpan.innerText = calculateGrossTotal(price, quantity, nosInSet).toFixed(2);
+        document.getElementById("pieces-" + model_id).innerText = totalPieces;
+
+
+        $.ajax({
+            url: "update_cart_quantity.php",
+            type: "POST",
+            data: { model_id: model_id, quantity: quantity },
+            success: function(response) {
+                console.log("Quantity updated:", response);
+                updateGrandTotals();
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating quantity:", error);
+            }
+        });
+
+        updateGrandTotals();
+    }
+
+    function updateGrandTotals() {
+        let grandTotal = 0;
+        let grandGrossTotal = 0;
+
+        $(".row.border.rounded").each(function () {
+            const modelId = $(this).attr("id").split('-').pop();
+            const price = parseFloat($(this).data("price")) || 0;
+            const nosInSet = parseInt($(this).data("nos-in-set")) || 1;
+            const quantity = parseInt($("#qty-" + modelId).val()) || 0;
+
+            const totalPieces = quantity * nosInSet;
+            const total = price * totalPieces;
+            const discount = total * (discountPercentage / 100);
+            const grossTotal = total - discount;
+
+            grandTotal += total;
+            grandGrossTotal += grossTotal;
+        });
+
+        $("#grand-total").text(grandTotal.toFixed(2));
+        $("#grand-gross-total").text(grandGrossTotal.toFixed(2));
+        $("#pieces-" + modelId).text(totalPieces);  // ✅ Add this
+    }
 
 
 
         $(document).ready(function() {
-
-            // Initial grand total calculation
+                    // Initial grand total calculation
             $(".row.border.rounded").each(function() {
-    const modelId = $(this).attr("id").split('-').pop();
-    const price = parseFloat($(this).data("price"));
-    const quantity = parseInt($("#qty-" + modelId).val());
-    const nosInSet = parseInt($(this).data("nos-in-set")) || 1;
+                const modelId = $(this).attr("id").split('-').pop();
+                const price = parseFloat($(this).data("price"));
+                const quantity = parseInt($("#qty-" + modelId).val());
+                const nosInSet = parseInt($(this).data("nos-in-set")) || 1;
 
-    const totalPieces = quantity * nosInSet;
-    const total = price * totalPieces;
-    const grossTotal = calculateGrossTotal(price, quantity, nosInSet);
+                const totalPieces = quantity * nosInSet;
+                const total = price * totalPieces;
+                const grossTotal = calculateGrossTotal(price, quantity, nosInSet);
 
-    $("#total-" + modelId).text(total.toFixed(2));
-    $("#gross-total-" + modelId).text(grossTotal.toFixed(2));
-});
-
-
-            updateGrandTotals();
-
-            $(".remove-from-cart").click(function() {
-                var model_id = $(this).data("model-id");
-                var user_id = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
-
-                if (user_id === null) {
-                    alert("You need to log in to remove items from the cart.");
-                    return;
-                }
-
-                console.log("Removing item:", { model_id: model_id, user_id: user_id });
-
-                $.ajax({
-                    url: "removefrom_cart.php",
-                    type: "POST",
-                    dataType: "json", // Expect JSON response
-                    data: { model_id: model_id, user_id: user_id },
-                    success: function(response) {
-                        console.log("Server response:", response);
-                        if (response && response.status === "success") {
-                            console.log("Successfully removed item:", model_id);
-                            $("#footwear-model-" + model_id).remove(); // Use .hide() for display: none
-                            updateGrandTotals();
-                        } else {
-                            alert("Failed to remove from cart! Try again.");
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.log("AJAX error:", status, error);
-                        console.log("Response Text:", xhr.responseText); // Log the raw response
-                    }
-                });
-                updateGrandTotals();
-            });
+                $("#total-" + modelId).text(total.toFixed(2));
+                $("#gross-total-" + modelId).text(grossTotal.toFixed(2));
         });
-    </script>
+
+
+        updateGrandTotals();
+        $(".remove-from-cart").click(function() {
+            var model_id = $(this).data("model-id");
+            var user_id = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
+
+            if (user_id === null) {
+                alert("You need to log in to remove items from the cart.");
+                return;
+            }
+
+            console.log("Removing item:", { model_id: model_id, user_id: user_id });
+
+            $.ajax({
+                url: "removefrom_cart.php",
+                type: "POST",
+                dataType: "json", // Expect JSON response
+                data: { model_id: model_id, user_id: user_id },
+                success: function(response) {
+                    console.log("Server response:", response);
+                    if (response && response.status === "success") {
+                        console.log("Successfully removed item:", model_id);
+                        $("#footwear-model-" + model_id).remove(); // Use .hide() for display: none
+                        updateGrandTotals();
+                    } else {
+                        alert("Failed to remove from cart! Try again.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log("AJAX error:", status, error);
+                    console.log("Response Text:", xhr.responseText); // Log the raw response
+                }
+            });
+            updateGrandTotals();
+        });
+    });
+</script>
 </body>
 </html>
