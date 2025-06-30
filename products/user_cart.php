@@ -1,6 +1,5 @@
 <?php
 include('../includes/session_dbConn.php');
-include('../includes/bootstrap-css-js.php');
 if(!isset($_SESSION['user_id'])){
     include('../auth/ua-auth/user_auth.php');
     exit;
@@ -44,7 +43,7 @@ $query = "
 $stmt = $conn->prepare($query);
 
 // Bind the parameter to the statement
-$stmt->bind_param("i", $user_id);  // 'i' for integer as user_id is likely an integer
+$stmt->bind_param("i", $user_id);   // 'i' for integer as user_id is likely an integer
 
 // Execute the query
 $stmt->execute();
@@ -76,10 +75,10 @@ if($result->num_rows == 0 ){
     </body>
     </html>
     ";
-    exit();              
+    exit();             
 }
 
-$stmt->close();
+// No need to close stmt here, it will be closed after fetching all results
 
 $userTypeQuery = "SELECT userType FROM usersretailers WHERE user_id = ?";
 $userTypeStmt = $conn->prepare($userTypeQuery);
@@ -103,6 +102,10 @@ if ($userTypeRow) {
             break;
     }
 }
+
+// Initialize grand totals BEFORE the loop
+$grandTotal = 0;
+$grandGrossTotal = 0;
 ?>
 
 
@@ -112,39 +115,32 @@ if ($userTypeRow) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User-Cart</title>
+    <?php include('../includes/inc_styles.php'); ?>
 </head>
 <body>
     <?php include("../includes/main_nav.php");?>
     <div class="container">
         <?php while ($row = $result->fetch_assoc()): ?>
             <?php
-                $grandTotal = 0;
-                $grandGrossTotal = 0;    
-            ?>
-            <?php
                 $nosInSet = $row['nos_in_set'] ?? 1;
                 $pieces = $row['quantity'] * $nosInSet;
                 $total = $row['price'] * $pieces;
                 $discountAmount = $total * ($discountPercentage / 100);
                 $grossTotal = $total - $discountAmount;
-                $grandTotal += $total;
-                $grandGrossTotal += $grossTotal;
+                $grandTotal += $total; // Accumulate grand total
+                $grandGrossTotal += $grossTotal; // Accumulate grand gross total
             ?>
 
-<div class="row border rounded p-2 m-2  align-items-center"
-     id="footwear-model-<?php echo $row['model_id'];?>"
-     data-price="<?php echo htmlspecialchars($row['price']); ?>"
-     data-nos-in-set="<?php echo htmlspecialchars($nosInSet); ?>"
-     data-stock-sets="<?php echo htmlspecialchars($row['stock']); ?>">
-
-            <!-- Product Image -->
+        <div class="row border rounded p-2 m-2  align-items-center"
+            id="footwear-model-<?php echo $row['model_id'];?>"
+            data-price="<?php echo htmlspecialchars($row['price']); ?>"
+            data-nos-in-set="<?php echo htmlspecialchars($nosInSet); ?>"
+            data-stock-sets="<?php echo htmlspecialchars($row['stock']); ?>">
             <div class="col-3 p-2">
                 <img src="data:<?php echo htmlspecialchars($row['image_type']); ?>;base64,<?php echo base64_encode($row['image_data']); ?>" 
                     alt="<?php echo htmlspecialchars($row['main_brand']); ?>" 
                     class="card-img-top rounded w-100">
             </div>
-
-            <!-- Product Details -->
             <div class="col-6 p-2">
                 <h2 class="card-title">
                     <?php 
@@ -161,43 +157,40 @@ if ($userTypeRow) {
                     <strong>Sets Available:</strong> <?php echo htmlspecialchars($row['stock']); ?><br>
                 </h4>
             </div>
-
-            <!-- Quantity Control & Remove Button -->
             <div class="col-3 p-2 text-center" >
-            <div class="d-flex align-items-center justify-content-center">
-    <button class="btn btn-sm btn-outline-secondary quantity-btn" onclick="updateQuantity(this, 'decrease', <?php echo $row['model_id']; ?>)">-</button>
-    <input type="text" class="form-control text-center mx-2 quantity-input" id="qty-<?php echo $row['model_id']; ?>" value="<?php echo htmlspecialchars($row['quantity']); ?>" readonly style="width: 50px;">
-    <button class="btn btn-sm btn-outline-secondary quantity-btn" onclick="updateQuantity(this, 'increase', <?php echo $row['model_id']; ?>)">+</button>
-</div>
-
-<strong>Nos in Set:</strong> <?php echo htmlspecialchars($nosInSet); ?><br>
-<strong>Total Pieces:</strong> <span id="pieces-<?php echo $row['model_id']; ?>"><?php echo $pieces; ?></span><br>
-<strong>Total: ₹<span id="total-<?php echo $row['model_id']; ?>"><?php echo number_format($total, 2); ?></span></strong><br>
-<strong>Gross Total: ₹<span id="gross-total-<?php echo $row['model_id']; ?>"><?php echo number_format($grossTotal, 2); ?></span></strong>
-<br>
-<div data-model-id="<?php echo $row['model_id']; ?>">
-    <button class="btn btn-sm btn-danger mt-2 remove-from-cart" data-model-id="<?php echo $row['model_id']; ?>" >Remove</button>
-</div>
-
+                <div class="d-flex align-items-center justify-content-center">
+                    <button class="btn btn-sm btn-outline-secondary quantity-btn" onclick="updateQuantity(this, 'decrease', <?php echo $row['model_id']; ?>)">-</button>
+                    <input type="text" class="form-control text-center mx-2 quantity-input" id="qty-<?php echo $row['model_id']; ?>" value="<?php echo htmlspecialchars($row['quantity']); ?>" readonly style="width: 50px;">
+                    <button class="btn btn-sm btn-outline-secondary quantity-btn" onclick="updateQuantity(this, 'increase', <?php echo $row['model_id']; ?>)">+</button>
+                </div>
+                <strong>Nos in Set:</strong> <?php echo htmlspecialchars($nosInSet); ?><br>
+                <strong>Total Pieces:</strong> <span id="pieces-<?php echo $row['model_id']; ?>"><?php echo $pieces; ?></span><br>
+                <strong>Total: ₹<span id="total-<?php echo $row['model_id']; ?>"><?php echo number_format($total, 2); ?></span></strong><br>
+                <strong>Gross Total: ₹<span id="gross-total-<?php echo $row['model_id']; ?>"><?php echo number_format($grossTotal, 2); ?></span></strong>
+                <br>
+                <div data-model-id="<?php echo $row['model_id']; ?>">
+                    <button class="btn btn-sm btn-danger mt-2 remove-from-cart" data-model-id="<?php echo $row['model_id']; ?>" >Remove</button>
+                </div>
             </div>
         </div>
         <?php endwhile; ?>
+        <?php $stmt->close(); // Close the statement here after fetching all results ?>
+
         <div class="mt-4 p-2 m-2 text-end border rounded d-flex flex-row justify-content-center align-items-center ">
-            <strong class="mx-2">Grand Total: ₹<span id="grand-total"></span></strong>
-            <strong class="mx-2">Grand Gross Total: ₹<span id="grand-gross-total"></span></strong>
+            <strong class="mx-2">Grand Total: ₹<span id="grand-total"><?php echo number_format($grandTotal, 2); ?></span></strong>
+            <strong class="mx-2">Grand Gross Total: ₹<span id="grand-gross-total"><?php echo number_format($grandGrossTotal, 2); ?></span></strong>
             <button class="btn btn-primary mx-2"><a href="bill-view.php" class="text-white" style="text-decoration:none;">Place Order</a></button>
-           
         </div>
     </div>
+    <?php include('../includes/inc_scripts.php');?>
 <script>
-            const discountPercentage = <?php echo $discountPercentage; ?>;
-            function calculateGrossTotal(price, sets, nosInSet) {
+    const discountPercentage = <?php echo $discountPercentage; ?>;
+    function calculateGrossTotal(price, sets, nosInSet) {
         const totalPieces = sets * nosInSet;
         const total = price * totalPieces;
         const discount = total * (discountPercentage / 100);
         return total - discount;
     }
-
     function updateQuantity(button, action, model_id) {
         let rowEl = document.getElementById('footwear-model-' + model_id);
         let qtyInput = document.getElementById('qty-' + model_id);
@@ -223,9 +216,9 @@ if ($userTypeRow) {
 
         qtyInput.value = quantity;
         let totalPieces = quantity * nosInSet;
+        document.getElementById("pieces-" + model_id).innerText = totalPieces; // Update total pieces here
         totalSpan.innerText = (price * totalPieces).toFixed(2);
         grossTotalSpan.innerText = calculateGrossTotal(price, quantity, nosInSet).toFixed(2);
-        document.getElementById("pieces-" + model_id).innerText = totalPieces;
 
 
         $.ajax({
@@ -234,16 +227,15 @@ if ($userTypeRow) {
             data: { model_id: model_id, quantity: quantity },
             success: function(response) {
                 console.log("Quantity updated:", response);
-                updateGrandTotals();
+                updateGrandTotals(); // Call this on success
             },
             error: function(xhr, status, error) {
                 console.error("Error updating quantity:", error);
             }
         });
 
-        updateGrandTotals();
+        // updateGrandTotals(); // Moved inside AJAX success to ensure consistent calculations
     }
-
     function updateGrandTotals() {
         let grandTotal = 0;
         let grandGrossTotal = 0;
@@ -261,44 +253,37 @@ if ($userTypeRow) {
 
             grandTotal += total;
             grandGrossTotal += grossTotal;
+            // No need to update individual 'pieces' span here, it's done in updateQuantity
         });
 
         $("#grand-total").text(grandTotal.toFixed(2));
         $("#grand-gross-total").text(grandGrossTotal.toFixed(2));
-        $("#pieces-" + modelId).text(totalPieces);  // ✅ Add this
     }
+    $(document).ready(function() {
+        // Initial calculation for individual item totals (this is fine)
+        $(".row.border.rounded").each(function() {
+            const modelId = $(this).attr("id").split('-').pop();
+            const price = parseFloat($(this).data("price"));
+            const quantity = parseInt($("#qty-" + modelId).val());
+            const nosInSet = parseInt($(this).data("nos-in-set")) || 1;
 
+            const totalPieces = quantity * nosInSet;
+            const total = price * totalPieces;
+            const grossTotal = calculateGrossTotal(price, quantity, nosInSet);
 
-
-        $(document).ready(function() {
-                    // Initial grand total calculation
-            $(".row.border.rounded").each(function() {
-                const modelId = $(this).attr("id").split('-').pop();
-                const price = parseFloat($(this).data("price"));
-                const quantity = parseInt($("#qty-" + modelId).val());
-                const nosInSet = parseInt($(this).data("nos-in-set")) || 1;
-
-                const totalPieces = quantity * nosInSet;
-                const total = price * totalPieces;
-                const grossTotal = calculateGrossTotal(price, quantity, nosInSet);
-
-                $("#total-" + modelId).text(total.toFixed(2));
-                $("#gross-total-" + modelId).text(grossTotal.toFixed(2));
+            $("#total-" + modelId).text(total.toFixed(2));
+            $("#gross-total-" + modelId).text(grossTotal.toFixed(2));
         });
+        updateGrandTotals(); // Ensure this is called on page load
 
-
-        updateGrandTotals();
         $(".remove-from-cart").click(function() {
             var model_id = $(this).data("model-id");
             var user_id = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
-
             if (user_id === null) {
                 alert("You need to log in to remove items from the cart.");
                 return;
             }
-
             console.log("Removing item:", { model_id: model_id, user_id: user_id });
-
             $.ajax({
                 url: "removefrom_cart.php",
                 type: "POST",
@@ -308,18 +293,23 @@ if ($userTypeRow) {
                     console.log("Server response:", response);
                     if (response && response.status === "success") {
                         console.log("Successfully removed item:", model_id);
-                        $("#footwear-model-" + model_id).remove(); // Use .hide() for display: none
-                        updateGrandTotals();
+                        $("#footwear-model-" + model_id).remove(); 
+                        updateGrandTotals(); // Update grand totals after removal
+                        // Check if the cart is now empty and redirect
+                        if ($(".row.border.rounded").length === 0) {
+                            window.location.reload(); // Reload to show "Cart is Empty" message
+                        }
                     } else {
-                        alert("Failed to remove from cart! Try again.");
+                        alert("Failed to remove from cart! Try again. Server message: " + (response ? response.message : "No message."));
                     }
                 },
                 error: function(xhr, status, error) {
                     console.log("AJAX error:", status, error);
                     console.log("Response Text:", xhr.responseText); // Log the raw response
+                    alert("An error occurred while trying to remove the item.");
                 }
             });
-            updateGrandTotals();
+            // Do NOT call updateGrandTotals() here, it should be in success callback
         });
     });
 </script>
